@@ -140,6 +140,11 @@ void Window::Run()
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
 
+	// Create timer.
+	std::chrono::steady_clock::time_point begin;
+	std::chrono::steady_clock::time_point end;
+	float dt = 0;
+
 	while (true) {
 		// Handle the windows messages.
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
@@ -150,23 +155,28 @@ void Window::Run()
 		if (msg.message == WM_QUIT) {
 			break;
 		}
-		else {
-			// Otherwise do the frame processing.
-			bool shouldContinue = Tick();
-			if (!shouldContinue) {
-				break;
-			}
+
+		// Otherwise do the frame processing.
+		begin = std::chrono::steady_clock::now();
+		bool shouldContinue = Tick(dt);
+		end = std::chrono::steady_clock::now();
+
+		if (!shouldContinue) {
+			break;
 		}
+
+		// Update delta time.
+		dt = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000000.0;
 	}
 }
 
-bool Window::Tick()
+bool Window::Tick(float dt)
 {
 	if (m_input->IsKeyDown(VK_ESCAPE)) {
 		return false;
 	}
 
-	return m_application->Tick();
+	return m_application->Tick(dt);
 }
 
 LRESULT CALLBACK Window::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)

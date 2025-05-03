@@ -14,7 +14,7 @@ public:
 
 	bool Initialize(int screenWidth, int screenHeight, HWND hwnd);
 	void Shutdown();
-	bool Tick();
+	bool Tick(float dt);
 
 private:
 	Direct3D* m_direct3d;

@@ -1,41 +1,41 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\",
+  "WorkspaceRootPath": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|solutionrelative:DirectX11-Project\\window.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|solutionrelative:DirectX11-Project\\application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|solutionrelative:DirectX11-Project\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|solutionrelative:DirectX11-Project\\direct3d.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|solutionrelative:DirectX11-Project\\direct3d.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|solutionrelative:DirectX11-Project\\application.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|solutionrelative:DirectX11-Project\\window.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|solutionrelative:DirectX11-Project\\input.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3741F5F1-FBF1-4CD7-9967-12FED5F1591B}|DirectX11-Project\\DirectX11-Project.vcxproj|solutionrelative:DirectX11-Project\\input.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -46,27 +46,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 7,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:4:0:{b9f91511-5ca5-40ec-9726-f3e3a7e534e2}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:3:0:{b9f91511-5ca5-40ec-9726-f3e3a7e534e2}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\main.cpp",
+              "DocumentMoniker": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\main.cpp",
               "RelativeDocumentMoniker": "DirectX11-Project\\main.cpp",
-              "ToolTip": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\main.cpp",
+              "ToolTip": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\main.cpp",
               "RelativeToolTip": "DirectX11-Project\\main.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
@@ -76,9 +64,9 @@
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "direct3d.cpp",
-              "DocumentMoniker": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.cpp",
+              "DocumentMoniker": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.cpp",
               "RelativeDocumentMoniker": "DirectX11-Project\\direct3d.cpp",
-              "ToolTip": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.cpp",
+              "ToolTip": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.cpp",
               "RelativeToolTip": "DirectX11-Project\\direct3d.cpp",
               "ViewState": "AgIAAAoBAAAAAAAAAAAowJIBAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
@@ -88,9 +76,9 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "application.cpp",
-              "DocumentMoniker": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.cpp",
+              "DocumentMoniker": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.cpp",
               "RelativeDocumentMoniker": "DirectX11-Project\\application.cpp",
-              "ToolTip": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.cpp",
+              "ToolTip": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.cpp",
               "RelativeToolTip": "DirectX11-Project\\application.cpp",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAACkAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
@@ -100,9 +88,9 @@
               "$type": "Document",
               "DocumentIndex": 7,
               "Title": "input.cpp",
-              "DocumentMoniker": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.cpp",
+              "DocumentMoniker": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.cpp",
               "RelativeDocumentMoniker": "DirectX11-Project\\input.cpp",
-              "ToolTip": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.cpp",
+              "ToolTip": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.cpp",
               "RelativeToolTip": "DirectX11-Project\\input.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
@@ -112,9 +100,9 @@
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "direct3d.h",
-              "DocumentMoniker": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.h",
+              "DocumentMoniker": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.h",
               "RelativeDocumentMoniker": "DirectX11-Project\\direct3d.h",
-              "ToolTip": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.h",
+              "ToolTip": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\direct3d.h",
               "RelativeToolTip": "DirectX11-Project\\direct3d.h",
               "ViewState": "AgIAAAYAAAAAAAAAAAAywCAAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
@@ -124,9 +112,9 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "application.h",
-              "DocumentMoniker": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.h",
+              "DocumentMoniker": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.h",
               "RelativeDocumentMoniker": "DirectX11-Project\\application.h",
-              "ToolTip": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.h",
+              "ToolTip": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\application.h",
               "RelativeToolTip": "DirectX11-Project\\application.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
@@ -136,9 +124,9 @@
               "$type": "Document",
               "DocumentIndex": 8,
               "Title": "input.h",
-              "DocumentMoniker": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.h",
+              "DocumentMoniker": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.h",
               "RelativeDocumentMoniker": "DirectX11-Project\\input.h",
-              "ToolTip": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.h",
+              "ToolTip": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\input.h",
               "RelativeToolTip": "DirectX11-Project\\input.h",
               "ViewState": "AgIAAAAAAAAAAAAAAADwvw4AAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
@@ -148,9 +136,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "window.cpp",
-              "DocumentMoniker": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.cpp",
+              "DocumentMoniker": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.cpp",
               "RelativeDocumentMoniker": "DirectX11-Project\\window.cpp",
-              "ToolTip": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.cpp",
+              "ToolTip": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.cpp",
               "RelativeToolTip": "DirectX11-Project\\window.cpp",
               "ViewState": "AgIAAK8AAAAAAAAAAAASwJoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
@@ -161,9 +149,9 @@
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "window.h",
-              "DocumentMoniker": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.h",
+              "DocumentMoniker": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.h",
               "RelativeDocumentMoniker": "DirectX11-Project\\window.h",
-              "ToolTip": "C:\\Users\\Jamal\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.h",
+              "ToolTip": "C:\\Users\\natzu\\OneDrive\\Desktop\\DirectX11-Project\\DirectX11-Project\\window.h",
               "RelativeToolTip": "DirectX11-Project\\window.h",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAADAAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",

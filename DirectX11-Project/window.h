@@ -9,6 +9,7 @@ PRE-PROCESSING DIRECTIVES
 INCLUDES
 ======*/
 #include <windows.h>
+#include <chrono>
 
 #include "input.h"
 #include "application.h"
@@ -27,7 +28,7 @@ public:
 	LRESULT CALLBACK MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);
 
 private:
-	bool Tick();
+	bool Tick(float dt);
 
 private:
 	LPCWSTR   m_applicationName;

@@ -37,7 +37,7 @@ void Application::Shutdown()
 	}
 }
 
-bool Application::Tick()
+bool Application::Tick(float dt)
 {
 	bool success = true;
 	// RENDER SCENE HERE
