@@ -22,6 +22,7 @@
     <ClInclude Include="application.h" />
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="transform.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +30,7 @@
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="transform.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
