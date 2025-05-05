@@ -16,6 +16,21 @@
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{aa8f289a-f792-42a5-b129-b816a2ab907e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Shaders">
+      <UniqueIdentifier>{0a0a4969-2f75-47e9-9dd3-b1efb6c111ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{700d2b9b-3fd3-4b00-a8c2-d83a517ed538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{a0c00574-b00f-4239-8bb8-fd07a0dadbfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Color Shader">
+      <UniqueIdentifier>{354c24a4-225d-4f78-96e1-ec0953cdea9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shaders\Color Shader">
+      <UniqueIdentifier>{e69483b2-4b1d-4f23-a935-6904627fc02f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -32,6 +47,15 @@
     </ClInclude>
     <ClInclude Include="transform.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="shadermanager.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="colorshader.h">
+      <Filter>Header Files\Shaders\Color Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -51,7 +75,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="transform.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="shadermanager.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="colorshader.cpp">
+      <Filter>Source Files\Shaders\Color Shader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="color.vs">
+      <Filter>Source Files\Shaders\Color Shader</Filter>
+    </None>
+    <None Include="color.ps">
+      <Filter>Source Files\Shaders\Color Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

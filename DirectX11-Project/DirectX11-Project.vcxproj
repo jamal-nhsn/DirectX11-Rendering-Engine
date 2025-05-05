@@ -20,18 +20,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
+    <ClInclude Include="colorshader.h" />
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="shader.h" />
+    <ClInclude Include="shadermanager.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="colorshader.cpp" />
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="shader.cpp" />
+    <ClCompile Include="shadermanager.cpp" />
     <ClCompile Include="transform.cpp" />
     <ClCompile Include="window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="color.ps" />
+    <None Include="color.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -3,6 +3,7 @@
 Application::Application()
 {
 	m_direct3d = 0;
+	m_shaderManager = 0;
 }
 
 Application::Application(const Application& other)
@@ -22,6 +23,15 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	success = m_direct3d->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 	if (!success) {
 		MessageBox(hwnd, L"Could not initialize Direct3D", L"Error", MB_OK);
+		return success;
+	}
+
+	// Create and initialize the ShaderManager object.
+	m_shaderManager = new ShaderManager;
+	success = m_shaderManager->Initialize(m_direct3d->GetDevice(), hwnd);
+	if (!success) {
+		MessageBox(hwnd, L"Could not initialize shaders", L"Error", MB_OK);
+		return success;
 	}
 
 	return success;
@@ -34,6 +44,13 @@ void Application::Shutdown()
 		m_direct3d->Shutdown();
 		delete m_direct3d;
 		m_direct3d = 0;
+	}
+
+	// Release the ShaderManager object.
+	if (m_shaderManager) {
+		m_shaderManager->Shutdown();
+		delete m_shaderManager;
+		m_shaderManager = 0;
 	}
 }
 

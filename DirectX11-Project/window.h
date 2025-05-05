@@ -50,4 +50,4 @@ GLOBALS
 static Window* ApplicationHandle = NULL;
 const int WINDOWED_WIDTH = 800;
 const int WINDOWED_HEIGHT = 600;
-const bool SHOW_CURSOR = false;
+const bool SHOW_CURSOR = true;

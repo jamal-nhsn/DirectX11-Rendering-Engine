@@ -4,11 +4,11 @@ Transform::Transform()
 {
 	m_dirtyFlag = false;
 
-	m_positionMatrix = XMMatrixIdentity();
-	m_scaleMatrix    = XMMatrixIdentity();
-	m_rotationMatrix     = XMMatrixIdentity();
+	m_positionMatrix = DirectX::XMMatrixIdentity();
+	m_scaleMatrix    = DirectX::XMMatrixIdentity();
+	m_rotationMatrix = DirectX::XMMatrixIdentity();
 
-	m_modelMatrix = XMMatrixIdentity();
+	m_modelMatrix = DirectX::XMMatrixIdentity();
 }
 
 Transform::Transform(const Transform&)
@@ -29,68 +29,68 @@ void Transform::Update()
 
 void Transform::SetPosition(float x, float y, float z)
 {
-	XMVectorSetW(m_positionMatrix.r[0], x);
-	XMVectorSetW(m_positionMatrix.r[1], y);
-	XMVectorSetW(m_positionMatrix.r[2], z);
+	DirectX::XMVectorSetW(m_positionMatrix.r[0], x);
+	DirectX::XMVectorSetW(m_positionMatrix.r[1], y);
+	DirectX::XMVectorSetW(m_positionMatrix.r[2], z);
 	
 	m_dirtyFlag = true;
 }
 
 void Transform::SetScale(float x, float y, float z)
 {
-	XMVectorSetX(m_scaleMatrix.r[0], x);
-	XMVectorSetY(m_scaleMatrix.r[1], y);
-	XMVectorSetZ(m_scaleMatrix.r[2], z);
+	DirectX::XMVectorSetX(m_scaleMatrix.r[0], x);
+	DirectX::XMVectorSetY(m_scaleMatrix.r[1], y);
+	DirectX::XMVectorSetZ(m_scaleMatrix.r[2], z);
 
 	m_dirtyFlag = true;
 }
 
-void Transform::SetRotation(XMVECTOR quaternion)
+void Transform::SetRotation(DirectX::XMVECTOR quaternion)
 {
-	float x = XMVectorGetX(quaternion);
-	float y = XMVectorGetY(quaternion);
-	float z = XMVectorGetZ(quaternion);
-	float w = XMVectorGetW(quaternion);
+	float x = DirectX::XMVectorGetX(quaternion);
+	float y = DirectX::XMVectorGetY(quaternion);
+	float z = DirectX::XMVectorGetZ(quaternion);
+	float w = DirectX::XMVectorGetW(quaternion);
 
-	XMVectorSetX(m_rotationMatrix.r[0], 2*(x*x + y*y) - 1);
-	XMVectorSetY(m_rotationMatrix.r[0], 2*(y*z - x*w));
-	XMVectorSetZ(m_rotationMatrix.r[0], 2*(y*w + x*z));
+	DirectX::XMVectorSetX(m_rotationMatrix.r[0], 2*(x*x + y*y) - 1);
+	DirectX::XMVectorSetY(m_rotationMatrix.r[0], 2*(y*z - x*w));
+	DirectX::XMVectorSetZ(m_rotationMatrix.r[0], 2*(y*w + x*z));
 
-	XMVectorSetX(m_rotationMatrix.r[1], 2*(y*z + x*w));
-	XMVectorSetY(m_rotationMatrix.r[1], 2*(x*x + z*z) - 1);
-	XMVectorSetZ(m_rotationMatrix.r[1], 2*(z*w - x*y));
+	DirectX::XMVectorSetX(m_rotationMatrix.r[1], 2*(y*z + x*w));
+	DirectX::XMVectorSetY(m_rotationMatrix.r[1], 2*(x*x + z*z) - 1);
+	DirectX::XMVectorSetZ(m_rotationMatrix.r[1], 2*(z*w - x*y));
 
-	XMVectorSetX(m_rotationMatrix.r[2], 2*(y*w - x*z));
-	XMVectorSetY(m_rotationMatrix.r[2], 2*(z*w + x*y));
-	XMVectorSetZ(m_rotationMatrix.r[2], 2*(x*x + w*w) - 1);
+	DirectX::XMVectorSetX(m_rotationMatrix.r[2], 2*(y*w - x*z));
+	DirectX::XMVectorSetY(m_rotationMatrix.r[2], 2*(z*w + x*y));
+	DirectX::XMVectorSetZ(m_rotationMatrix.r[2], 2*(x*x + w*w) - 1);
 
 	m_dirtyFlag = true;
 }
 
-XMFLOAT3 Transform::GetPosition()
+DirectX::XMFLOAT3 Transform::GetPosition()
 {
-	return XMFLOAT3(
-		XMVectorGetW(m_positionMatrix.r[0]),
-		XMVectorGetW(m_positionMatrix.r[1]),
-		XMVectorGetW(m_positionMatrix.r[2])
+	return DirectX::XMFLOAT3(
+		DirectX::XMVectorGetW(m_positionMatrix.r[0]),
+		DirectX::XMVectorGetW(m_positionMatrix.r[1]),
+		DirectX::XMVectorGetW(m_positionMatrix.r[2])
 	);
 }
 
-XMFLOAT3 Transform::GetScale()
+DirectX::XMFLOAT3 Transform::GetScale()
 {
-	return XMFLOAT3(
-		XMVectorGetX(m_scaleMatrix.r[0]),
-		XMVectorGetY(m_scaleMatrix.r[1]),
-		XMVectorGetZ(m_scaleMatrix.r[2])
+	return DirectX::XMFLOAT3(
+		DirectX::XMVectorGetX(m_scaleMatrix.r[0]),
+		DirectX::XMVectorGetY(m_scaleMatrix.r[1]),
+		DirectX::XMVectorGetZ(m_scaleMatrix.r[2])
 	);
 }
 
-XMVECTOR Transform::GetRotation()
+DirectX::XMVECTOR Transform::GetRotation()
 {
 	return XMQuaternionRotationMatrix(m_rotationMatrix);
 }
 
-XMMATRIX Transform::GetModelMatrix()
+DirectX::XMMATRIX Transform::GetModelMatrix()
 {
 	return m_modelMatrix;
 }

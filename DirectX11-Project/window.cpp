@@ -166,7 +166,7 @@ void Window::Run()
 		}
 
 		// Update delta time.
-		dt = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000000.0;
+		dt = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000000.0f;
 	}
 }
 

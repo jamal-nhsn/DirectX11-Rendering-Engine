@@ -4,7 +4,6 @@
 INCLUDES
 ======*/
 #include <directxmath.h>
-using namespace DirectX;
 
 class Transform
 {
@@ -17,20 +16,20 @@ public:
 
 	void SetPosition(float x, float y, float z);
 	void SetScale(float x, float y, float z);
-	void SetRotation(XMVECTOR quaternion);
+	void SetRotation(DirectX::XMVECTOR quaternion);
 
-	XMFLOAT3 GetPosition();
-	XMFLOAT3 GetScale();
-	XMVECTOR GetRotation();
+	DirectX::XMFLOAT3 GetPosition();
+	DirectX::XMFLOAT3 GetScale();
+	DirectX::XMVECTOR GetRotation();
 
-	XMMATRIX GetModelMatrix();
+	DirectX::XMMATRIX GetModelMatrix();
 
 private:
 	bool m_dirtyFlag;
 
-	XMMATRIX m_positionMatrix;
-	XMMATRIX m_scaleMatrix;
-	XMMATRIX m_rotationMatrix;
+	DirectX::XMMATRIX m_positionMatrix;
+	DirectX::XMMATRIX m_scaleMatrix;
+	DirectX::XMMATRIX m_rotationMatrix;
 
-	XMMATRIX m_modelMatrix;
+	DirectX::XMMATRIX m_modelMatrix;
 };
