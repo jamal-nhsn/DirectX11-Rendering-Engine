@@ -3,8 +3,6 @@
 /*======
 INCLUDES
 ======*/
-#include <directxmath.h>
-
 #include "shader.h"
 
 class ColorShader : public Shader

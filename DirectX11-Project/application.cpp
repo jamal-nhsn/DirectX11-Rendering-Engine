@@ -4,6 +4,7 @@ Application::Application()
 {
 	m_direct3d = 0;
 	m_shaderManager = 0;
+	m_meshManager = 0;
 }
 
 Application::Application(const Application& other)
@@ -34,6 +35,14 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return success;
 	}
 
+	// Create and initialize the MeshManager object.
+	m_meshManager = new MeshManager;
+	success = m_meshManager->Initialize(m_direct3d->GetDevice());
+	if (!success) {
+		MessageBox(hwnd, L"Could not initialize meshes", L"Error", MB_OK);
+		return success;
+	}
+
 	return success;
 }
 
@@ -51,6 +60,13 @@ void Application::Shutdown()
 		m_shaderManager->Shutdown();
 		delete m_shaderManager;
 		m_shaderManager = 0;
+	}
+
+	// Release the MeshManager object.
+	if (m_meshManager) {
+		m_meshManager->Shutdown();
+		delete m_meshManager;
+		m_meshManager = 0;
 	}
 }
 

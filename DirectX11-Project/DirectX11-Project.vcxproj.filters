@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Shaders\Color Shader">
       <UniqueIdentifier>{e69483b2-4b1d-4f23-a935-6904627fc02f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Geometry">
+      <UniqueIdentifier>{b832301e-85dc-4dd8-aa20-3971d03c5edf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Geometry">
+      <UniqueIdentifier>{4891999e-1a02-454c-b2b8-b29af9b88588}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -56,6 +62,15 @@
     </ClInclude>
     <ClInclude Include="colorshader.h">
       <Filter>Header Files\Shaders\Color Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="meshmanager.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="vertex.h">
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +100,12 @@
     </ClCompile>
     <ClCompile Include="colorshader.cpp">
       <Filter>Source Files\Shaders\Color Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="meshmanager.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh.cpp">
+      <Filter>Source Files\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

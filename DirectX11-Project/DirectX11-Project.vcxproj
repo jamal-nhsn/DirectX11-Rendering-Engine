@@ -23,9 +23,12 @@
     <ClInclude Include="colorshader.h" />
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="meshmanager.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shadermanager.h" />
     <ClInclude Include="transform.h" />
+    <ClInclude Include="vertex.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +37,8 @@
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="meshmanager.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shadermanager.cpp" />
     <ClCompile Include="transform.cpp" />

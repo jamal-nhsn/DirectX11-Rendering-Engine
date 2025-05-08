@@ -5,6 +5,7 @@ INCLUDES
 ======*/
 #include "direct3d.h"
 #include "shadermanager.h"
+#include "meshmanager.h"
 
 class Application
 {
@@ -20,6 +21,7 @@ public:
 private:
 	Direct3D* m_direct3d;
 	ShaderManager* m_shaderManager;
+	MeshManager* m_meshManager;
 };
 
 /*=====
