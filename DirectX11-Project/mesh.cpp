@@ -17,10 +17,12 @@ Mesh::~Mesh()
 {
 }
 
-bool Mesh::Initialize(ID3D11Device* device, Vertex* vertices, int vertexCount, unsigned long* indices, int indexCount)
+bool Mesh::Initialize(ID3D11Device* device, Vertex* vertices, int vertexCount, unsigned long* indices, int indexCount, D3D_PRIMITIVE_TOPOLOGY primitiveType)
 {
 	m_vertexCount = vertexCount;
 	m_indexCount  = indexCount;
+
+	m_primitiveType = primitiveType;
 
 	HRESULT result;
 
@@ -72,8 +74,8 @@ void Mesh::Bind(ID3D11DeviceContext* deviceContext)
 	// Set the index buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetIndexBuffer(m_ibo, DXGI_FORMAT_R32_UINT, 0);
 
-	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// Set the type of primitive that should be rendered from this vertex buffer.
+	deviceContext->IASetPrimitiveTopology(m_primitiveType);
 }
 
 void Mesh::Shutdown()

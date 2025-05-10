@@ -5,6 +5,7 @@ Application::Application()
 	m_direct3d = 0;
 	m_shaderManager = 0;
 	m_meshManager = 0;
+	m_materialManager = 0;
 }
 
 Application::Application(const Application& other)
@@ -43,6 +44,14 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return success;
 	}
 
+	// Create and initialize the MaterialManager object.
+	m_materialManager = new MaterialManager;
+	success = m_materialManager->Initialize(m_shaderManager);
+	if (!success) {
+		MessageBox(hwnd, L"Could not initalize materials", L"Error", MB_OK);
+		return success;
+	}
+
 	return success;
 }
 
@@ -67,6 +76,13 @@ void Application::Shutdown()
 		m_meshManager->Shutdown();
 		delete m_meshManager;
 		m_meshManager = 0;
+	}
+
+	// Release the MaterialManager object.
+	if (m_materialManager) {
+		m_materialManager->Shutdown();
+		delete m_materialManager;
+		m_materialManager = 0;
 	}
 }
 

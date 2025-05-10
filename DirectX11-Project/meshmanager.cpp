@@ -34,9 +34,11 @@ Mesh* MeshManager::GetMesh(const char* meshName)
 	return m_meshBank[meshName];
 }
 
-void MeshManager::Shutdown() {
+void MeshManager::Shutdown()
+{
 	for (auto& entry : m_meshBank) {
 		entry.second->Shutdown();
+		delete entry.second;
 	}
 }
 
@@ -70,7 +72,7 @@ bool MeshManager::InitializeTriangle(ID3D11Device* device)
 	indices[2] = 2;
 
 	Mesh* triangle = new Mesh;
-	bool success = triangle->Initialize(device, vertices, vertexCount, indices, indexCount);
+	bool success = triangle->Initialize(device, vertices, vertexCount, indices, indexCount, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	if (success) {
 		m_meshBank["triangle"] = triangle;
@@ -122,7 +124,7 @@ bool MeshManager::InitializeQuad(ID3D11Device* device)
 	indices[5] = 3;
 
 	Mesh* quad = new Mesh;
-	bool success = quad->Initialize(device, vertices, vertexCount, indices, indexCount);
+	bool success = quad->Initialize(device, vertices, vertexCount, indices, indexCount, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	if (success) {
 		m_meshBank["quad"] = quad;

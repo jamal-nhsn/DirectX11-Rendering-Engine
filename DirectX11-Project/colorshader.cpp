@@ -61,7 +61,15 @@ bool ColorShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShade
 	HRESULT result;
 	unsigned int numElements;
 
-	D3D11_INPUT_ELEMENT_DESC* polygonLayout = CreateLayout(true, false, false, false, true, numElements);
+	D3D11_INPUT_ELEMENT_DESC* polygonLayout = CreateLayout(
+		true,  // Use position.
+		false, // Use normal.
+		false, // Use texcoord.
+		false, // Use tangent.
+		true,  // Use color.
+		numElements
+	);
+
 	if (!polygonLayout) {
 		return false;
 	}
