@@ -13,10 +13,28 @@ ColorShader::ColorShader()
 
 ColorShader::ColorShader(const ColorShader& other)
 {
+	m_vertexShader = other.m_vertexShader;
+	m_pixelShader = other.m_pixelShader;
+	m_constantBuffer = other.m_constantBuffer;
+	m_layout = other.m_layout;
 }
 
 ColorShader::~ColorShader()
 {
+}
+
+void ColorShader::Bind(ID3D11DeviceContext* deviceContext, Material* material, Transform& transform, Camera& camera)
+{
+	deviceContext->IASetInputLayout(m_layout);
+	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
+	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
+
+	SetShaderParameters(
+		deviceContext,
+		transform.GetModelMatrix(),
+		camera.GetViewMatrix(),
+		camera.GetProjectionMatrix()
+	);
 }
 
 bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, DirectX::XMMATRIX modelMatrix, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix)

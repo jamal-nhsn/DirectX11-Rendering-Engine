@@ -11,6 +11,11 @@ Mesh::Mesh()
 
 Mesh::Mesh(const Mesh& other)
 {
+	m_vbo = other.m_vbo;
+	m_ibo = other.m_ibo;
+	m_vertexCount = other.m_vertexCount;
+	m_indexCount = other.m_indexCount;
+	m_primitiveType = other.m_primitiveType;
 }
 
 Mesh::~Mesh()
@@ -91,4 +96,14 @@ void Mesh::Shutdown()
 		m_ibo->Release();
 		m_ibo = 0;
 	}
+}
+
+int Mesh::GetVertexCount()
+{
+	return m_vertexCount;
+}
+
+int Mesh::GetIndexCount()
+{
+	return m_indexCount;
 }

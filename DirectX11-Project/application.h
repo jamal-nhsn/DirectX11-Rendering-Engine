@@ -7,6 +7,10 @@ INCLUDES
 #include "shadermanager.h"
 #include "meshmanager.h"
 #include "materialmanager.h"
+#include "transformsystem.h"
+#include "camerasystem.h"
+#include "rendersystem.h"
+#include "scene.h"
 
 class Application
 {
@@ -21,9 +25,16 @@ public:
 
 private:
 	Direct3D* m_direct3d;
+
 	ShaderManager* m_shaderManager;
 	MeshManager* m_meshManager;
 	MaterialManager* m_materialManager;
+
+	TransformSystem* m_transformSystem;
+	CameraSystem* m_cameraSystem;
+	RenderSystem* m_renderSystem;
+
+	Scene* m_scene;
 };
 
 /*=====

@@ -3,9 +3,16 @@
 Application::Application()
 {
 	m_direct3d = 0;
+
 	m_shaderManager = 0;
 	m_meshManager = 0;
 	m_materialManager = 0;
+
+	m_transformSystem = 0;
+	m_cameraSystem = 0;
+	m_renderSystem = 0;
+
+	m_scene = 0;
 }
 
 Application::Application(const Application& other)
@@ -46,11 +53,29 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Create and initialize the MaterialManager object.
 	m_materialManager = new MaterialManager;
-	success = m_materialManager->Initialize(m_shaderManager);
+	success = m_materialManager->Initialize();
 	if (!success) {
 		MessageBox(hwnd, L"Could not initalize materials", L"Error", MB_OK);
 		return success;
 	}
+
+	// Create the System objects.
+	m_transformSystem = new TransformSystem;
+	m_cameraSystem    = new CameraSystem;
+	m_renderSystem    = new RenderSystem;
+
+	// Create and initialize the Scene object.
+	m_scene = new Scene;
+	m_scene->Initialize(screenWidth, screenHeight);
+
+	// Add triangle to scene.
+	int triangle = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(triangle);
+	m_scene->AddComponent<Model>(triangle);
+	Model& model = m_scene->GetComponent<Model>(triangle);
+	model.SetMesh(m_meshManager->GetMesh("triangle"));
+	model.SetShader(m_shaderManager->GetShader<ColorShader>());
+	model.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
 
 	return success;
 }
@@ -84,11 +109,37 @@ void Application::Shutdown()
 		delete m_materialManager;
 		m_materialManager = 0;
 	}
+
+	// Release the System objects.
+	if (m_transformSystem) {
+		delete m_transformSystem;
+		m_transformSystem = 0;
+	}
+
+	if (m_cameraSystem) {
+		delete m_cameraSystem;
+		m_cameraSystem = 0;
+	}
+
+	if (m_renderSystem) {
+		delete m_renderSystem;
+		m_renderSystem = 0;
+	}
+
+	// Release the Scene object.
+	if (m_scene) {
+		delete m_scene;
+		m_scene = 0;
+	}
 }
 
 bool Application::Tick(float dt)
 {
 	bool success = true;
-	// RENDER SCENE HERE
+	
+	m_transformSystem->Update(m_scene);
+	m_cameraSystem->Update(m_scene);
+	m_renderSystem->Update(m_direct3d, m_scene);
+
 	return success;
 }

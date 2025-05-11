@@ -64,7 +64,7 @@ bool MeshManager::InitializeTriangle(ID3D11Device* device)
 	vertices[1].position = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertices[1].color = DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 
-	vertices[2].position = DirectX::XMFLOAT3(1.0f, -1.0f, 1.0f);
+	vertices[2].position = DirectX::XMFLOAT3(1.0f, -1.0f, 0.0f);
 	vertices[2].color = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
 	indices[0] = 0;

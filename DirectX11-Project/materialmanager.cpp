@@ -12,12 +12,12 @@ MaterialManager::~MaterialManager()
 {
 }
 
-bool MaterialManager::Initialize(ShaderManager* shaderManager)
+bool MaterialManager::Initialize()
 {
 	bool success = false;
 
 	Material* colorMaterial = new Material();
-	success = colorMaterial->Initialize(shaderManager->GetShader<ColorShader>());
+	success = colorMaterial->Initialize();
 
 	if (!success) {
 		delete colorMaterial;

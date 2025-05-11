@@ -5,13 +5,17 @@ INCLUDES
 ======*/
 #include <directxmath.h>
 
+#include "components.h"
+
 class Transform
 {
 public:
-	Transform();
+	Transform(int entityId);
 	Transform(const Transform&);
 	~Transform();
 	
+	int GetEntityId();
+
 	void Update();
 
 	void SetPosition(float x, float y, float z);
@@ -24,7 +28,12 @@ public:
 
 	DirectX::XMMATRIX GetModelMatrix();
 
+public:
+	static const ComponentId ID;
+
 private:
+	int m_entityId;
+
 	bool m_dirtyFlag;
 
 	DirectX::XMMATRIX m_positionMatrix;

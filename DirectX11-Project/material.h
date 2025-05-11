@@ -3,7 +3,7 @@
 /*======
 INCLUDES
 ======*/
-#include "shader.h"
+#include <d3d11.h>
 
 class Material
 {
@@ -12,9 +12,5 @@ public:
 	Material(const Material&);
 	~Material();
 
-	bool Initialize(Shader* shader);
-	void Bind(ID3D11DeviceContext* deviceContext);
-
-private:
-	Shader* m_shader;
+	bool Initialize();
 };

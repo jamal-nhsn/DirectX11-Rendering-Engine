@@ -8,17 +8,21 @@ INCLUDES
 #include <d3dcompiler.h>
 #include <fstream>
 
+#include "material.h"
+#include "transform.h"
+#include "camera.h"
+
 class Shader
 {
 public:
 	bool Initialize(ID3D11Device* device, HWND hwnd);
-	void Bind(ID3D11DeviceContext* deviceContext);
+	virtual void Bind(ID3D11DeviceContext* deviceContext, Material* material, Transform& transform, Camera& camera) = 0;
 	void Shutdown();
 
 protected:
 	D3D11_INPUT_ELEMENT_DESC* CreateLayout(bool usePosition, bool useNormal, bool useTexCoord, bool useTangent, bool useColor, unsigned int& numElements);
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderSource);
-	
+
 	virtual bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) = 0;
 	virtual bool InitializeConstants(ID3D11Device* device) = 0;
 

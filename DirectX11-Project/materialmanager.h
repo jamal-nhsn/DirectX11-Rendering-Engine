@@ -6,7 +6,6 @@ INCLUDES
 #include <unordered_map>
 
 #include "material.h"
-#include "shadermanager.h"
 
 class MaterialManager
 {
@@ -15,7 +14,7 @@ public:
 	MaterialManager(const MaterialManager&);
 	~MaterialManager();
 
-	bool Initialize(ShaderManager* shaderManager);
+	bool Initialize();
 	Material* GetMaterial(const char* materialName);
 	void Shutdown();
 

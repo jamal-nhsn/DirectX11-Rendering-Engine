@@ -20,32 +20,47 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="camerasystem.h" />
     <ClInclude Include="colorshader.h" />
+    <ClInclude Include="components.h" />
     <ClInclude Include="direct3d.h" />
+    <ClInclude Include="entity.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="material.h" />
     <ClInclude Include="materialmanager.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="meshmanager.h" />
+    <ClInclude Include="model.h" />
+    <ClInclude Include="rendersystem.h" />
+    <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shadermanager.h" />
     <ClInclude Include="transform.h" />
+    <ClInclude Include="transformsystem.h" />
     <ClInclude Include="vertex.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="camerasystem.cpp" />
     <ClCompile Include="colorshader.cpp" />
     <ClCompile Include="direct3d.cpp" />
+    <ClCompile Include="entity.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="material.cpp" />
     <ClCompile Include="materialmanager.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="meshmanager.cpp" />
+    <ClCompile Include="model.cpp" />
+    <ClCompile Include="rendersystem.cpp" />
+    <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shadermanager.cpp" />
     <ClCompile Include="transform.cpp" />
+    <ClCompile Include="transformsystem.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>

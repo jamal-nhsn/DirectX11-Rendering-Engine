@@ -18,6 +18,9 @@ public:
 	void Bind(ID3D11DeviceContext* deviceContext);
 	void Shutdown();
 
+	int GetVertexCount();
+	int GetIndexCount();
+
 private:
 	ID3D11Buffer* m_vbo;
 	ID3D11Buffer* m_ibo;

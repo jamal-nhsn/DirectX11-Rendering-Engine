@@ -86,13 +86,6 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 	return InitializeConstants(device);
 }
 
-void Shader::Bind(ID3D11DeviceContext* deviceContext)
-{
-	deviceContext->IASetInputLayout(m_layout);
-	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
-	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
-}
-
 void Shader::Shutdown()
 {
 	// Release the vertex shader.
