@@ -17,6 +17,9 @@ void TransformSystem::Update(Scene* scene)
 	std::vector<Transform>* transforms = scene->GetComponents<Transform>();
 
 	for (Transform& transform : (*transforms)) {
-		transform.Update();
+		// Only update roots
+		if (transform.GetParentId() == -1) {
+			transform.Update(scene);
+		}
 	}
 }

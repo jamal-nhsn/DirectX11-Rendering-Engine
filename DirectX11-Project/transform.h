@@ -7,6 +7,11 @@ INCLUDES
 
 #include "components.h"
 
+/*==================
+FORWARD DECLARATIONS
+==================*/
+class Scene;
+
 class Transform
 {
 public:
@@ -16,11 +21,20 @@ public:
 	
 	int GetEntityId();
 
-	void Update();
+	void Update(Scene* scene);
+
+	bool AddChild(int childId, Scene* scene);
+	bool RemoveChild(int childId, Scene* scene);
+
+	int GetParentId();
+	int GetFirstChildId();
+	int GetNextSiblingId();
 
 	void SetPosition(float x, float y, float z);
 	void SetScale(float x, float y, float z);
 	void SetRotation(DirectX::XMVECTOR quaternion);
+
+	DirectX::XMMATRIX GetParentMatrix();
 
 	DirectX::XMFLOAT3 GetPosition();
 	DirectX::XMFLOAT3 GetScale();
@@ -35,6 +49,13 @@ private:
 	int m_entityId;
 
 	bool m_dirtyFlag;
+
+	// Entity IDs that create the hierarchy.
+	int m_parent;
+	int m_firstChild;
+	int m_nextSibling;
+
+	DirectX::XMMATRIX m_parentMatrix;
 
 	DirectX::XMMATRIX m_positionMatrix;
 	DirectX::XMMATRIX m_scaleMatrix;

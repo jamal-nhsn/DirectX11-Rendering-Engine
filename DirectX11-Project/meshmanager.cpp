@@ -58,14 +58,17 @@ bool MeshManager::InitializeTriangle(ID3D11Device* device)
 		return false;
 	}
 
-	vertices[0].position = DirectX::XMFLOAT3(-1.0f, -1.0f, 0.0f);
+	float quarterRoot3 = 0.433012694f;
+
+	vertices[0].position = DirectX::XMFLOAT3(-quarterRoot3, -0.25f, 0.0f);
 	vertices[0].color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	vertices[1].position = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
+	vertices[1].position = DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f);
 	vertices[1].color = DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 
-	vertices[2].position = DirectX::XMFLOAT3(1.0f, -1.0f, 0.0f);
+	vertices[2].position = DirectX::XMFLOAT3(quarterRoot3, -0.25f, 0.0f);
 	vertices[2].color = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+
 
 	indices[0] = 0;
 	indices[1] = 1;
@@ -103,17 +106,17 @@ bool MeshManager::InitializeQuad(ID3D11Device* device)
 		return false;
 	}
 
-	vertices[0].position = DirectX::XMFLOAT3(-1.0f, -1.0f, 0.0f);
+	vertices[0].position = DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f);
 	vertices[0].color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	vertices[1].position = DirectX::XMFLOAT3(-1.0f, 1.0f, 0.0f);
+	vertices[1].position = DirectX::XMFLOAT3(-0.5f, 0.5f, 0.0f);
 	vertices[1].color = DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 
-	vertices[2].position = DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f);
+	vertices[2].position = DirectX::XMFLOAT3(0.5f, 0.5f, 0.0f);
 	vertices[2].color = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
-	vertices[3].position = DirectX::XMFLOAT3(1.0f, -1.0f, 0.0f);
-	vertices[3].color = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+	vertices[3].position = DirectX::XMFLOAT3(0.5f, -0.5f, 0.0f);
+	vertices[3].color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	indices[0] = 0;
 	indices[1] = 1;

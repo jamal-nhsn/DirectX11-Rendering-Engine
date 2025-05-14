@@ -68,14 +68,34 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene = new Scene;
 	m_scene->Initialize(screenWidth, screenHeight);
 
+	// Add quad to scene.
+	int entity1 = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(entity1);
+	m_scene->AddComponent<Model>(entity1);
+	Model& model1 = m_scene->GetComponent<Model>(entity1);
+	model1.SetMesh(m_meshManager->GetMesh("quad"));
+	model1.SetShader(m_shaderManager->GetShader<ColorShader>());
+	model1.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
+
 	// Add triangle to scene.
-	int triangle = m_scene->CreateEntity();
-	m_scene->AddComponent<Transform>(triangle);
-	m_scene->AddComponent<Model>(triangle);
-	Model& model = m_scene->GetComponent<Model>(triangle);
-	model.SetMesh(m_meshManager->GetMesh("triangle"));
-	model.SetShader(m_shaderManager->GetShader<ColorShader>());
-	model.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
+	int entity2 = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(entity2);
+	m_scene->AddComponent<Model>(entity2);
+	Model& model2 = m_scene->GetComponent<Model>(entity2);
+	model2.SetMesh(m_meshManager->GetMesh("triangle"));
+	model2.SetShader(m_shaderManager->GetShader<ColorShader>());
+	model2.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
+
+
+	Transform& transform2 = m_scene->GetComponent<Transform>(entity2);
+	transform2.SetPosition(0.0f, 2.0f, 0.0f);
+
+	Transform& transform1 = m_scene->GetComponent<Transform>(entity1);
+	transform1.AddChild(entity2, m_scene);
+
+
+	
+	
 
 	return success;
 }
