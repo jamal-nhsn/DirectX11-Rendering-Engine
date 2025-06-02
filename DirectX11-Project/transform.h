@@ -30,15 +30,23 @@ public:
 	int GetFirstChildId();
 	int GetNextSiblingId();
 
-	void SetPosition(float x, float y, float z);
-	void SetScale(float x, float y, float z);
-	void SetRotation(DirectX::XMVECTOR quaternion);
+	void SetLocalPosition(float x, float y, float z);
+	void SetLocalScale(float x, float y, float z);
+	void SetLocalRotation(DirectX::XMVECTOR quaternion);
+	void SetLocalRotation(float deg, float x, float y, float z);
 
-	DirectX::XMMATRIX GetParentMatrix();
+	void SetGlobalPosition(float x, float y, float z);
+	void SetGlobalScale(float x, float y, float z);
+	void SetGlobalRotation(DirectX::XMVECTOR quaternion);
+	void SetGlobalRotation(float deg, float x, float y, float z);
 
-	DirectX::XMFLOAT3 GetPosition();
-	DirectX::XMFLOAT3 GetScale();
-	DirectX::XMVECTOR GetRotation();
+	DirectX::XMFLOAT3 GetLocalPosition();
+	DirectX::XMFLOAT3 GetLocalScale();
+	DirectX::XMVECTOR GetLocalRotation();
+
+	DirectX::XMFLOAT3 GetGlobalPosition();
+	DirectX::XMFLOAT3 GetGlobalScale();
+	DirectX::XMVECTOR GetGlobalRotation();
 
 	DirectX::XMMATRIX GetModelMatrix();
 
@@ -55,11 +63,13 @@ private:
 	int m_firstChild;
 	int m_nextSibling;
 
-	DirectX::XMMATRIX m_parentMatrix;
+	DirectX::XMFLOAT3 m_localTranslation;
+	DirectX::XMFLOAT3 m_localScale;
+	DirectX::XMVECTOR m_localRotation;
 
-	DirectX::XMMATRIX m_positionMatrix;
-	DirectX::XMMATRIX m_scaleMatrix;
-	DirectX::XMMATRIX m_rotationMatrix;
+	DirectX::XMFLOAT3 m_parentTranslation;
+	DirectX::XMFLOAT3 m_parentScale;
+	DirectX::XMVECTOR m_parentRotation;
 
 	DirectX::XMMATRIX m_modelMatrix;
 };

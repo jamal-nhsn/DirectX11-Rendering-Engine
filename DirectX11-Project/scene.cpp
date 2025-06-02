@@ -19,7 +19,7 @@ void Scene::Initialize(float screenWidth, float screenHeight)
 {
 	int camera = CreateEntity();
 	AddComponent<Transform>(camera);
-	GetComponent<Transform>(camera).SetPosition(0.0f, 0.0f, -5.0f);
+	GetComponent<Transform>(camera).SetLocalPosition(0.0f, 0.0f, -5.0f);
 
 	AddComponent<Camera>(camera);
 	GetComponent<Camera>(camera).SetAspectRatio(screenWidth/screenHeight);

@@ -73,7 +73,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Transform>(entity1);
 	m_scene->AddComponent<Model>(entity1);
 	Model& model1 = m_scene->GetComponent<Model>(entity1);
-	model1.SetMesh(m_meshManager->GetMesh("quad"));
+	model1.SetMesh(m_meshManager->GetMesh("triangle"));
 	model1.SetShader(m_shaderManager->GetShader<ColorShader>());
 	model1.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
 
@@ -86,17 +86,29 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	model2.SetShader(m_shaderManager->GetShader<ColorShader>());
 	model2.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
 
-
-	Transform& transform2 = m_scene->GetComponent<Transform>(entity2);
-	transform2.SetPosition(0.0f, 2.0f, 0.0f);
+	// Add another triangle to scene.
+	int entity3 = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(entity3);
+	m_scene->AddComponent<Model>(entity3);
+	Model& model3 = m_scene->GetComponent<Model>(entity3);
+	model3.SetMesh(m_meshManager->GetMesh("triangle"));
+	model3.SetShader(m_shaderManager->GetShader<ColorShader>());
+	model3.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
 
 	Transform& transform1 = m_scene->GetComponent<Transform>(entity1);
+	Transform& transform2 = m_scene->GetComponent<Transform>(entity2);
+	Transform& transform3 = m_scene->GetComponent<Transform>(entity3);
+
+	transform2.SetLocalPosition(0.0f, 1.0f, 0.0f);
+	transform2.SetLocalScale(0.5f, 0.5f, 0.5f);
+
+	transform2.AddChild(entity3, m_scene);
+
+	transform3.SetLocalPosition(1.0f, 0.0f, 0.0f);
+	transform3.SetLocalScale(0.5f, 0.5f, 0.5f);
+
 	transform1.AddChild(entity2, m_scene);
-
-
 	
-	
-
 	return success;
 }
 
@@ -161,5 +173,29 @@ bool Application::Tick(float dt)
 	m_cameraSystem->Update(m_scene);
 	m_renderSystem->Update(m_direct3d, m_scene);
 
+	Transform& transform1 = m_scene->GetComponent<Transform>(1);
+	transform1.SetLocalRotation(
+		DirectX::XMQuaternionMultiply(
+			transform1.GetLocalRotation(),
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), dt)
+		)
+	);
+
+	Transform& transform2 = m_scene->GetComponent<Transform>(2);
+	transform2.SetLocalRotation(
+		DirectX::XMQuaternionMultiply(
+			transform2.GetLocalRotation(),
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), dt)
+		)
+	);
+
+	Transform& transform3 = m_scene->GetComponent<Transform>(3);
+	transform3.SetLocalRotation(
+		DirectX::XMQuaternionMultiply(
+			transform3.GetLocalRotation(),
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), dt)
+		)
+	);
+	
 	return success;
 }
