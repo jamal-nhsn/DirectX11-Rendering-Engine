@@ -9,6 +9,7 @@ INCLUDES
 
 #include "shader.h"
 #include "colorshader.h"
+#include "textureshader.h"
 
 class ShaderManager
 {

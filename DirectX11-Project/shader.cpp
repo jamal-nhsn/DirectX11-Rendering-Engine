@@ -69,7 +69,6 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 
 	// Setup layout.
-
 	bool layoutIntialized = InitializeLayout(device, vertexShaderBuffer, pixelShaderBuffer);
 	if (!layoutIntialized) {
 		return false;
@@ -81,6 +80,12 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 
 	pixelShaderBuffer->Release();
 	pixelShaderBuffer = 0;
+
+	// Setup sampler description.
+	bool samplerDescInitialized = InitializeSamplerDesc(device);
+	if (!samplerDescInitialized) {
+		return false;
+	}
 
 	// Set up constants
 	return InitializeConstants(device);
@@ -103,11 +108,20 @@ void Shader::Shutdown()
 		m_layout->Release();
 		m_layout = 0;
 	}
+
+	// Release the sample state.
+	if (m_sampleState) {
+		m_sampleState->Release();
+		m_sampleState = 0;
+	}
+
 	// Release the matrix constant buffer.
 	if (m_constantBuffer) {
 		m_constantBuffer->Release();
 		m_constantBuffer = 0;
 	}
+
+
 }
 
 D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout(bool usePosition, bool useNormal, bool useTexCoord, bool useTangent, bool useColor, unsigned int& numElements)

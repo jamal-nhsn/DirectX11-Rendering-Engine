@@ -5,7 +5,7 @@ INCLUDES
 ======*/
 #include "components.h"
 #include "mesh.h"
-#include "material.h"
+#include "texture.h"
 #include "shader.h"
 
 class Model
@@ -18,11 +18,11 @@ public:
 	int GetEntityId();
 
 	void SetMesh(Mesh* mesh);
-	void SetMaterial(Material* material);
+	void SetTexture(Texture* texture);
 	void SetShader(Shader* shader);
 
 	Mesh* GetMesh();
-	Material* GetMaterial();
+	Texture* GetTexture();
 	Shader* GetShader();
 
 public:
@@ -32,6 +32,6 @@ private:
 	int m_entityId;
 
 	Mesh* m_mesh;
-	Material* m_material;
+	Texture* m_texture;
 	Shader* m_shader;
 };

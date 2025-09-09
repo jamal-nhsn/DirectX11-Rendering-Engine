@@ -6,7 +6,7 @@ Model::Model(int entityId)
 	: m_entityId(entityId)
 {
 	m_mesh = 0;
-	m_material = 0;
+	m_texture = 0;
 	m_shader = 0;
 }
 
@@ -14,7 +14,7 @@ Model::Model(const Model& other)
 {
 	m_entityId = other.m_entityId;
 	m_mesh = other.m_mesh;
-	m_material = other.m_material;
+	m_texture = other.m_texture;
 	m_shader = other.m_shader;
 }
 
@@ -32,9 +32,9 @@ void Model::SetMesh(Mesh* mesh)
 	m_mesh = mesh;
 }
 
-void Model::SetMaterial(Material* material)
+void Model::SetTexture(Texture* texture)
 {
-	m_material = material;
+	m_texture = texture;
 }
 
 void Model::SetShader(Shader* shader)
@@ -47,9 +47,9 @@ Mesh* Model::GetMesh()
 	return m_mesh;
 }
 
-Material* Model::GetMaterial()
+Texture* Model::GetTexture()
 {
-	return m_material;
+	return m_texture;
 }
 
 Shader* Model::GetShader()

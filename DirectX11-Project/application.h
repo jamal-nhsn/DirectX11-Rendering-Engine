@@ -6,7 +6,7 @@ INCLUDES
 #include "direct3d.h"
 #include "shadermanager.h"
 #include "meshmanager.h"
-#include "materialmanager.h"
+#include "texturemanager.h"
 #include "transformsystem.h"
 #include "camerasystem.h"
 #include "rendersystem.h"
@@ -28,7 +28,7 @@ private:
 
 	ShaderManager* m_shaderManager;
 	MeshManager* m_meshManager;
-	MaterialManager* m_materialManager;
+	TextureManager* m_textureManager;
 
 	TransformSystem* m_transformSystem;
 	CameraSystem* m_cameraSystem;

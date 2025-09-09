@@ -4,6 +4,7 @@
 INCLUDES
 ======*/
 #include <d3d11.h>
+#include "texture.h"
 
 class Material
 {
@@ -13,4 +14,7 @@ public:
 	~Material();
 
 	bool Initialize();
+
+public:
+	Texture* GetTexture();
 };

@@ -21,14 +21,14 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 
 	for (Model& model : (*models)) {
 		Mesh* mesh           = model.GetMesh();
-		Material* material   = model.GetMaterial();
+		Texture* texture     = model.GetTexture();
 		Shader* shader       = model.GetShader();
 		Transform& transform = scene->GetComponent<Transform>(model.GetEntityId());
 
 		Camera& camera = scene->GetComponent<Camera>(0); // Camera is the first entity always.
 
 		mesh->Bind(deviceContext);
-		shader->Bind(deviceContext, material, transform, camera);
+		shader->Bind(deviceContext, texture, transform, camera);
 
 		deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 	}

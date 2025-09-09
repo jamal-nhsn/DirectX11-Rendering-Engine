@@ -8,6 +8,7 @@ ColorShader::ColorShader()
 	m_vertexShader   = 0;
 	m_pixelShader    = 0;
 	m_layout         = 0;
+	m_sampleState    = 0;
 	m_constantBuffer = 0;
 }
 
@@ -16,6 +17,7 @@ ColorShader::ColorShader(const ColorShader& other)
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
 	m_constantBuffer = other.m_constantBuffer;
+	m_sampleState = other.m_sampleState;
 	m_layout = other.m_layout;
 }
 
@@ -23,7 +25,7 @@ ColorShader::~ColorShader()
 {
 }
 
-void ColorShader::Bind(ID3D11DeviceContext* deviceContext, Material* material, Transform& transform, Camera& camera)
+void ColorShader::Bind(ID3D11DeviceContext* deviceContext, Texture* texture, Transform& transform, Camera& camera)
 {
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
@@ -104,6 +106,12 @@ bool ColorShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShade
 	delete[] polygonLayout;
 
 	return !FAILED(result);
+}
+
+bool ColorShader::InitializeSamplerDesc(ID3D11Device* device)
+{
+	// No sampler is used in the shader.
+	return true;
 }
 
 bool ColorShader::InitializeConstants(ID3D11Device* device)

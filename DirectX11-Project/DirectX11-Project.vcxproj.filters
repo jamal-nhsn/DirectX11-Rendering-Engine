@@ -28,9 +28,6 @@
     <Filter Include="Source Files\Shaders\Color Shader">
       <UniqueIdentifier>{354c24a4-225d-4f78-96e1-ec0953cdea9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Shaders\Color Shader">
-      <UniqueIdentifier>{e69483b2-4b1d-4f23-a935-6904627fc02f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{b832301e-85dc-4dd8-aa20-3971d03c5edf}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,9 @@
     </Filter>
     <Filter Include="Header Files\Systems">
       <UniqueIdentifier>{46f2e00f-4a7d-41f2-b36f-0325ed3f8a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Texture Shader">
+      <UniqueIdentifier>{a04c4120-380b-49c2-b8bc-13fa6ac155dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{04a2bd0b-1f28-4624-b0f9-a59b6839c96f}</UniqueIdentifier>
@@ -71,9 +71,6 @@
     </ClInclude>
     <ClInclude Include="shader.h">
       <Filter>Header Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="colorshader.h">
-      <Filter>Header Files\Shaders\Color Shader</Filter>
     </ClInclude>
     <ClInclude Include="meshmanager.h">
       <Filter>Header Files\Geometry</Filter>
@@ -113,6 +110,18 @@
     </ClInclude>
     <ClInclude Include="camerasystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="colorshader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="textureshader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="texturemanager.h">
+      <Filter>Header Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +185,15 @@
     <ClCompile Include="camerasystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="textureshader.cpp">
+      <Filter>Source Files\Shaders\Texture Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="texturemanager.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs">
@@ -183,6 +201,12 @@
     </None>
     <None Include="color.ps">
       <Filter>Source Files\Shaders\Color Shader</Filter>
+    </None>
+    <None Include="texture.vs">
+      <Filter>Source Files\Shaders\Texture Shader</Filter>
+    </None>
+    <None Include="texture.ps">
+      <Filter>Source Files\Shaders\Texture Shader</Filter>
     </None>
   </ItemGroup>
 </Project>

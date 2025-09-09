@@ -24,6 +24,14 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 	m_shaderBank[typeid(ColorShader)] = colorShader;
 
+	TextureShader* textureShader = new TextureShader;
+	success = textureShader->Initialize(device, hwnd);
+	if (!success) {
+		delete textureShader;
+		return success;
+	}
+	m_shaderBank[typeid(TextureShader)] = textureShader;
+
 	return success;
 }
 

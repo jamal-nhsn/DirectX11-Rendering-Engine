@@ -6,7 +6,7 @@ Application::Application()
 
 	m_shaderManager = 0;
 	m_meshManager = 0;
-	m_materialManager = 0;
+	m_textureManager = 0;
 
 	m_transformSystem = 0;
 	m_cameraSystem = 0;
@@ -51,11 +51,11 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return success;
 	}
 
-	// Create and initialize the MaterialManager object.
-	m_materialManager = new MaterialManager;
-	success = m_materialManager->Initialize();
+	// Create and initialize the TextureManager object.
+	m_textureManager = new TextureManager;
+	success = m_textureManager->Initialize(m_direct3d->GetDevice(), m_direct3d->GetDeviceContext());
 	if (!success) {
-		MessageBox(hwnd, L"Could not initalize materials", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initalize textures", L"Error", MB_OK);
 		return success;
 	}
 
@@ -73,41 +73,10 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Transform>(entity1);
 	m_scene->AddComponent<Model>(entity1);
 	Model& model1 = m_scene->GetComponent<Model>(entity1);
-	model1.SetMesh(m_meshManager->GetMesh("triangle"));
-	model1.SetShader(m_shaderManager->GetShader<ColorShader>());
-	model1.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
-
-	// Add triangle to scene.
-	int entity2 = m_scene->CreateEntity();
-	m_scene->AddComponent<Transform>(entity2);
-	m_scene->AddComponent<Model>(entity2);
-	Model& model2 = m_scene->GetComponent<Model>(entity2);
-	model2.SetMesh(m_meshManager->GetMesh("triangle"));
-	model2.SetShader(m_shaderManager->GetShader<ColorShader>());
-	model2.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
-
-	// Add another triangle to scene.
-	int entity3 = m_scene->CreateEntity();
-	m_scene->AddComponent<Transform>(entity3);
-	m_scene->AddComponent<Model>(entity3);
-	Model& model3 = m_scene->GetComponent<Model>(entity3);
-	model3.SetMesh(m_meshManager->GetMesh("triangle"));
-	model3.SetShader(m_shaderManager->GetShader<ColorShader>());
-	model3.SetMaterial(m_materialManager->GetMaterial("colorMaterial"));
-
-	Transform& transform1 = m_scene->GetComponent<Transform>(entity1);
-	Transform& transform2 = m_scene->GetComponent<Transform>(entity2);
-	Transform& transform3 = m_scene->GetComponent<Transform>(entity3);
-
-	transform2.SetLocalPosition(0.0f, 1.0f, 0.0f);
-	transform2.SetLocalScale(0.5f, 0.5f, 0.5f);
-
-	transform2.AddChild(entity3, m_scene);
-
-	transform3.SetLocalPosition(1.0f, 0.0f, 0.0f);
-	transform3.SetLocalScale(0.5f, 0.5f, 0.5f);
-
-	transform1.AddChild(entity2, m_scene);
+	model1.SetMesh(m_meshManager->GetMesh("quad"));
+	model1.SetShader(m_shaderManager->GetShader<TextureShader>());
+	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
+	m_scene->GetComponent<Transform>(entity1).SetLocalScale(4.0f, 4.0f, 4.0f);
 	
 	return success;
 }
@@ -136,10 +105,10 @@ void Application::Shutdown()
 	}
 
 	// Release the MaterialManager object.
-	if (m_materialManager) {
-		m_materialManager->Shutdown();
-		delete m_materialManager;
-		m_materialManager = 0;
+	if (m_textureManager) {
+		m_textureManager->Shutdown();
+		delete m_textureManager;
+		m_textureManager = 0;
 	}
 
 	// Release the System objects.
@@ -177,22 +146,6 @@ bool Application::Tick(float dt)
 	transform1.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
 			transform1.GetLocalRotation(),
-			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), dt)
-		)
-	);
-
-	Transform& transform2 = m_scene->GetComponent<Transform>(2);
-	transform2.SetLocalRotation(
-		DirectX::XMQuaternionMultiply(
-			transform2.GetLocalRotation(),
-			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), dt)
-		)
-	);
-
-	Transform& transform3 = m_scene->GetComponent<Transform>(3);
-	transform3.SetLocalRotation(
-		DirectX::XMQuaternionMultiply(
-			transform3.GetLocalRotation(),
 			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), dt)
 		)
 	);

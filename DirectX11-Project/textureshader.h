@@ -5,7 +5,7 @@ INCLUDES
 ======*/
 #include "shader.h"
 
-class ColorShader : public Shader
+class TextureShader : public Shader
 {
 private:
 	struct ConstantBuffer
@@ -16,15 +16,15 @@ private:
 	};
 
 public:
-	ColorShader();
-	ColorShader(const ColorShader&);
-	~ColorShader();
+	TextureShader();
+	TextureShader(const TextureShader&);
+	~TextureShader();
 
 	void Bind(ID3D11DeviceContext* deviceContext, Texture* texture, Transform& transform, Camera& camera) override;
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, DirectX::XMMATRIX modelMatrix, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix);
+	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, DirectX::XMMATRIX modelMatrix, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture);
 
 protected:
 	bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) override;
-	virtual bool InitializeSamplerDesc(ID3D11Device* device) override;
+	bool InitializeSamplerDesc(ID3D11Device* device) override;
 	bool InitializeConstants(ID3D11Device* device) override;
 };

@@ -62,12 +62,15 @@ bool MeshManager::InitializeTriangle(ID3D11Device* device)
 
 	vertices[0].position = DirectX::XMFLOAT3(-quarterRoot3, -0.25f, 0.0f);
 	vertices[0].color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+	vertices[0].texCoord = DirectX::XMFLOAT2(0.0f, 1.0f);
 
 	vertices[1].position = DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f);
 	vertices[1].color = DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[1].texCoord = DirectX::XMFLOAT2(0.5f, 0.0f);
 
 	vertices[2].position = DirectX::XMFLOAT3(quarterRoot3, -0.25f, 0.0f);
 	vertices[2].color = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+	vertices[2].texCoord = DirectX::XMFLOAT2(1.0f, 1.0f);
 
 
 	indices[0] = 0;
@@ -108,15 +111,19 @@ bool MeshManager::InitializeQuad(ID3D11Device* device)
 
 	vertices[0].position = DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f);
 	vertices[0].color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+	vertices[0].texCoord = DirectX::XMFLOAT2(0.0f, 1.0f);
 
 	vertices[1].position = DirectX::XMFLOAT3(-0.5f, 0.5f, 0.0f);
 	vertices[1].color = DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[1].texCoord = DirectX::XMFLOAT2(0.0f, 0.0f);
 
 	vertices[2].position = DirectX::XMFLOAT3(0.5f, 0.5f, 0.0f);
 	vertices[2].color = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+	vertices[2].texCoord = DirectX::XMFLOAT2(1.0f, 0.0f);
 
 	vertices[3].position = DirectX::XMFLOAT3(0.5f, -0.5f, 0.0f);
 	vertices[3].color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertices[3].texCoord = DirectX::XMFLOAT2(1.0f, 1.0f);
 
 	indices[0] = 0;
 	indices[1] = 1;
