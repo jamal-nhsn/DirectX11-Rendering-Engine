@@ -25,7 +25,7 @@ TextureShader::~TextureShader()
 {
 }
 
-void TextureShader::Bind(ID3D11DeviceContext* deviceContext, Texture* texture, Transform& transform, Camera& camera)
+void TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& transform, Material* material)
 {
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
@@ -36,7 +36,7 @@ void TextureShader::Bind(ID3D11DeviceContext* deviceContext, Texture* texture, T
 		transform.GetModelMatrix(),
 		camera.GetViewMatrix(),
 		camera.GetProjectionMatrix(),
-		texture->GetTexture2D()
+		material->GetTexture()->GetTexture2D()
 	);
 
 	// Set the sampler state in the pixel shader.

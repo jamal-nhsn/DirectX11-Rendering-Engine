@@ -1,4 +1,5 @@
 #include "rendersystem.h"
+#include "shader.h"
 
 RenderSystem::RenderSystem()
 {
@@ -21,14 +22,15 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 
 	for (Model& model : (*models)) {
 		Mesh* mesh           = model.GetMesh();
-		Texture* texture     = model.GetTexture();
-		Shader* shader       = model.GetShader();
+		Material* material   = model.GetMaterial();
 		Transform& transform = scene->GetComponent<Transform>(model.GetEntityId());
 
 		Camera& camera = scene->GetComponent<Camera>(0); // Camera is the first entity always.
 
-		mesh->Bind(deviceContext);
-		shader->Bind(deviceContext, texture, transform, camera);
+		if (material != 0) {
+			mesh->Bind(deviceContext);
+			material->GetShader()->Bind(deviceContext, camera, transform, material);
+		}
 
 		deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 	}

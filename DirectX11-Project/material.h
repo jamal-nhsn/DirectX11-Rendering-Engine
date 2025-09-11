@@ -6,6 +6,8 @@ INCLUDES
 #include <d3d11.h>
 #include "texture.h"
 
+class Shader;
+
 class Material
 {
 public:
@@ -13,8 +15,14 @@ public:
 	Material(const Material&);
 	~Material();
 
-	bool Initialize();
+private:
+	Shader* m_shader;
+	Texture* m_texture;
 
 public:
+	void SetShader(Shader* shader);
+	void SetTexture(Texture* texture);
+
+	Shader* GetShader();
 	Texture* GetTexture();
 };

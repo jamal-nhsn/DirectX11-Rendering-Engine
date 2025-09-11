@@ -12,21 +12,17 @@ MaterialManager::~MaterialManager()
 {
 }
 
-bool MaterialManager::Initialize()
+void MaterialManager::Initialize(ShaderManager* shaderManager, TextureManager* textureManager)
 {
-	bool success = false;
+	Material* color = new Material();
+	color->SetShader(shaderManager->GetShader<ColorShader>());
+	color->SetTexture(0);
+	m_materialBank["color"] = color;
 
-	Material* colorMaterial = new Material();
-	success = colorMaterial->Initialize();
-
-	if (!success) {
-		delete colorMaterial;
-		return success;
-	}
-
-	m_materialBank["colorMaterial"] = colorMaterial;
-
-	return success;
+	Material* stoneWall = new Material();
+	stoneWall->SetShader(shaderManager->GetShader<TextureShader>());
+	stoneWall->SetTexture(textureManager->GetTexture("stoneWall"));
+	m_materialBank["stoneWall"] = stoneWall;
 }
 
 Material* MaterialManager::GetMaterial(const char* materialName)

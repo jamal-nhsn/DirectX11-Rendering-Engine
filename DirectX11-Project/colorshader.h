@@ -20,7 +20,7 @@ public:
 	ColorShader(const ColorShader&);
 	~ColorShader();
 
-	void Bind(ID3D11DeviceContext* deviceContext, Texture* texture, Transform& transform, Camera& camera) override;
+	void Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& transform, Material* material) override;
 	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, DirectX::XMMATRIX modelMatrix, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix);
 
 protected:

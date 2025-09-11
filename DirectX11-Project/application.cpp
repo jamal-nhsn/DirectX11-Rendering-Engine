@@ -7,6 +7,7 @@ Application::Application()
 	m_shaderManager = 0;
 	m_meshManager = 0;
 	m_textureManager = 0;
+	m_materialManager = 0;
 
 	m_transformSystem = 0;
 	m_cameraSystem = 0;
@@ -59,6 +60,10 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return success;
 	}
 
+	// Create and initialize the MaterialManager object.
+	m_materialManager = new MaterialManager;
+	m_materialManager->Initialize(m_shaderManager, m_textureManager);
+
 	// Create the System objects.
 	m_transformSystem = new TransformSystem;
 	m_cameraSystem    = new CameraSystem;
@@ -74,8 +79,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Model>(entity1);
 	Model& model1 = m_scene->GetComponent<Model>(entity1);
 	model1.SetMesh(m_meshManager->GetMesh("quad"));
-	model1.SetShader(m_shaderManager->GetShader<TextureShader>());
-	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
+	model1.SetMaterial(m_materialManager->GetMaterial("stoneWall"));
 	m_scene->GetComponent<Transform>(entity1).SetLocalScale(4.0f, 4.0f, 4.0f);
 	
 	return success;
@@ -104,11 +108,18 @@ void Application::Shutdown()
 		m_meshManager = 0;
 	}
 
-	// Release the MaterialManager object.
+	// Release the TextureManager object.
 	if (m_textureManager) {
 		m_textureManager->Shutdown();
 		delete m_textureManager;
 		m_textureManager = 0;
+	}
+
+	// Release the MaterialManager object.
+	if (m_materialManager) {
+		m_materialManager->Shutdown();
+		delete m_materialManager;
+		m_materialManager = 0;
 	}
 
 	// Release the System objects.

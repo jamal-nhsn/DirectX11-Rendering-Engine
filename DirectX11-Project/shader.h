@@ -8,15 +8,15 @@ INCLUDES
 #include <d3dcompiler.h>
 #include <fstream>
 
-#include "texture.h"
-#include "transform.h"
 #include "camera.h"
+#include "transform.h"
+#include "material.h"
 
 class Shader
 {
 public:
 	bool Initialize(ID3D11Device* device, HWND hwnd);
-	virtual void Bind(ID3D11DeviceContext* deviceContext, Texture* texture, Transform& transform, Camera& camera) = 0;
+	virtual void Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& transform, Material* material) = 0;
 	void Shutdown();
 
 protected:

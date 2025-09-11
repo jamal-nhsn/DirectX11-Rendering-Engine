@@ -25,7 +25,7 @@ ColorShader::~ColorShader()
 {
 }
 
-void ColorShader::Bind(ID3D11DeviceContext* deviceContext, Texture* texture, Transform& transform, Camera& camera)
+void ColorShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& transform, Material* material)
 {
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
