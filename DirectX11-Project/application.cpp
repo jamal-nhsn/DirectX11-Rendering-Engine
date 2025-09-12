@@ -78,9 +78,9 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Transform>(entity1);
 	m_scene->AddComponent<Model>(entity1);
 	Model& model1 = m_scene->GetComponent<Model>(entity1);
-	model1.SetMesh(m_meshManager->GetMesh("quad"));
+	model1.SetMesh(m_meshManager->GetMesh("cube"));
 	model1.SetMaterial(m_materialManager->GetMaterial("stoneWall"));
-	m_scene->GetComponent<Transform>(entity1).SetLocalScale(4.0f, 4.0f, 4.0f);
+	m_scene->GetComponent<Transform>(entity1).SetLocalScale(2.0f, 2.0f, 2.0f);
 	
 	return success;
 }
@@ -157,7 +157,7 @@ bool Application::Tick(float dt)
 	transform1.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
 			transform1.GetLocalRotation(),
-			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), dt)
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), 0.001f)
 		)
 	);
 	
