@@ -50,6 +50,8 @@ public:
 
 	DirectX::XMMATRIX GetModelMatrix();
 
+	DirectX::XMFLOAT3 GetForward();
+
 public:
 	static const ComponentId ID;
 

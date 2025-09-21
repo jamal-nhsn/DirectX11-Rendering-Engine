@@ -27,6 +27,7 @@
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="directionallight.h" />
     <ClInclude Include="material.h" />
     <ClInclude Include="materialmanager.h" />
     <ClInclude Include="mesh.h" />
@@ -50,6 +51,7 @@
     <ClCompile Include="camerasystem.cpp" />
     <ClCompile Include="colorshader.cpp" />
     <ClCompile Include="direct3d.cpp" />
+    <ClCompile Include="directionallight.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />

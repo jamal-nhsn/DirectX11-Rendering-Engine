@@ -123,6 +123,9 @@
     <ClInclude Include="texturemanager.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="directionallight.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -193,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="texturemanager.cpp">
       <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="directionallight.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
