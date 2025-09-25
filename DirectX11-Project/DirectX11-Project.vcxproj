@@ -25,6 +25,7 @@
     <ClInclude Include="colorshader.h" />
     <ClInclude Include="components.h" />
     <ClInclude Include="direct3d.h" />
+    <ClInclude Include="dirlightshader.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="directionallight.h" />
@@ -52,6 +53,7 @@
     <ClCompile Include="colorshader.cpp" />
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="directionallight.cpp" />
+    <ClCompile Include="dirlightshader.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -74,6 +76,8 @@
   <ItemGroup>
     <None Include="color.ps" />
     <None Include="color.vs" />
+    <None Include="dirlight.ps" />
+    <None Include="dirlight.vs" />
     <None Include="texture.ps" />
     <None Include="texture.vs" />
   </ItemGroup>

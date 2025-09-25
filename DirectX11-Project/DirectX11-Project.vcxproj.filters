@@ -49,6 +49,9 @@
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{04a2bd0b-1f28-4624-b0f9-a59b6839c96f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\DirLight Shader">
+      <UniqueIdentifier>{ec6d5a34-ef46-4fd4-8dac-07d3dca1cef8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -126,6 +129,9 @@
     <ClInclude Include="directionallight.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="dirlightshader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -200,6 +206,9 @@
     <ClCompile Include="directionallight.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="dirlightshader.cpp">
+      <Filter>Source Files\Shaders\DirLight Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs">
@@ -213,6 +222,12 @@
     </None>
     <None Include="texture.ps">
       <Filter>Source Files\Shaders\Texture Shader</Filter>
+    </None>
+    <None Include="dirlight.ps">
+      <Filter>Source Files\Shaders\DirLight Shader</Filter>
+    </None>
+    <None Include="dirlight.vs">
+      <Filter>Source Files\Shaders\DirLight Shader</Filter>
     </None>
   </ItemGroup>
 </Project>
