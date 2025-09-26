@@ -208,7 +208,7 @@ bool MeshManager::InitializeCube(ID3D11Device* device)
 	indices[6] = 4; indices[7]  = 5; indices[8]  = 6;
 	indices[9] = 4; indices[10] = 6; indices[11] = 7;
 
-	// Right
+	// Left
 	vertices[8].position  = DirectX::XMFLOAT3(0.5f, -0.5f, -0.5f);
 	vertices[9].position  = DirectX::XMFLOAT3(0.5f,  0.5f, -0.5f);
 	vertices[10].position = DirectX::XMFLOAT3(0.5f,  0.5f,  0.5f);
@@ -227,7 +227,7 @@ bool MeshManager::InitializeCube(ID3D11Device* device)
 	indices[12] = 8; indices[13] = 9; indices[14]  = 10;
 	indices[15] = 8; indices[16] = 10; indices[17] = 11;
 
-	// Left
+	// Right
 	vertices[12].position = DirectX::XMFLOAT3(-0.5f,  0.5f, -0.5f);
 	vertices[13].position = DirectX::XMFLOAT3(-0.5f, -0.5f, -0.5f);
 	vertices[14].position = DirectX::XMFLOAT3(-0.5f, -0.5f, 0.5f);
