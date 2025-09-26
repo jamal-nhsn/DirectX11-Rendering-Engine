@@ -1,4 +1,5 @@
 #include "textureshader.h"
+#include "scene.h"
 
 TextureShader::TextureShader()
 {
@@ -25,18 +26,22 @@ TextureShader::~TextureShader()
 {
 }
 
-void TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& transform, Material* material)
+void TextureShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
 {
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
+	Camera& camera = scene->GetComponent<Camera>(0);
+	Transform& transform = scene->GetComponent<Transform>(entity);
+	Model& model = scene->GetComponent<Model>(entity);
+	
 	SetShaderParameters(
 		deviceContext,
 		transform.GetModelMatrix(),
 		camera.GetViewMatrix(),
 		camera.GetProjectionMatrix(),
-		material->GetTexture()->GetTexture2D()
+		model.GetMaterial()->GetTexture()->GetTexture2D()
 	);
 
 	// Set the sampler state in the pixel shader.

@@ -13,13 +13,13 @@ TYPEDEFS
 ======*/
 struct VertexInputType
 {
-    float3 position : POSITION;
+    float4 position : POSITION;
     float2 tex : TEXCOORD0;
 };
 
 struct PixelInputType
 {
-    float3 position : SV_POSITION;
+    float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
 };
 

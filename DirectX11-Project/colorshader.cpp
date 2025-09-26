@@ -1,4 +1,5 @@
 #include "colorshader.h"
+#include "scene.h"
 
 ColorShader::ColorShader()
 {
@@ -25,11 +26,15 @@ ColorShader::~ColorShader()
 {
 }
 
-void ColorShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& transform, Material* material)
+void ColorShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
 {
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
+
+	Camera& camera = scene->GetComponent<Camera>(0);
+	Transform& transform = scene->GetComponent<Transform>(entity);
+	Model& model = scene->GetComponent<Model>(entity);
 
 	SetShaderParameters(
 		deviceContext,
