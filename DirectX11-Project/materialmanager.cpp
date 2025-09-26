@@ -23,6 +23,11 @@ void MaterialManager::Initialize(ShaderManager* shaderManager, TextureManager* t
 	stoneWall->SetShader(shaderManager->GetShader<TextureShader>());
 	stoneWall->SetTexture(textureManager->GetTexture("stoneWall"));
 	m_materialBank["stoneWall"] = stoneWall;
+
+	Material* stoneWallLit = new Material();
+	stoneWallLit->SetShader(shaderManager->GetShader<DirLightShader>());
+	stoneWallLit->SetTexture(textureManager->GetTexture("stoneWall"));
+	m_materialBank["stoneWallLit"] = stoneWallLit;
 }
 
 Material* MaterialManager::GetMaterial(const char* materialName)

@@ -11,6 +11,7 @@ DirLightShader::DirLightShader()
 	m_layout = 0;
 	m_sampleState = 0;
 	m_vertexConstantBuffer = 0;
+	m_pixelConstantBuffer = 0;
 }
 
 DirLightShader::DirLightShader(const DirLightShader& other)
@@ -18,6 +19,7 @@ DirLightShader::DirLightShader(const DirLightShader& other)
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
 	m_vertexConstantBuffer = other.m_vertexConstantBuffer;
+	m_pixelConstantBuffer = other.m_pixelConstantBuffer;
 	m_sampleState = other.m_sampleState;
 	m_layout = other.m_layout;
 }
@@ -103,7 +105,7 @@ bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ver
 	pixelDataPtr->padding        = pixelConstantBuffer.padding;
 
 	// Set the constant buffer in the pixel shader with the updated values.
-	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_vertexConstantBuffer);
+	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_pixelConstantBuffer);
 
 	// Unlock the constant buffer.
 	deviceContext->Unmap(m_pixelConstantBuffer, 0);
@@ -121,7 +123,7 @@ bool DirLightShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexSh
 
 	D3D11_INPUT_ELEMENT_DESC* polygonLayout = CreateLayout(
 		true,  // Use position.
-		true, // Use normal.
+		true,  // Use normal.
 		true,  // Use texcoord.
 		false, // Use tangent.
 		false, // Use color.
@@ -174,17 +176,32 @@ bool DirLightShader::InitializeSamplerDesc(ID3D11Device* device)
 bool DirLightShader::InitializeConstants(ID3D11Device* device)
 {
 	HRESULT result;
-	D3D11_BUFFER_DESC constantBufferDesc;
+	D3D11_BUFFER_DESC vertexConstantBufferDesc;
+	D3D11_BUFFER_DESC pixelConstantBufferDesc;
 
 	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
-	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	constantBufferDesc.ByteWidth = sizeof(VertexConstantBuffer);
-	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	constantBufferDesc.MiscFlags = 0;
-	constantBufferDesc.StructureByteStride = 0;
+	vertexConstantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vertexConstantBufferDesc.ByteWidth = sizeof(VertexConstantBuffer);
+	vertexConstantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	vertexConstantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	vertexConstantBufferDesc.MiscFlags = 0;
+	vertexConstantBufferDesc.StructureByteStride = 0;
 
-	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	result = device->CreateBuffer(&constantBufferDesc, NULL, &m_vertexConstantBuffer);
+	// Create the vertex constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+	result = device->CreateBuffer(&vertexConstantBufferDesc, NULL, &m_vertexConstantBuffer);
+	if (FAILED(result)) {
+		return false;
+	}
+
+	// Setup the description of the dynamic light constant buffer that is in the pixel shader.
+	pixelConstantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	pixelConstantBufferDesc.ByteWidth = sizeof(PixelConstantBuffer);
+	pixelConstantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	pixelConstantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	pixelConstantBufferDesc.MiscFlags = 0;
+	pixelConstantBufferDesc.StructureByteStride = 0;
+
+	// Create the pixel constant buffer pointer so we can access the pixel shader constant buffer from within this class.
+	result = device->CreateBuffer(&pixelConstantBufferDesc, NULL, &m_pixelConstantBuffer);
 	return !FAILED(result);
 }
