@@ -41,7 +41,7 @@ PixelInputType VertexMain(VertexInputType input)
     output.position = mul(output.position, projectionMatrix);
 
     // Calculate the normals in world space.
-    output.normal = mul(input.position, (float3x3)modelMatrix);
+    output.normal = mul(input.normal, (float3x3)modelMatrix);
 
     // Normalize the normals.
     output.normal = normalize(output.normal);
