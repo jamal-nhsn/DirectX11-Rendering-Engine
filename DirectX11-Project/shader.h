@@ -8,15 +8,13 @@ INCLUDES
 #include <d3dcompiler.h>
 #include <fstream>
 
-#include "camera.h"
-#include "transform.h"
-#include "material.h"
+class Scene;
 
 class Shader
 {
 public:
 	bool Initialize(ID3D11Device* device, HWND hwnd);
-	virtual void Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& transform, Material* material) = 0;
+	virtual bool Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) = 0;
 	void Shutdown();
 
 protected:
@@ -35,5 +33,6 @@ protected:
 	ID3D11PixelShader*  m_pixelShader;
 	ID3D11InputLayout*  m_layout;
 	ID3D11SamplerState* m_sampleState;
-	ID3D11Buffer*       m_constantBuffer;
+	ID3D11Buffer*       m_vertexConstantBuffer;
+	ID3D11Buffer*       m_pixelConstantBuffer;
 };

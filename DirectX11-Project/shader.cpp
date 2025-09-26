@@ -116,9 +116,9 @@ void Shader::Shutdown()
 	}
 
 	// Release the matrix constant buffer.
-	if (m_constantBuffer) {
-		m_constantBuffer->Release();
-		m_constantBuffer = 0;
+	if (m_vertexConstantBuffer) {
+		m_vertexConstantBuffer->Release();
+		m_vertexConstantBuffer = 0;
 	}
 
 

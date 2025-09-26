@@ -5,7 +5,7 @@ INCLUDES
 ======*/
 #include "shader.h"
 
-class TextureShader : public Shader
+class DirLightShader : public Shader
 {
 private:
 	struct VertexConstantBuffer
@@ -14,14 +14,20 @@ private:
 		DirectX::XMMATRIX view;
 		DirectX::XMMATRIX projection;
 	};
+	struct PixelConstantBuffer
+	{
+		DirectX::XMFLOAT3 lightDirection;
+		DirectX::XMFLOAT4 diffuseColor;
+		float padding;
+	};
 
 public:
-	TextureShader();
-	TextureShader(const TextureShader&);
-	~TextureShader();
+	DirLightShader();
+	DirLightShader(const DirLightShader&);
+	~DirLightShader();
 
 	bool Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) override;
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, ID3D11ShaderResourceView* texture);
+	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture);
 
 protected:
 	bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) override;

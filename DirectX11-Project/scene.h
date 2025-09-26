@@ -9,6 +9,7 @@ INCLUDES
 #include "transform.h"
 #include "model.h"
 #include "camera.h"
+#include "directionallight.h"
 
 class Scene
 {
@@ -41,9 +42,10 @@ private:
 	std::vector<int>    m_components; // Indicies into component lists for each entity.
 
 	// All component lists.
-	std::vector<Transform> m_transforms;
-	std::vector<Model>     m_models;
-	std::vector<Camera>	   m_cameras;
+	std::vector<Transform>        m_transforms;
+	std::vector<Model>            m_models;
+	std::vector<Camera>	          m_cameras;
+	std::vector<DirectionalLight> m_directionalLights;
 
 	void* m_componentLists[static_cast<int>(ComponentId::COMPONENT_COUNT)]; // Table of component lists for generalized access.
 };

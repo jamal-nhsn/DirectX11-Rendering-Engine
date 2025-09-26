@@ -330,3 +330,13 @@ DirectX::XMMATRIX Transform::GetModelMatrix()
 {
 	return m_modelMatrix;
 }
+
+DirectX::XMFLOAT3 Transform::GetForward()
+{
+	DirectX::XMFLOAT3 ans;
+	DirectX::XMStoreFloat3(
+		&ans,
+		DirectX::XMVector3Rotate(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), GetGlobalRotation())
+	);
+	return ans;
+}

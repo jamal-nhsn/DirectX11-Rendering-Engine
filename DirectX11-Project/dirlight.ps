@@ -1,0 +1,49 @@
+/*=====
+GLOBALS
+=====*/
+Texture2D shaderTexture : register(t0);
+SamplerState sampleType : register(s0);
+
+cbuffer DirLightBuffer
+{
+    float3 lightDirection;
+    float4 diffuseColor;
+    float padding;
+};
+
+/*======
+TYPEDEFS
+======*/
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+    float3 normal: NORMAL;
+    float2 tex : TEXCOORD0;
+};
+
+/*==========
+PIXEL SHADER
+==========*/
+float4 PixelMain(PixelInputType input) : SV_TARGET
+{
+    float4 textureColor;
+    float3 normal;
+    float lightIntensity;
+    float4 color;
+   
+    // Sample the pixel color from the texture using the sampler at this texture coordinate location.
+    textureColor = shaderTexture.Sample(sampleType, input.tex);
+
+    // Invert the light direction for calculations.
+    // Calculate the amount of light on this pixel.
+    normal = normalize(input.normal);
+    lightIntensity = saturate(dot(normal, -lightDirection));
+
+    // Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
+    color = saturate(diffuseColor * lightIntensity);
+
+    // Multiply the texture pixel and the final diffuse color to get the final pixel color result.
+    color = color * textureColor;
+
+    return color;
+}
