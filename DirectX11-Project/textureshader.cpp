@@ -10,14 +10,14 @@ TextureShader::TextureShader()
 	m_pixelShader = 0;
 	m_layout = 0;
 	m_sampleState = 0;
-	m_constantBuffer = 0;
+	m_vertexConstantBuffer = 0;
 }
 
 TextureShader::TextureShader(const TextureShader& other)
 {
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
-	m_constantBuffer = other.m_constantBuffer;
+	m_vertexConstantBuffer = other.m_vertexConstantBuffer;
 	m_sampleState = other.m_sampleState;
 	m_layout = other.m_layout;
 }
@@ -59,14 +59,14 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Dire
 
 	// Lock the constant buffer so it can be written to.
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	result = deviceContext->Map(m_constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = deviceContext->Map(m_vertexConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
 
 	// Get a pointer to the data in the constant buffer.
-	ConstantBuffer* dataPtr;
-	dataPtr = (ConstantBuffer*)mappedResource.pData;
+	VertexConstantBuffer* dataPtr;
+	dataPtr = (VertexConstantBuffer*)mappedResource.pData;
 
 	// Copy the matrices into the constant buffer.
 	dataPtr->model = modelMatrix;
@@ -74,13 +74,13 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Dire
 	dataPtr->projection = projectionMatrix;
 
 	// Unlock the constant buffer.
-	deviceContext->Unmap(m_constantBuffer, 0);
+	deviceContext->Unmap(m_vertexConstantBuffer, 0);
 
 	// Set the position of the constant buffer in the vertex shader.
 	unsigned int bufferNumber = 0;
 
 	// Set the constant buffer in the vertex shader with the updated values.
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_constantBuffer);
+	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_vertexConstantBuffer);
 
 	// Finally, set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
@@ -152,13 +152,13 @@ bool TextureShader::InitializeConstants(ID3D11Device* device)
 
 	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
 	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	constantBufferDesc.ByteWidth = sizeof(ConstantBuffer);
+	constantBufferDesc.ByteWidth = sizeof(VertexConstantBuffer);
 	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	constantBufferDesc.MiscFlags = 0;
 	constantBufferDesc.StructureByteStride = 0;
 
 	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	result = device->CreateBuffer(&constantBufferDesc, NULL, &m_constantBuffer);
+	result = device->CreateBuffer(&constantBufferDesc, NULL, &m_vertexConstantBuffer);
 	return !FAILED(result);
 }

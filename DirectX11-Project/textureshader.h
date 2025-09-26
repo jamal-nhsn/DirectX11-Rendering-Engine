@@ -8,7 +8,7 @@ INCLUDES
 class TextureShader : public Shader
 {
 private:
-	struct ConstantBuffer
+	struct VertexConstantBuffer
 	{
 		DirectX::XMMATRIX model;
 		DirectX::XMMATRIX view;
