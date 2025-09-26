@@ -1,1 +1,36 @@
 #pragma once
+
+/*======
+INCLUDES
+======*/
+#include "shader.h"
+
+class DirLightShader : public Shader
+{
+private:
+	struct VertexConstantBuffer
+	{
+		DirectX::XMMATRIX model;
+		DirectX::XMMATRIX view;
+		DirectX::XMMATRIX projection;
+	};
+	struct PixelConstantBuffer
+	{
+		DirectX::XMFLOAT3 lightDirection;
+		DirectX::XMFLOAT4 diffuseColor;
+		float padding;
+	};
+
+public:
+	DirLightShader();
+	DirLightShader(const DirLightShader&);
+	~DirLightShader();
+
+	void Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) override;
+	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture);
+
+protected:
+	bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) override;
+	bool InitializeSamplerDesc(ID3D11Device* device) override;
+	bool InitializeConstants(ID3D11Device* device) override;
+};
