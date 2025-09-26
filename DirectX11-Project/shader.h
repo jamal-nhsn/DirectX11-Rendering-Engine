@@ -14,7 +14,7 @@ class Shader
 {
 public:
 	bool Initialize(ID3D11Device* device, HWND hwnd);
-	virtual void Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) = 0;
+	virtual bool Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) = 0;
 	void Shutdown();
 
 protected:

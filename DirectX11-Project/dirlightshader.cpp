@@ -28,8 +28,9 @@ DirLightShader::~DirLightShader()
 {
 }
 
-void DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
+bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
 {
+	bool success;
 	VertexConstantBuffer vertexConstantBuffer;
 	PixelConstantBuffer pixelConstantBuffer;
 	ID3D11ShaderResourceView* texture;
@@ -54,10 +55,15 @@ void DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int 
 
 	texture = scene->GetComponent<Model>(entity).GetMaterial()->GetTexture()->GetTexture2D();
 	
-	SetShaderParameters(deviceContext, vertexConstantBuffer, pixelConstantBuffer, texture);
+	success = SetShaderParameters(deviceContext, vertexConstantBuffer, pixelConstantBuffer, texture);
+	if (!success) {
+		return success;
+	}
 
 	// Set the sampler state in the pixel shader.
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
+
+	return success;
 }
 
 bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture)

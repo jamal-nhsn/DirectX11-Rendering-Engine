@@ -26,7 +26,7 @@ public:
 	DirLightShader(const DirLightShader&);
 	~DirLightShader();
 
-	void Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) override;
+	bool Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) override;
 	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture);
 
 protected:

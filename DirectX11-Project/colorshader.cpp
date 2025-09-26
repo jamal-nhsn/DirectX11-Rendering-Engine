@@ -26,32 +26,27 @@ ColorShader::~ColorShader()
 {
 }
 
-void ColorShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
+bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
 {
+	VertexConstantBuffer vertexConstantBuffer;
+
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	Camera& camera = scene->GetComponent<Camera>(0);
-	Transform& transform = scene->GetComponent<Transform>(entity);
-	Model& model = scene->GetComponent<Model>(entity);
-
-	SetShaderParameters(
-		deviceContext,
-		transform.GetModelMatrix(),
-		camera.GetViewMatrix(),
-		camera.GetProjectionMatrix()
-	);
-}
-
-bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, DirectX::XMMATRIX modelMatrix, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix)
-{
-	HRESULT result;
 
 	// Transpose the matrices to prepare them for the shader.
-	modelMatrix      = DirectX::XMMatrixTranspose(modelMatrix);
-	viewMatrix       = DirectX::XMMatrixTranspose(viewMatrix);
-	projectionMatrix = DirectX::XMMatrixTranspose(projectionMatrix);
+	vertexConstantBuffer.model = DirectX::XMMatrixTranspose(scene->GetComponent<Transform>(entity).GetModelMatrix());
+	vertexConstantBuffer.view = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
+	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
+
+	return SetShaderParameters(deviceContext, vertexConstantBuffer);
+}
+
+bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer)
+{
+	HRESULT result;
 
 	// Lock the constant buffer so it can be written to.
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -61,13 +56,13 @@ bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Direct
 	}
 
 	// Get a pointer to the data in the constant buffer.
-	VertexConstantBuffer* dataPtr;
-	dataPtr = (VertexConstantBuffer*)mappedResource.pData;
+	VertexConstantBuffer* vertexDataPtr;
+	vertexDataPtr = (VertexConstantBuffer*)mappedResource.pData;
 
 	// Copy the matrices into the constant buffer.
-	dataPtr->model      = modelMatrix;
-	dataPtr->view       = viewMatrix;
-	dataPtr->projection = projectionMatrix;
+	vertexDataPtr->model = vertexConstantBuffer.model;
+	vertexDataPtr->view = vertexConstantBuffer.view;
+	vertexDataPtr->projection = vertexConstantBuffer.projection;
 
 	// Unlock the constant buffer.
 	deviceContext->Unmap(m_vertexConstantBuffer, 0);

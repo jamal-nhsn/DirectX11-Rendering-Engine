@@ -26,36 +26,39 @@ TextureShader::~TextureShader()
 {
 }
 
-void TextureShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
+bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
 {
+	bool success;
+	VertexConstantBuffer vertexConstantBuffer;
+	ID3D11ShaderResourceView* texture;
+
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	Camera& camera = scene->GetComponent<Camera>(0);
-	Transform& transform = scene->GetComponent<Transform>(entity);
-	Model& model = scene->GetComponent<Model>(entity);
+
+	// Transpose the matrices to prepare them for the shader.
+	vertexConstantBuffer.model = DirectX::XMMatrixTranspose(scene->GetComponent<Transform>(entity).GetModelMatrix());
+	vertexConstantBuffer.view = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
+	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
+
+	texture = scene->GetComponent<Model>(entity).GetMaterial()->GetTexture()->GetTexture2D();
 	
-	SetShaderParameters(
-		deviceContext,
-		transform.GetModelMatrix(),
-		camera.GetViewMatrix(),
-		camera.GetProjectionMatrix(),
-		model.GetMaterial()->GetTexture()->GetTexture2D()
-	);
+	success = SetShaderParameters(deviceContext, vertexConstantBuffer, texture);
+	if (!success) {
+		return success;
+	}
 
 	// Set the sampler state in the pixel shader.
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
+
+	return success;
 }
 
-bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, DirectX::XMMATRIX modelMatrix, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
+bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
-
-	// Transpose the matrices to prepare them for the shader.
-	modelMatrix = DirectX::XMMatrixTranspose(modelMatrix);
-	viewMatrix = DirectX::XMMatrixTranspose(viewMatrix);
-	projectionMatrix = DirectX::XMMatrixTranspose(projectionMatrix);
 
 	// Lock the constant buffer so it can be written to.
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -65,13 +68,13 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Dire
 	}
 
 	// Get a pointer to the data in the constant buffer.
-	VertexConstantBuffer* dataPtr;
-	dataPtr = (VertexConstantBuffer*)mappedResource.pData;
+	VertexConstantBuffer* vertexDataPtr;
+	vertexDataPtr = (VertexConstantBuffer*)mappedResource.pData;
 
 	// Copy the matrices into the constant buffer.
-	dataPtr->model = modelMatrix;
-	dataPtr->view = viewMatrix;
-	dataPtr->projection = projectionMatrix;
+	vertexDataPtr->model = vertexConstantBuffer.model;
+	vertexDataPtr->view = vertexConstantBuffer.view;
+	vertexDataPtr->projection = vertexConstantBuffer.projection;
 
 	// Unlock the constant buffer.
 	deviceContext->Unmap(m_vertexConstantBuffer, 0);
