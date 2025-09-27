@@ -43,7 +43,7 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int e
 	vertexConstantBuffer.view = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
 	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
 
-	texture = scene->GetComponent<Model>(entity).GetMaterial()->GetTexture()->GetTexture2D();
+	texture = scene->GetComponent<Model>(entity).GetTexture()->GetTexture2D();
 	
 	success = SetShaderParameters(deviceContext, vertexConstantBuffer, texture);
 	if (!success) {

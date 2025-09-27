@@ -53,7 +53,7 @@ bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int 
 	pixelConstantBuffer.diffuseColor = dirLight.GetColor();
 	pixelConstantBuffer.padding = 0.0f;
 
-	texture = scene->GetComponent<Model>(entity).GetMaterial()->GetTexture()->GetTexture2D();
+	texture = scene->GetComponent<Model>(entity).GetTexture()->GetTexture2D();
 	
 	success = SetShaderParameters(deviceContext, vertexConstantBuffer, pixelConstantBuffer, texture);
 	if (!success) {

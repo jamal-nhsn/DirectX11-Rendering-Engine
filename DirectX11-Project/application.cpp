@@ -7,7 +7,6 @@ Application::Application()
 	m_shaderManager = 0;
 	m_meshManager = 0;
 	m_textureManager = 0;
-	m_materialManager = 0;
 
 	m_transformSystem = 0;
 	m_cameraSystem = 0;
@@ -60,10 +59,6 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return success;
 	}
 
-	// Create and initialize the MaterialManager object.
-	m_materialManager = new MaterialManager;
-	m_materialManager->Initialize(m_shaderManager, m_textureManager);
-
 	// Create the System objects.
 	m_transformSystem = new TransformSystem;
 	m_cameraSystem    = new CameraSystem;
@@ -91,7 +86,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Model>(entity2);
 	Model& model1 = m_scene->GetComponent<Model>(entity2);
 	model1.SetMesh(m_meshManager->GetMesh("cube"));
-	model1.SetMaterial(m_materialManager->GetMaterial("stoneWallLit"));
+	model1.SetShader(m_shaderManager->GetShader<DirLightShader>());
+	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
 	m_scene->GetComponent<Transform>(entity2).SetGlobalScale(1.0f, 1.0f, 1.0f);
 
 	// Add another cube to scene.
@@ -100,7 +96,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Model>(entity3);
 	Model& model2 = m_scene->GetComponent<Model>(entity3);
 	model2.SetMesh(m_meshManager->GetMesh("cube"));
-	model2.SetMaterial(m_materialManager->GetMaterial("stoneWallLit"));
+	model2.SetShader(m_shaderManager->GetShader<DirLightShader>());
+	model2.SetTexture(m_textureManager->GetTexture("stoneWall"));
 	m_scene->GetComponent<Transform>(entity3).SetLocalPosition(-1.5f, 0.0f, 0.0f);
 	m_scene->GetComponent<Transform>(entity3).SetGlobalScale(0.5f, 0.5f, 0.5f);
 
@@ -140,24 +137,15 @@ void Application::Shutdown()
 		m_textureManager = 0;
 	}
 
-	// Release the MaterialManager object.
-	if (m_materialManager) {
-		m_materialManager->Shutdown();
-		delete m_materialManager;
-		m_materialManager = 0;
-	}
-
 	// Release the System objects.
 	if (m_transformSystem) {
 		delete m_transformSystem;
 		m_transformSystem = 0;
 	}
-
 	if (m_cameraSystem) {
 		delete m_cameraSystem;
 		m_cameraSystem = 0;
 	}
-
 	if (m_renderSystem) {
 		delete m_renderSystem;
 		m_renderSystem = 0;

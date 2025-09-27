@@ -84,12 +84,6 @@
     <ClInclude Include="vertex.h">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="materialmanager.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="material.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -166,12 +160,6 @@
     </ClCompile>
     <ClCompile Include="mesh.cpp">
       <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="material.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="materialmanager.cpp">
-      <Filter>Source Files\Resources</Filter>
     </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>Source Files\Components</Filter>

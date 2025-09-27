@@ -29,8 +29,6 @@
     <ClInclude Include="entity.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="directionallight.h" />
-    <ClInclude Include="material.h" />
-    <ClInclude Include="materialmanager.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="meshmanager.h" />
     <ClInclude Include="model.h" />
@@ -57,8 +55,6 @@
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="material.cpp" />
-    <ClCompile Include="materialmanager.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="meshmanager.cpp" />
     <ClCompile Include="model.cpp" />

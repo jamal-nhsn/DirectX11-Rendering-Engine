@@ -21,12 +21,13 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 	direct3d->Clear(0.0f, 0.0f, 0.0f, 1.0f);
 
 	for (Model& model : (*models)) {
-		Mesh* mesh           = model.GetMesh();
-		Material* material   = model.GetMaterial();
+		Mesh* mesh       = model.GetMesh();
+		Texture* texture = model.GetTexture();
+		Shader* shader   = model.GetShader();
 
-		if (material != 0) {
+		if (shader != 0) {
 			mesh->Bind(deviceContext);
-			material->GetShader()->Bind(deviceContext, scene, model.GetEntityId());
+			shader->Bind(deviceContext, scene, model.GetEntityId());
 		}
 
 		deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
