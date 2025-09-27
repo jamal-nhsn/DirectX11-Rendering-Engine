@@ -13,7 +13,7 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 	result = D3DCompileFromFile(
 		m_vertexShaderSource,
 		NULL,
-		NULL,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"VertexMain",
 		"vs_5_0",
 		D3D10_SHADER_ENABLE_STRICTNESS,
@@ -37,7 +37,7 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 	result = D3DCompileFromFile(
 		m_pixelShaderSource,
 		NULL,
-		NULL,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"PixelMain",
 		"ps_5_0",
 		D3D10_SHADER_ENABLE_STRICTNESS,

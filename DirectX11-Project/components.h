@@ -5,6 +5,6 @@ enum class ComponentId
 	Transform,
 	Model,
 	Camera,
-	DirectionalLight,
+	Light,
 	COMPONENT_COUNT
 };

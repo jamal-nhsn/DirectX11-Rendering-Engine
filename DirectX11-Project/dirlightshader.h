@@ -4,6 +4,7 @@
 INCLUDES
 ======*/
 #include "shader.h"
+#include "light.h"
 
 class DirLightShader : public Shader
 {
@@ -16,9 +17,7 @@ private:
 	};
 	struct PixelConstantBuffer
 	{
-		DirectX::XMFLOAT3 lightDirection;
-		DirectX::XMFLOAT4 diffuseColor;
-		float padding;
+		LightStruct light;
 	};
 
 public:

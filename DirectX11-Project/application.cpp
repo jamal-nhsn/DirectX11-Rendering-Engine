@@ -76,9 +76,9 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// Add direction light to scene.
 	int entity1 = m_scene->CreateEntity();
 	m_scene->AddComponent<Transform>(entity1);
-	m_scene->AddComponent<DirectionalLight>(entity1);
+	m_scene->AddComponent<Light>(entity1);
 	m_scene->GetComponent<Transform>(entity1).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
-	m_scene->GetComponent<DirectionalLight>(entity1).SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	m_scene->GetComponent<Light>(entity1).SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	// Add cube to scene.
 	int entity2 = m_scene->CreateEntity();

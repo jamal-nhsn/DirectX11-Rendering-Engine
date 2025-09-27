@@ -46,12 +46,11 @@ bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int 
 	vertexConstantBuffer.view       = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
 	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
 
-	DirectionalLight& dirLight = (*scene->GetComponents<DirectionalLight>())[0];
+	Light& dirLight = (*scene->GetComponents<Light>())[0];
 
 	// Load the directional light data into the buffer.
-	pixelConstantBuffer.lightDirection = scene->GetComponent<Transform>(dirLight.GetEntityId()).GetForward();
-	pixelConstantBuffer.diffuseColor = dirLight.GetColor();
-	pixelConstantBuffer.padding = 0.0f;
+	pixelConstantBuffer.light.direction = scene->GetComponent<Transform>(dirLight.GetEntityId()).GetForward();
+	pixelConstantBuffer.light.color = dirLight.GetColor();
 
 	texture = scene->GetComponent<Model>(entity).GetTexture()->GetTexture2D();
 	
@@ -106,9 +105,7 @@ bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ver
 	pixelDataPtr = (PixelConstantBuffer*)mappedResource.pData;
 
 	// Copy the light data into the constant buffer.
-	pixelDataPtr->lightDirection = pixelConstantBuffer.lightDirection;
-	pixelDataPtr->diffuseColor   = pixelConstantBuffer.diffuseColor;
-	pixelDataPtr->padding        = pixelConstantBuffer.padding;
+	pixelDataPtr->light = pixelConstantBuffer.light;
 
 	// Set the constant buffer in the pixel shader with the updated values.
 	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_pixelConstantBuffer);

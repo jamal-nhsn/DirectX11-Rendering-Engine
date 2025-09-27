@@ -5,7 +5,7 @@ Scene::Scene()
 	m_componentLists[static_cast<int>(ComponentId::Transform)] = &m_transforms;
 	m_componentLists[static_cast<int>(ComponentId::Model)]     = &m_models;
 	m_componentLists[static_cast<int>(ComponentId::Camera)]    = &m_cameras;
-	m_componentLists[static_cast<int>(ComponentId::DirectionalLight)] = &m_directionalLights;
+	m_componentLists[static_cast<int>(ComponentId::Light)]     = &m_lights;
 }
 
 Scene::Scene(const Scene& other)

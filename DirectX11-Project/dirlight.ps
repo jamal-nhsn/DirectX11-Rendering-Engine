@@ -1,14 +1,17 @@
+/*======
+INCLUDES
+======*/
+#include "light.h"
+
 /*=====
 GLOBALS
 =====*/
 Texture2D shaderTexture : register(t0);
 SamplerState sampleType : register(s0);
 
-cbuffer DirLightBuffer
+cbuffer LightBuffer
 {
-    float3 lightDirection;
-    float4 diffuseColor;
-    float padding;
+    Light light;
 };
 
 /*======
@@ -37,10 +40,10 @@ float4 PixelMain(PixelInputType input) : SV_TARGET
     // Invert the light direction for calculations.
     // Calculate the amount of light on this pixel.
     normal = normalize(input.normal);
-    lightIntensity = saturate(dot(normal, -lightDirection));
+    lightIntensity = saturate(dot(normal, -light.direction));
 
     // Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
-    color = saturate(diffuseColor * lightIntensity);
+    color = saturate(light.color * lightIntensity);
 
     // Multiply the texture pixel and the final diffuse color to get the final pixel color result.
     color = color * textureColor;
