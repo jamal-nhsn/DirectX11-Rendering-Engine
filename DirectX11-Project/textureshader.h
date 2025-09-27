@@ -20,7 +20,10 @@ public:
 	TextureShader(const TextureShader&);
 	~TextureShader();
 
-	bool Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) override;
+	bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) override;
+	bool IsLit() override;
+
+private:
 	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, ID3D11ShaderResourceView* texture);
 
 protected:

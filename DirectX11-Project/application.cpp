@@ -69,40 +69,46 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->Initialize(screenWidth, screenHeight);
 
 	// Get camera entity from scene.
-	int entity0 = 0;
-	m_scene->GetComponent<Transform>(entity0).SetGlobalPosition(0.0f, 2.0f, -2.0f);
-	m_scene->GetComponent<Transform>(entity0).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
+	int camera = 0;
+	m_scene->GetComponent<Transform>(camera).SetGlobalPosition(0.0f, 2.0f, -2.0f);
+	m_scene->GetComponent<Transform>(camera).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
 
 	// Add direction light to scene.
-	int entity1 = m_scene->CreateEntity();
-	m_scene->AddComponent<Transform>(entity1);
-	m_scene->AddComponent<Light>(entity1);
-	m_scene->GetComponent<Transform>(entity1).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
-	m_scene->GetComponent<Light>(entity1).SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	int dirLight1 = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(dirLight1);
+	m_scene->AddComponent<Light>(dirLight1);
+	m_scene->GetComponent<Transform>(dirLight1).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
+	m_scene->GetComponent<Light>(dirLight1).SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+	int dirLight2 = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(dirLight2);
+	m_scene->AddComponent<Light>(dirLight2);
+	m_scene->GetComponent<Transform>(dirLight2).SetGlobalRotation(180.0f, 0.0f, 1.0f, 0.0f);
+	m_scene->GetComponent<Light>(dirLight2).SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
 
 	// Add cube to scene.
-	int entity2 = m_scene->CreateEntity();
-	m_scene->AddComponent<Transform>(entity2);
-	m_scene->AddComponent<Model>(entity2);
-	Model& model1 = m_scene->GetComponent<Model>(entity2);
+	int cube1 = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(cube1);
+	m_scene->AddComponent<Model>(cube1);
+	Model& model1 = m_scene->GetComponent<Model>(cube1);
 	model1.SetMesh(m_meshManager->GetMesh("cube"));
 	model1.SetShader(m_shaderManager->GetShader<DirLightShader>());
 	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
-	m_scene->GetComponent<Transform>(entity2).SetGlobalScale(1.0f, 1.0f, 1.0f);
+	m_scene->GetComponent<Transform>(cube1).SetGlobalScale(1.0f, 1.0f, 1.0f);
 
 	// Add another cube to scene.
-	int entity3 = m_scene->CreateEntity();
-	m_scene->AddComponent<Transform>(entity3);
-	m_scene->AddComponent<Model>(entity3);
-	Model& model2 = m_scene->GetComponent<Model>(entity3);
+	int cube2 = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(cube2);
+	m_scene->AddComponent<Model>(cube2);
+	Model& model2 = m_scene->GetComponent<Model>(cube2);
 	model2.SetMesh(m_meshManager->GetMesh("cube"));
 	model2.SetShader(m_shaderManager->GetShader<DirLightShader>());
 	model2.SetTexture(m_textureManager->GetTexture("stoneWall"));
-	m_scene->GetComponent<Transform>(entity3).SetLocalPosition(-1.5f, 0.0f, 0.0f);
-	m_scene->GetComponent<Transform>(entity3).SetGlobalScale(0.5f, 0.5f, 0.5f);
+	m_scene->GetComponent<Transform>(cube2).SetLocalPosition(-1.5f, 0.0f, 0.0f);
+	m_scene->GetComponent<Transform>(cube2).SetGlobalScale(0.5f, 0.5f, 0.5f);
 
-	// Make entity3 a child of entity2.
-	m_scene->GetComponent<Transform>(entity2).AddChild(entity3, m_scene);
+	// Make cube2 a child of cube1.
+	m_scene->GetComponent<Transform>(cube1).AddChild(cube2, m_scene);
 	
 	return success;
 }
@@ -166,7 +172,7 @@ bool Application::Tick(float dt)
 	m_cameraSystem->Update(m_scene);
 	m_renderSystem->Update(m_direct3d, m_scene);
 
-	Transform& transform2 = m_scene->GetComponent<Transform>(2);
+	Transform& transform2 = m_scene->GetComponent<Transform>(3);
 	transform2.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
 			transform2.GetLocalRotation(),
@@ -174,7 +180,7 @@ bool Application::Tick(float dt)
 		)
 	);
 
-	Transform& transform3 = m_scene->GetComponent<Transform>(3);
+	Transform& transform3 = m_scene->GetComponent<Transform>(4);
 	transform3.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
 			transform3.GetLocalRotation(),

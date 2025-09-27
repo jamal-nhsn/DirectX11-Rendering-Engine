@@ -28,7 +28,7 @@ DirLightShader::~DirLightShader()
 {
 }
 
-bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
+bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
 {
 	bool success;
 	VertexConstantBuffer vertexConstantBuffer;
@@ -39,20 +39,18 @@ bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int 
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
-	Camera& camera = scene->GetComponent<Camera>(0);
-
 	// Transpose the matrices to prepare them for the shader.
-	vertexConstantBuffer.model      = DirectX::XMMatrixTranspose(scene->GetComponent<Transform>(entity).GetModelMatrix());
+	vertexConstantBuffer.model      = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
 	vertexConstantBuffer.view       = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
 	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
 
-	Light& dirLight = (*scene->GetComponents<Light>())[0];
-
 	// Load the directional light data into the buffer.
-	pixelConstantBuffer.light.direction = scene->GetComponent<Transform>(dirLight.GetEntityId()).GetForward();
-	pixelConstantBuffer.light.color = dirLight.GetColor();
+	DirectX::XMFLOAT3 lightPosition = lightTransform.GetGlobalPosition();
+	pixelConstantBuffer.light.position = DirectX::XMFLOAT4(lightPosition.x, lightPosition.y, lightPosition.z, 1.0f);
+	pixelConstantBuffer.light.direction = lightTransform.GetForward();
+	pixelConstantBuffer.light.color = light.GetColor();
 
-	texture = scene->GetComponent<Model>(entity).GetTexture()->GetTexture2D();
+	texture = model.GetTexture()->GetTexture2D();
 	
 	success = SetShaderParameters(deviceContext, vertexConstantBuffer, pixelConstantBuffer, texture);
 	if (!success) {
@@ -62,7 +60,15 @@ bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int 
 	// Set the sampler state in the pixel shader.
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
 
+	// Set the blend state in the output merger.
+	deviceContext->OMSetBlendState(m_blendState, 0, 0xffffffff);
+
 	return success;
+}
+
+bool DirLightShader::IsLit()
+{
+	return true;
 }
 
 bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture)
@@ -157,22 +163,47 @@ bool DirLightShader::InitializeSamplerDesc(ID3D11Device* device)
 	D3D11_SAMPLER_DESC samplerDesc;
 
 	// Create a texture sampler state description.
-	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.MipLODBias = 0.0f;
-	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.Filter         = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU       = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV       = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW       = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias     = 0.0f;
+	samplerDesc.MaxAnisotropy  = 1;
 	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 	samplerDesc.BorderColor[0] = 0;
 	samplerDesc.BorderColor[1] = 0;
 	samplerDesc.BorderColor[2] = 0;
 	samplerDesc.BorderColor[3] = 0;
-	samplerDesc.MinLOD = 0;
-	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	samplerDesc.MinLOD         = 0;
+	samplerDesc.MaxLOD         = D3D11_FLOAT32_MAX;
 
 	// Create the texture sampler state.
 	result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
+	return !FAILED(result);
+}
+
+bool DirLightShader::InitializeBlendDesc(ID3D11Device* device)
+{
+	HRESULT result;
+	D3D11_BLEND_DESC blendDesc;
+	D3D11_RENDER_TARGET_BLEND_DESC rtBlendDesc;
+
+	// Create a blend description which will determine how multi-pass rendering will work.
+	blendDesc.AlphaToCoverageEnable   = FALSE;
+	blendDesc.IndependentBlendEnable  = FALSE;
+	rtBlendDesc.BlendEnable           = TRUE;
+	rtBlendDesc.SrcBlend              = D3D11_BLEND_ONE;
+	rtBlendDesc.DestBlend             = D3D11_BLEND_ONE;
+	rtBlendDesc.BlendOp               = D3D11_BLEND_OP_ADD;
+	rtBlendDesc.SrcBlendAlpha         = D3D11_BLEND_ONE;
+	rtBlendDesc.DestBlendAlpha        = D3D11_BLEND_ONE;
+	rtBlendDesc.BlendOpAlpha          = D3D11_BLEND_OP_ADD;
+	rtBlendDesc.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	blendDesc.RenderTarget[0] = rtBlendDesc;
+
+	// Create the blend state.
+	result = device->CreateBlendState(&blendDesc, &m_blendState);
 	return !FAILED(result);
 }
 

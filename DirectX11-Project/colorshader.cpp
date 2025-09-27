@@ -26,7 +26,7 @@ ColorShader::~ColorShader()
 {
 }
 
-bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
+bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
 {
 	VertexConstantBuffer vertexConstantBuffer;
 
@@ -34,14 +34,17 @@ bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int ent
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
-	Camera& camera = scene->GetComponent<Camera>(0);
-
 	// Transpose the matrices to prepare them for the shader.
-	vertexConstantBuffer.model = DirectX::XMMatrixTranspose(scene->GetComponent<Transform>(entity).GetModelMatrix());
-	vertexConstantBuffer.view = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
+	vertexConstantBuffer.model      = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
+	vertexConstantBuffer.view       = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
 	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
 
 	return SetShaderParameters(deviceContext, vertexConstantBuffer);
+}
+
+bool ColorShader::IsLit()
+{
+	return false;
 }
 
 bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer)
@@ -106,12 +109,6 @@ bool ColorShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShade
 	delete[] polygonLayout;
 
 	return !FAILED(result);
-}
-
-bool ColorShader::InitializeSamplerDesc(ID3D11Device* device)
-{
-	// No sampler is used in the shader.
-	return true;
 }
 
 bool ColorShader::InitializeConstants(ID3D11Device* device)

@@ -8,21 +8,28 @@ INCLUDES
 #include <d3dcompiler.h>
 #include <fstream>
 
-class Scene;
+#include "camera.h"
+#include "transform.h"
+#include "light.h"
+
+class Model;
 
 class Shader
 {
 public:
 	bool Initialize(ID3D11Device* device, HWND hwnd);
-	virtual bool Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) = 0;
+	virtual bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) = 0;
 	void Shutdown();
+
+	virtual bool IsLit() = 0;
 
 protected:
 	D3D11_INPUT_ELEMENT_DESC* CreateLayout(bool usePosition, bool useNormal, bool useTexCoord, bool useTangent, bool useColor, unsigned int& numElements);
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderSource);
 
 	virtual bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) = 0;
-	virtual bool InitializeSamplerDesc(ID3D11Device* device) = 0;
+	virtual bool InitializeSamplerDesc(ID3D11Device* device);
+	virtual bool InitializeBlendDesc(ID3D11Device* device);
 	virtual bool InitializeConstants(ID3D11Device* device) = 0;
 
 protected:
@@ -33,6 +40,7 @@ protected:
 	ID3D11PixelShader*  m_pixelShader;
 	ID3D11InputLayout*  m_layout;
 	ID3D11SamplerState* m_sampleState;
+	ID3D11BlendState*   m_blendState;
 	ID3D11Buffer*       m_vertexConstantBuffer;
 	ID3D11Buffer*       m_pixelConstantBuffer;
 };

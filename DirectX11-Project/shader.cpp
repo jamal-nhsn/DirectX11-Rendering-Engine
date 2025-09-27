@@ -87,6 +87,12 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
+	// Setup blend description.
+	bool blendDescInitialized = InitializeBlendDesc(device);
+	if (!blendDescInitialized) {
+		return false;
+	}
+
 	// Set up constants
 	return InitializeConstants(device);
 }
@@ -237,4 +243,16 @@ void Shader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR
 
 	// Pop a message up on the screen to notify the user to check the text file for compile errors.
 	MessageBox(hwnd, L"Error compiling shader.  Check shader-error.txt for message.", shaderSource, MB_OK);
+}
+
+bool Shader::InitializeSamplerDesc(ID3D11Device* device)
+{
+	// Default to no sampler.
+	return true;
+}
+
+bool Shader::InitializeBlendDesc(ID3D11Device* device)
+{
+	// Default to no blending.
+	return true;
 }

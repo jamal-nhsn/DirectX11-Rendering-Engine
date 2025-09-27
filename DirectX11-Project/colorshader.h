@@ -20,11 +20,13 @@ public:
 	ColorShader(const ColorShader&);
 	~ColorShader();
 
-	bool Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity) override;
+	bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) override;
+	bool IsLit() override;
+
+private:
 	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer);
 
 protected:
 	bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) override;
-	virtual bool InitializeSamplerDesc(ID3D11Device* device) override;
 	bool InitializeConstants(ID3D11Device* device) override;
 };

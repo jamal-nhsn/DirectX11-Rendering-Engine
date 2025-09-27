@@ -26,7 +26,7 @@ TextureShader::~TextureShader()
 {
 }
 
-bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int entity)
+bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
 {
 	bool success;
 	VertexConstantBuffer vertexConstantBuffer;
@@ -36,14 +36,12 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int e
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
-	Camera& camera = scene->GetComponent<Camera>(0);
-
 	// Transpose the matrices to prepare them for the shader.
-	vertexConstantBuffer.model = DirectX::XMMatrixTranspose(scene->GetComponent<Transform>(entity).GetModelMatrix());
+	vertexConstantBuffer.model = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
 	vertexConstantBuffer.view = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
 	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
 
-	texture = scene->GetComponent<Model>(entity).GetTexture()->GetTexture2D();
+	texture = model.GetTexture()->GetTexture2D();
 	
 	success = SetShaderParameters(deviceContext, vertexConstantBuffer, texture);
 	if (!success) {
@@ -54,6 +52,11 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Scene* scene, int e
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
 
 	return success;
+}
+
+bool TextureShader::IsLit()
+{
+	return false;
 }
 
 bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, ID3D11ShaderResourceView* texture)
