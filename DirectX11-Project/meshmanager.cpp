@@ -31,6 +31,11 @@ bool MeshManager::Initialize(ID3D11Device* device)
 		return success;
 	}
 
+	success = InitializeObjFiles(device);
+	if (!success) {
+		return success;
+	}
+
 	return success;
 }
 
@@ -45,6 +50,14 @@ void MeshManager::Shutdown()
 		entry.second->Shutdown();
 		delete entry.second;
 	}
+}
+
+bool MeshManager::InitializeObjFiles(ID3D11Device* device)
+{
+	ObjLoader objLoader;
+
+
+	return true;
 }
 
 bool MeshManager::InitializeTriangle(ID3D11Device* device)

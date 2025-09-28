@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Shaders\Light Pass\Default Light Shader">
       <UniqueIdentifier>{ec6d5a34-ef46-4fd4-8dac-07d3dca1cef8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{24f2417f-163a-4f3b-a1c7-7111528e2a86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Meshes">
+      <UniqueIdentifier>{437e2e87-d32b-49e5-a9c9-c714de2e3761}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -138,6 +144,9 @@
     <ClInclude Include="light.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="objloader.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -212,6 +221,9 @@
     <ClCompile Include="light.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="objloader.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs">
@@ -238,5 +250,10 @@
     <None Include="defaultbase.vs">
       <Filter>Source Files\Shaders\Base Pass\Default Base Shader</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\stoneWall.tga">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>
