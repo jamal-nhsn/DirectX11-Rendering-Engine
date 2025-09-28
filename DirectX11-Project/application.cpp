@@ -67,24 +67,25 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// Create and initialize the Scene object.
 	m_scene = new Scene;
 	m_scene->Initialize(screenWidth, screenHeight);
+	m_scene->SetAmbientLight(DirectX::XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f));
 
 	// Get camera entity from scene.
 	int camera = 0;
 	m_scene->GetComponent<Transform>(camera).SetGlobalPosition(0.0f, 2.0f, -2.0f);
 	m_scene->GetComponent<Transform>(camera).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
 
-	// Add direction light to scene.
+	// Add direction lights to scene.
 	int dirLight1 = m_scene->CreateEntity();
 	m_scene->AddComponent<Transform>(dirLight1);
 	m_scene->AddComponent<Light>(dirLight1);
-	m_scene->GetComponent<Transform>(dirLight1).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
-	m_scene->GetComponent<Light>(dirLight1).SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//m_scene->GetComponent<Transform>(dirLight1).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
+	m_scene->GetComponent<Light>(dirLight1).SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
 
 	int dirLight2 = m_scene->CreateEntity();
 	m_scene->AddComponent<Transform>(dirLight2);
 	m_scene->AddComponent<Light>(dirLight2);
 	m_scene->GetComponent<Transform>(dirLight2).SetGlobalRotation(180.0f, 0.0f, 1.0f, 0.0f);
-	m_scene->GetComponent<Light>(dirLight2).SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	m_scene->GetComponent<Light>(dirLight2).SetColor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
 
 	// Add cube to scene.
 	int cube1 = m_scene->CreateEntity();
@@ -92,7 +93,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Model>(cube1);
 	Model& model1 = m_scene->GetComponent<Model>(cube1);
 	model1.SetMesh(m_meshManager->GetMesh("cube"));
-	model1.SetShader(m_shaderManager->GetShader<DirLightShader>());
+	model1.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
+	model1.SetLightShader(m_shaderManager->GetShader<DirLightShader>());
 	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
 	m_scene->GetComponent<Transform>(cube1).SetGlobalScale(1.0f, 1.0f, 1.0f);
 
@@ -102,7 +104,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Model>(cube2);
 	Model& model2 = m_scene->GetComponent<Model>(cube2);
 	model2.SetMesh(m_meshManager->GetMesh("cube"));
-	model2.SetShader(m_shaderManager->GetShader<DirLightShader>());
+	model2.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
+	model2.SetLightShader(m_shaderManager->GetShader<DirLightShader>());
 	model2.SetTexture(m_textureManager->GetTexture("stoneWall"));
 	m_scene->GetComponent<Transform>(cube2).SetLocalPosition(-1.5f, 0.0f, 0.0f);
 	m_scene->GetComponent<Transform>(cube2).SetGlobalScale(0.5f, 0.5f, 0.5f);
@@ -172,18 +175,34 @@ bool Application::Tick(float dt)
 	m_cameraSystem->Update(m_scene);
 	m_renderSystem->Update(m_direct3d, m_scene);
 
-	Transform& transform2 = m_scene->GetComponent<Transform>(3);
-	transform2.SetLocalRotation(
+	Transform& transform1 = m_scene->GetComponent<Transform>(1);
+	transform1.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
-			transform2.GetLocalRotation(),
+			transform1.GetLocalRotation(),
 			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(36.0f) * dt)
 		)
 	);
 
-	Transform& transform3 = m_scene->GetComponent<Transform>(4);
+	Transform& transform2 = m_scene->GetComponent<Transform>(2);
+	transform2.SetLocalRotation(
+		DirectX::XMQuaternionMultiply(
+			transform2.GetLocalRotation(),
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(36.0f * 2.0f) * dt)
+		)
+	);
+
+	Transform& transform3 = m_scene->GetComponent<Transform>(3);
 	transform3.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
 			transform3.GetLocalRotation(),
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(36.0f * 2.0f) * dt)
+		)
+	);
+
+	Transform& transform4 = m_scene->GetComponent<Transform>(4);
+	transform4.SetLocalRotation(
+		DirectX::XMQuaternionMultiply(
+			transform4.GetLocalRotation(),
 			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(1.0f, 0.0f, 1.0f, 0.0f), DirectX::XMConvertToRadians(36.0f) * dt)
 		)
 	);

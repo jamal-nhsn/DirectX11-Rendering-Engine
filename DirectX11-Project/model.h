@@ -18,11 +18,13 @@ public:
 	int GetEntityId();
 
 	void SetMesh(Mesh* mesh);
-	void SetShader(Shader* shader);
+	void SetBaseShader(Shader* shader);
+	void SetLightShader(Shader* shader);
 	void SetTexture(Texture* texture);
 
 	Mesh*    GetMesh();
-	Shader*  GetShader();
+	Shader*  GetBaseShader();
+	Shader*  GetLightShader();
 	Texture* GetTexture();
 
 public:
@@ -32,6 +34,7 @@ private:
 	int m_entityId;
 
 	Mesh*    m_mesh;
-	Shader*  m_shader;
+	Shader*  m_baseShader;
+	Shader*  m_lightShader;
 	Texture* m_texture;
 };

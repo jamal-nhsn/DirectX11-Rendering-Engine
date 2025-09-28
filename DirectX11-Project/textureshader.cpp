@@ -26,7 +26,7 @@ TextureShader::~TextureShader()
 {
 }
 
-bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
+bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
 {
 	bool success;
 	VertexConstantBuffer vertexConstantBuffer;
@@ -48,15 +48,10 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Mod
 		return success;
 	}
 
-	// Set the sampler state in the pixel shader.
-	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
+	// Finally, set the shader states.
+	SetShaderStates(deviceContext);
 
 	return success;
-}
-
-bool TextureShader::IsLit()
-{
-	return false;
 }
 
 bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, ID3D11ShaderResourceView* texture)

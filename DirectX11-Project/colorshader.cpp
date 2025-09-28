@@ -26,8 +26,9 @@ ColorShader::~ColorShader()
 {
 }
 
-bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
+bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
 {
+	bool success;
 	VertexConstantBuffer vertexConstantBuffer;
 
 	deviceContext->IASetInputLayout(m_layout);
@@ -39,12 +40,15 @@ bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model
 	vertexConstantBuffer.view       = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
 	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
 
-	return SetShaderParameters(deviceContext, vertexConstantBuffer);
-}
+	success = SetShaderParameters(deviceContext, vertexConstantBuffer);
+	if (!success) {
+		return success;
+	}
 
-bool ColorShader::IsLit()
-{
-	return false;
+	// Finally, set the shader states.
+	SetShaderStates(deviceContext);
+
+	return success;
 }
 
 bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer)

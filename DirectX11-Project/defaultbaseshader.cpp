@@ -1,34 +1,32 @@
-#include "DirLightShader.h"
+#include "defaultbaseshader.h"
 #include "scene.h"
 
-DirLightShader::DirLightShader()
+DefaultBaseShader::DefaultBaseShader()
 {
-	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/dirlight.vs");
-	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/dirlight.ps");
+	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/defaultbase.vs");
+	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/defaultbase.ps");
 
 	m_vertexShader = 0;
 	m_pixelShader = 0;
 	m_layout = 0;
 	m_sampleState = 0;
 	m_vertexConstantBuffer = 0;
-	m_pixelConstantBuffer = 0;
 }
 
-DirLightShader::DirLightShader(const DirLightShader& other)
+DefaultBaseShader::DefaultBaseShader(const DefaultBaseShader& other)
 {
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
 	m_vertexConstantBuffer = other.m_vertexConstantBuffer;
-	m_pixelConstantBuffer = other.m_pixelConstantBuffer;
 	m_sampleState = other.m_sampleState;
 	m_layout = other.m_layout;
 }
 
-DirLightShader::~DirLightShader()
+DefaultBaseShader::~DefaultBaseShader()
 {
 }
 
-bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
+bool DefaultBaseShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
 {
 	bool success;
 	VertexConstantBuffer vertexConstantBuffer;
@@ -40,19 +38,15 @@ bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Mo
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	// Transpose the matrices to prepare them for the shader.
-	vertexConstantBuffer.model      = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
-	vertexConstantBuffer.view       = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
+	vertexConstantBuffer.model = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
+	vertexConstantBuffer.view = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
 	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
 
-	// Load the directional light data into the buffer.
-	DirectX::XMFLOAT3 lightPosition = lightTransform.GetGlobalPosition();
-	pixelConstantBuffer.light.position = DirectX::XMFLOAT4(lightPosition.x, lightPosition.y, lightPosition.z, 1.0f);
-	pixelConstantBuffer.light.color = light.GetColor();
-	pixelConstantBuffer.light.direction = lightTransform.GetForward();
-	pixelConstantBuffer.light.type = light.GetType();
+	// Pass the ambient light to the pixel shader.
+	pixelConstantBuffer.ambientLight = ambientLight;
 
 	texture = model.GetTexture()->GetTexture2D();
-	
+
 	success = SetShaderParameters(deviceContext, vertexConstantBuffer, pixelConstantBuffer, texture);
 	if (!success) {
 		return success;
@@ -64,7 +58,7 @@ bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Mo
 	return success;
 }
 
-bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture)
+bool DefaultBaseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
 
@@ -80,8 +74,8 @@ bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ver
 	vertexDataPtr = (VertexConstantBuffer*)mappedResource.pData;
 
 	// Copy the matrices into the constant buffer.
-	vertexDataPtr->model      = vertexConstantBuffer.model;
-	vertexDataPtr->view       = vertexConstantBuffer.view;
+	vertexDataPtr->model = vertexConstantBuffer.model;
+	vertexDataPtr->view = vertexConstantBuffer.view;
 	vertexDataPtr->projection = vertexConstantBuffer.projection;
 
 	// Unlock the constant buffer.
@@ -103,8 +97,8 @@ bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ver
 	PixelConstantBuffer* pixelDataPtr;
 	pixelDataPtr = (PixelConstantBuffer*)mappedResource.pData;
 
-	// Copy the light data into the constant buffer.
-	pixelDataPtr->light = pixelConstantBuffer.light;
+	// Copy the ambient light data into the constant buffer.
+	pixelDataPtr->ambientLight = pixelConstantBuffer.ambientLight;
 
 	// Set the constant buffer in the pixel shader with the updated values.
 	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_pixelConstantBuffer);
@@ -118,14 +112,14 @@ bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ver
 	return true;
 }
 
-bool DirLightShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer)
+bool DefaultBaseShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer)
 {
 	HRESULT result;
 	unsigned int numElements;
 
 	D3D11_INPUT_ELEMENT_DESC* polygonLayout = CreateLayout(
 		true,  // Use position.
-		true,  // Use normal.
+		false, // Use normal.
 		true,  // Use texcoord.
 		false, // Use tangent.
 		false, // Use color.
@@ -150,72 +144,32 @@ bool DirLightShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexSh
 	return !FAILED(result);
 }
 
-bool DirLightShader::InitializeSamplerDesc(ID3D11Device* device)
+bool DefaultBaseShader::InitializeSamplerDesc(ID3D11Device* device)
 {
 	HRESULT result;
 	D3D11_SAMPLER_DESC samplerDesc;
 
 	// Create a texture sampler state description.
-	samplerDesc.Filter         = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerDesc.AddressU       = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressV       = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW       = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.MipLODBias     = 0.0f;
-	samplerDesc.MaxAnisotropy  = 1;
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
 	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 	samplerDesc.BorderColor[0] = 0;
 	samplerDesc.BorderColor[1] = 0;
 	samplerDesc.BorderColor[2] = 0;
 	samplerDesc.BorderColor[3] = 0;
-	samplerDesc.MinLOD         = 0;
-	samplerDesc.MaxLOD         = D3D11_FLOAT32_MAX;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	// Create the texture sampler state.
 	result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
 	return !FAILED(result);
 }
 
-bool DirLightShader::InitializeBlendDesc(ID3D11Device* device)
-{
-	HRESULT result;
-	D3D11_BLEND_DESC blendDesc;
-	D3D11_RENDER_TARGET_BLEND_DESC rtBlendDesc;
-
-	// Create a blend description which will determine how multi-pass rendering will work.
-	blendDesc.AlphaToCoverageEnable   = FALSE;
-	blendDesc.IndependentBlendEnable  = FALSE;
-	rtBlendDesc.BlendEnable           = TRUE;
-	rtBlendDesc.SrcBlend              = D3D11_BLEND_ONE;
-	rtBlendDesc.DestBlend             = D3D11_BLEND_ONE;
-	rtBlendDesc.BlendOp               = D3D11_BLEND_OP_ADD;
-	rtBlendDesc.SrcBlendAlpha         = D3D11_BLEND_ONE;
-	rtBlendDesc.DestBlendAlpha        = D3D11_BLEND_ONE;
-	rtBlendDesc.BlendOpAlpha          = D3D11_BLEND_OP_ADD;
-	rtBlendDesc.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-	blendDesc.RenderTarget[0] = rtBlendDesc;
-
-	// Create the blend state.
-	result = device->CreateBlendState(&blendDesc, &m_blendState);
-	return !FAILED(result);
-}
-
-bool DirLightShader::InitializeDepthStencilDesc(ID3D11Device* device)
-{
-	HRESULT result;
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-
-	// Create a depth stencil description, which will determine how depth writes work.
-	depthStencilDesc.DepthEnable    = TRUE;
-	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	depthStencilDesc.DepthFunc      = D3D11_COMPARISON_EQUAL;
-	depthStencilDesc.StencilEnable  = FALSE;
-
-	result = device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
-	return !FAILED(result);
-}
-
-bool DirLightShader::InitializeConstants(ID3D11Device* device)
+bool DefaultBaseShader::InitializeConstants(ID3D11Device* device)
 {
 	HRESULT result;
 	D3D11_BUFFER_DESC vertexConstantBufferDesc;
@@ -229,7 +183,7 @@ bool DirLightShader::InitializeConstants(ID3D11Device* device)
 	vertexConstantBufferDesc.MiscFlags = 0;
 	vertexConstantBufferDesc.StructureByteStride = 0;
 
-	// Create the vertex constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
 	result = device->CreateBuffer(&vertexConstantBufferDesc, NULL, &m_vertexConstantBuffer);
 	if (FAILED(result)) {
 		return false;

@@ -93,8 +93,23 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
+	// Setup the depth stencil description.
+	bool depthStencilDescInitialized = InitializeDepthStencilDesc(device);
+	if (!depthStencilDescInitialized) {
+		return false;
+	}
+
 	// Set up constants
 	return InitializeConstants(device);
+}
+
+// If either of these are called, the renderer called the wrong Bind for the shader.
+bool Shader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) {
+	return false;
+}
+
+bool Shader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight) {
+	return false;
 }
 
 void Shader::Shutdown()
@@ -126,8 +141,6 @@ void Shader::Shutdown()
 		m_vertexConstantBuffer->Release();
 		m_vertexConstantBuffer = 0;
 	}
-
-
 }
 
 D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout(bool usePosition, bool useNormal, bool useTexCoord, bool useTangent, bool useColor, unsigned int& numElements)
@@ -219,6 +232,18 @@ D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout(bool usePosition, bool useNormal,
 	return polygonLayout;
 }
 
+void Shader::SetShaderStates(ID3D11DeviceContext* deviceContext)
+{
+	// Set the sampler state in the pixel shader.
+	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
+
+	// Set the blend state in the output merger.
+	deviceContext->OMSetBlendState(m_blendState, 0, 0xffffffff);
+
+	// Set the depth stencil state in the output merger.
+	deviceContext->OMSetDepthStencilState(m_depthStencilState, 0);
+}
+
 void Shader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderSource)
 {
 	// Get a pointer to the error message text buffer.
@@ -254,5 +279,11 @@ bool Shader::InitializeSamplerDesc(ID3D11Device* device)
 bool Shader::InitializeBlendDesc(ID3D11Device* device)
 {
 	// Default to no blending.
+	return true;
+}
+
+bool Shader::InitializeDepthStencilDesc(ID3D11Device* device)
+{
+	// Default to depth writes enabled.
 	return true;
 }

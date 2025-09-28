@@ -40,6 +40,14 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 	m_shaderBank[typeid(DirLightShader)] = dirLightShader;
 
+	DefaultBaseShader* defaultBaseShader = new DefaultBaseShader;
+	success = defaultBaseShader->Initialize(device, hwnd);
+	if (!success) {
+		delete defaultBaseShader;
+		return success;
+	}
+	m_shaderBank[typeid(DefaultBaseShader)] = defaultBaseShader;
+
 	return success;
 }
 

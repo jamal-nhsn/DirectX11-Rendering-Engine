@@ -37,9 +37,14 @@ public:
 	template<typename ComponentType>
 	bool HasComponent(int entityId);
 
+	DirectX::XMFLOAT4 GetAmbientLight();
+	void SetAmbientLight(DirectX::XMFLOAT4 color);
+
 private:
 	std::vector<Entity> m_entities;   // All entities in scene.
 	std::vector<int>    m_components; // Indicies into component lists for each entity.
+
+	DirectX::XMFLOAT4 m_ambientLight;
 
 	// All component lists.
 	std::vector<Transform> m_transforms;

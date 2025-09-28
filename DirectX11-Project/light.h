@@ -3,7 +3,7 @@ SHARED
 ====*/
 #pragma once
 
-#define DIRECTIONAL_LIGHT_TYPE 0
+#define DIRECTIONAL_LIGHT_TYPE 0.0f
 
 /*======
 C++ SIDE
@@ -19,10 +19,9 @@ INCLUDES
 struct LightStruct
 {
 	DirectX::XMFLOAT4 position;
-	DirectX::XMFLOAT3 direction;
 	DirectX::XMFLOAT4 color;
-	int type;
-	DirectX::XMFLOAT4 padding;
+	DirectX::XMFLOAT3 direction;
+	float type;
 };
 
 
@@ -39,7 +38,7 @@ public:
 	void SetType(int type);
 
 	DirectX::XMFLOAT4 GetColor();
-	int GetType();
+	float GetType();
 
 public:
 	static const ComponentId ID;
@@ -48,7 +47,7 @@ private:
 	int m_entityId;
 
 	DirectX::XMFLOAT4 m_color;
-	int m_type;
+	float m_type;
 };
 
 /*=======
@@ -59,10 +58,9 @@ HLSL SIDE
 struct Light
 {
 	float4 position;
-	float3 direction;
 	float4 color;
-	int type;
-	float4 padding;
+	float3 direction;
+	float type;
 };
 
 #endif
