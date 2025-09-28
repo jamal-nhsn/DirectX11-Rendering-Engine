@@ -25,9 +25,6 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{a0c00574-b00f-4239-8bb8-fd07a0dadbfc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders\Color Shader">
-      <UniqueIdentifier>{354c24a4-225d-4f78-96e1-ec0953cdea9e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{b832301e-85dc-4dd8-aa20-3971d03c5edf}</UniqueIdentifier>
     </Filter>
@@ -43,14 +40,26 @@
     <Filter Include="Header Files\Systems">
       <UniqueIdentifier>{46f2e00f-4a7d-41f2-b36f-0325ed3f8a7d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders\Texture Shader">
-      <UniqueIdentifier>{a04c4120-380b-49c2-b8bc-13fa6ac155dd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{04a2bd0b-1f28-4624-b0f9-a59b6839c96f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders\DirLight Shader">
+    <Filter Include="Source Files\Shaders\Base Pass">
+      <UniqueIdentifier>{fa1a9fde-e3e8-4b3f-8706-ef91a5e03208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Light Pass">
+      <UniqueIdentifier>{f07c4d56-8891-46d6-b1e1-5b0e9b0ed612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Base Pass\Color Shader">
+      <UniqueIdentifier>{354c24a4-225d-4f78-96e1-ec0953cdea9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Base Pass\Texture Shader">
+      <UniqueIdentifier>{a04c4120-380b-49c2-b8bc-13fa6ac155dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Light Pass\DirLight Shader">
       <UniqueIdentifier>{ec6d5a34-ef46-4fd4-8dac-07d3dca1cef8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Base Pass\Default Base">
+      <UniqueIdentifier>{31953d29-7b72-4aa1-b815-51f52d58a4b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,11 +129,14 @@
     <ClInclude Include="texturemanager.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="directionallight.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="dirlightshader.h">
       <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="defaultbaseshader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -153,7 +165,7 @@
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="colorshader.cpp">
-      <Filter>Source Files\Shaders\Color Shader</Filter>
+      <Filter>Source Files\Shaders\Base Pass\Color Shader</Filter>
     </ClCompile>
     <ClCompile Include="meshmanager.cpp">
       <Filter>Source Files\Geometry</Filter>
@@ -183,7 +195,7 @@
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="textureshader.cpp">
-      <Filter>Source Files\Shaders\Texture Shader</Filter>
+      <Filter>Source Files\Shaders\Base Pass\Texture Shader</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
       <Filter>Source Files\Resources</Filter>
@@ -191,31 +203,40 @@
     <ClCompile Include="texturemanager.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="directionallight.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="dirlightshader.cpp">
-      <Filter>Source Files\Shaders\DirLight Shader</Filter>
+      <Filter>Source Files\Shaders\Light Pass\DirLight Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="defaultbaseshader.cpp">
+      <Filter>Source Files\Shaders\Base Pass\Default Base</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs">
-      <Filter>Source Files\Shaders\Color Shader</Filter>
+      <Filter>Source Files\Shaders\Base Pass\Color Shader</Filter>
     </None>
     <None Include="color.ps">
-      <Filter>Source Files\Shaders\Color Shader</Filter>
+      <Filter>Source Files\Shaders\Base Pass\Color Shader</Filter>
     </None>
     <None Include="texture.vs">
-      <Filter>Source Files\Shaders\Texture Shader</Filter>
+      <Filter>Source Files\Shaders\Base Pass\Texture Shader</Filter>
     </None>
     <None Include="texture.ps">
-      <Filter>Source Files\Shaders\Texture Shader</Filter>
+      <Filter>Source Files\Shaders\Base Pass\Texture Shader</Filter>
     </None>
     <None Include="dirlight.ps">
-      <Filter>Source Files\Shaders\DirLight Shader</Filter>
+      <Filter>Source Files\Shaders\Light Pass\DirLight Shader</Filter>
     </None>
     <None Include="dirlight.vs">
-      <Filter>Source Files\Shaders\DirLight Shader</Filter>
+      <Filter>Source Files\Shaders\Light Pass\DirLight Shader</Filter>
+    </None>
+    <None Include="defaultbase.ps">
+      <Filter>Source Files\Shaders\Base Pass\Default Base</Filter>
+    </None>
+    <None Include="defaultbase.vs">
+      <Filter>Source Files\Shaders\Base Pass\Default Base</Filter>
     </None>
   </ItemGroup>
 </Project>

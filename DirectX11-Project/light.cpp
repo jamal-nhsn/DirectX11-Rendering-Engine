@@ -40,7 +40,7 @@ void Light::SetType(int type)
 	m_type = type;
 }
 
-int Light::GetType()
+float Light::GetType()
 {
 	return m_type;
 }

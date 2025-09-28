@@ -28,7 +28,7 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 	for (Model& model : (*models)) {
 		Mesh* mesh = model.GetMesh();
 		Texture* texture = model.GetTexture();
-		Shader* shader = model.GetLightShader();
+		Shader* shader = model.GetBaseShader();
 
 		if (shader == 0) {
 			continue;

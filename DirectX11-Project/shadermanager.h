@@ -11,6 +11,7 @@ INCLUDES
 #include "colorshader.h"
 #include "textureshader.h"
 #include "dirlightshader.h"
+#include "defaultbaseshader.h"
 
 class ShaderManager
 {

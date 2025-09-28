@@ -24,6 +24,7 @@
     <ClInclude Include="camerasystem.h" />
     <ClInclude Include="colorshader.h" />
     <ClInclude Include="components.h" />
+    <ClInclude Include="defaultbaseshader.h" />
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="dirlightshader.h" />
     <ClInclude Include="entity.h" />
@@ -49,6 +50,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="camerasystem.cpp" />
     <ClCompile Include="colorshader.cpp" />
+    <ClCompile Include="defaultbaseshader.cpp" />
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="dirlightshader.cpp" />
@@ -72,6 +74,8 @@
   <ItemGroup>
     <None Include="color.ps" />
     <None Include="color.vs" />
+    <None Include="defaultbase.ps" />
+    <None Include="defaultbase.vs" />
     <None Include="dirlight.ps" />
     <None Include="dirlight.vs" />
     <None Include="texture.ps" />
