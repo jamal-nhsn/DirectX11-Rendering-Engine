@@ -23,31 +23,30 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 
 	direct3d->Clear(0.0f, 0.0f, 0.0f, 1.0f);
 
+	/*---------AMBIENT-PASS---------*/
 	for (Model& model : (*models)) {
-		Mesh* mesh       = model.GetMesh();
+		Mesh* mesh = model.GetMesh();
 		Texture* texture = model.GetTexture();
-		Shader* shader   = model.GetShader();
+		Shader* shader = model.GetShader();
 
 		if (shader == 0) {
 			continue;
 		}
 
-		bool isLit = shader->IsLit();
 		mesh->Bind(deviceContext);
-
 		Transform& modelTransform = scene->GetComponent<Transform>(model.GetEntityId());
 
+		bool isLit = shader->IsLit();
 		for (Light& light : (*lights)) {
-			Transform& lightTransfrom = scene->GetComponent<Transform>(light.GetEntityId());
+			Transform& lightTransform = scene->GetComponent<Transform>(light.GetEntityId());
 
-			shader->Bind(deviceContext, camera, model, modelTransform, light, lightTransfrom);
+			shader->Bind(deviceContext, camera, model, modelTransform, light, lightTransform);
 			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 
-			if (!isLit) {
-				break;
-			}
+			if (!isLit) break;
 		}
 	}
+
 
 	direct3d->Render();
 }
