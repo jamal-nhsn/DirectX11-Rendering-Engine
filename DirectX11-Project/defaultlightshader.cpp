@@ -1,10 +1,10 @@
-#include "DirLightShader.h"
+#include "defaultlightshader.h"
 #include "scene.h"
 
-DirLightShader::DirLightShader()
+DefaultLightShader::DefaultLightShader()
 {
-	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/dirlight.vs");
-	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/dirlight.ps");
+	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/defaultlight.vs");
+	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/defaultlight.ps");
 
 	m_vertexShader = 0;
 	m_pixelShader = 0;
@@ -14,7 +14,7 @@ DirLightShader::DirLightShader()
 	m_pixelConstantBuffer = 0;
 }
 
-DirLightShader::DirLightShader(const DirLightShader& other)
+DefaultLightShader::DefaultLightShader(const DefaultLightShader& other)
 {
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
@@ -24,11 +24,11 @@ DirLightShader::DirLightShader(const DirLightShader& other)
 	m_layout = other.m_layout;
 }
 
-DirLightShader::~DirLightShader()
+DefaultLightShader::~DefaultLightShader()
 {
 }
 
-bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
+bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
 {
 	bool success;
 	VertexConstantBuffer vertexConstantBuffer;
@@ -64,7 +64,7 @@ bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Mo
 	return success;
 }
 
-bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture)
+bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
 
@@ -118,7 +118,7 @@ bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Ver
 	return true;
 }
 
-bool DirLightShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer)
+bool DefaultLightShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer)
 {
 	HRESULT result;
 	unsigned int numElements;
@@ -150,7 +150,7 @@ bool DirLightShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexSh
 	return !FAILED(result);
 }
 
-bool DirLightShader::InitializeSamplerDesc(ID3D11Device* device)
+bool DefaultLightShader::InitializeSamplerDesc(ID3D11Device* device)
 {
 	HRESULT result;
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -175,7 +175,7 @@ bool DirLightShader::InitializeSamplerDesc(ID3D11Device* device)
 	return !FAILED(result);
 }
 
-bool DirLightShader::InitializeBlendDesc(ID3D11Device* device)
+bool DefaultLightShader::InitializeBlendDesc(ID3D11Device* device)
 {
 	HRESULT result;
 	D3D11_BLEND_DESC blendDesc;
@@ -200,7 +200,7 @@ bool DirLightShader::InitializeBlendDesc(ID3D11Device* device)
 	return !FAILED(result);
 }
 
-bool DirLightShader::InitializeDepthStencilDesc(ID3D11Device* device)
+bool DefaultLightShader::InitializeDepthStencilDesc(ID3D11Device* device)
 {
 	HRESULT result;
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
@@ -215,7 +215,7 @@ bool DirLightShader::InitializeDepthStencilDesc(ID3D11Device* device)
 	return !FAILED(result);
 }
 
-bool DirLightShader::InitializeConstants(ID3D11Device* device)
+bool DefaultLightShader::InitializeConstants(ID3D11Device* device)
 {
 	HRESULT result;
 	D3D11_BUFFER_DESC vertexConstantBufferDesc;

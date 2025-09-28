@@ -32,14 +32,6 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 	m_shaderBank[typeid(TextureShader)] = textureShader;
 
-	DirLightShader* dirLightShader = new DirLightShader;
-	success = dirLightShader->Initialize(device, hwnd);
-	if (!success) {
-		delete dirLightShader;
-		return success;
-	}
-	m_shaderBank[typeid(DirLightShader)] = dirLightShader;
-
 	DefaultBaseShader* defaultBaseShader = new DefaultBaseShader;
 	success = defaultBaseShader->Initialize(device, hwnd);
 	if (!success) {
@@ -47,6 +39,14 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 		return success;
 	}
 	m_shaderBank[typeid(DefaultBaseShader)] = defaultBaseShader;
+
+	DefaultLightShader* defaultLightShader = new DefaultLightShader;
+	success = defaultLightShader->Initialize(device, hwnd);
+	if (!success) {
+		delete defaultLightShader;
+		return success;
+	}
+	m_shaderBank[typeid(DefaultLightShader)] = defaultLightShader;
 
 	return success;
 }

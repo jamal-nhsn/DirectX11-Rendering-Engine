@@ -10,7 +10,7 @@ INCLUDES
 #include "shader.h"
 #include "colorshader.h"
 #include "textureshader.h"
-#include "dirlightshader.h"
+#include "defaultlightshader.h"
 #include "defaultbaseshader.h"
 
 class ShaderManager

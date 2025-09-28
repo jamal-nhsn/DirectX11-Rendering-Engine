@@ -5,7 +5,7 @@ INCLUDES
 ======*/
 #include "shader.h"
 
-class DirLightShader : public Shader
+class DefaultLightShader : public Shader
 {
 private:
 	struct VertexConstantBuffer
@@ -20,9 +20,9 @@ private:
 	};
 
 public:
-	DirLightShader();
-	DirLightShader(const DirLightShader&);
-	~DirLightShader();
+	DefaultLightShader();
+	DefaultLightShader(const DefaultLightShader&);
+	~DefaultLightShader();
 
 	bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) override;
 

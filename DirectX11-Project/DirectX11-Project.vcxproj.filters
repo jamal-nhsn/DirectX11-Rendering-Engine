@@ -55,11 +55,11 @@
     <Filter Include="Source Files\Shaders\Base Pass\Texture Shader">
       <UniqueIdentifier>{a04c4120-380b-49c2-b8bc-13fa6ac155dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders\Light Pass\DirLight Shader">
-      <UniqueIdentifier>{ec6d5a34-ef46-4fd4-8dac-07d3dca1cef8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shaders\Base Pass\Default Base">
+    <Filter Include="Source Files\Shaders\Base Pass\Default Base Shader">
       <UniqueIdentifier>{31953d29-7b72-4aa1-b815-51f52d58a4b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Light Pass\Default Light Shader">
+      <UniqueIdentifier>{ec6d5a34-ef46-4fd4-8dac-07d3dca1cef8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -129,7 +129,7 @@
     <ClInclude Include="texturemanager.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="dirlightshader.h">
+    <ClInclude Include="defaultlightshader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="defaultbaseshader.h">
@@ -203,11 +203,11 @@
     <ClCompile Include="texturemanager.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="dirlightshader.cpp">
-      <Filter>Source Files\Shaders\Light Pass\DirLight Shader</Filter>
+    <ClCompile Include="defaultlightshader.cpp">
+      <Filter>Source Files\Shaders\Light Pass\Default Light Shader</Filter>
     </ClCompile>
     <ClCompile Include="defaultbaseshader.cpp">
-      <Filter>Source Files\Shaders\Base Pass\Default Base</Filter>
+      <Filter>Source Files\Shaders\Base Pass\Default Base Shader</Filter>
     </ClCompile>
     <ClCompile Include="light.cpp">
       <Filter>Source Files\Components</Filter>
@@ -226,17 +226,17 @@
     <None Include="texture.ps">
       <Filter>Source Files\Shaders\Base Pass\Texture Shader</Filter>
     </None>
-    <None Include="dirlight.ps">
-      <Filter>Source Files\Shaders\Light Pass\DirLight Shader</Filter>
+    <None Include="defaultlight.ps">
+      <Filter>Source Files\Shaders\Light Pass\Default Light Shader</Filter>
     </None>
-    <None Include="dirlight.vs">
-      <Filter>Source Files\Shaders\Light Pass\DirLight Shader</Filter>
+    <None Include="defaultlight.vs">
+      <Filter>Source Files\Shaders\Light Pass\Default Light Shader</Filter>
     </None>
     <None Include="defaultbase.ps">
-      <Filter>Source Files\Shaders\Base Pass\Default Base</Filter>
+      <Filter>Source Files\Shaders\Base Pass\Default Base Shader</Filter>
     </None>
     <None Include="defaultbase.vs">
-      <Filter>Source Files\Shaders\Base Pass\Default Base</Filter>
+      <Filter>Source Files\Shaders\Base Pass\Default Base Shader</Filter>
     </None>
   </ItemGroup>
 </Project>

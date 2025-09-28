@@ -94,7 +94,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	Model& model1 = m_scene->GetComponent<Model>(cube1);
 	model1.SetMesh(m_meshManager->GetMesh("cube"));
 	model1.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
-	model1.SetLightShader(m_shaderManager->GetShader<DirLightShader>());
+	model1.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
 	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
 	m_scene->GetComponent<Transform>(cube1).SetGlobalScale(1.0f, 1.0f, 1.0f);
 
@@ -105,7 +105,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	Model& model2 = m_scene->GetComponent<Model>(cube2);
 	model2.SetMesh(m_meshManager->GetMesh("cube"));
 	model2.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
-	model2.SetLightShader(m_shaderManager->GetShader<DirLightShader>());
+	model2.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
 	model2.SetTexture(m_textureManager->GetTexture("stoneWall"));
 	m_scene->GetComponent<Transform>(cube2).SetLocalPosition(-1.5f, 0.0f, 0.0f);
 	m_scene->GetComponent<Transform>(cube2).SetGlobalScale(0.5f, 0.5f, 0.5f);
