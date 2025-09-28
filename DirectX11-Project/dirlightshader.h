@@ -25,7 +25,6 @@ public:
 	~DirLightShader();
 
 	bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) override;
-	bool IsLit() override;
 
 private:
 	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture);
@@ -34,5 +33,6 @@ protected:
 	bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) override;
 	bool InitializeSamplerDesc(ID3D11Device* device) override;
 	bool InitializeBlendDesc(ID3D11Device* device) override;
+	bool InitializeDepthStencilDesc(ID3D11Device* device) override;
 	bool InitializeConstants(ID3D11Device* device) override;
 };

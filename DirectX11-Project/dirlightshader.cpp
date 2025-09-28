@@ -57,18 +57,10 @@ bool DirLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Mo
 		return success;
 	}
 
-	// Set the sampler state in the pixel shader.
-	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
-
-	// Set the blend state in the output merger.
-	deviceContext->OMSetBlendState(m_blendState, 0, 0xffffffff);
+	// Finally, set the shader states.
+	SetShaderStates(deviceContext);
 
 	return success;
-}
-
-bool DirLightShader::IsLit()
-{
-	return true;
 }
 
 bool DirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture)
@@ -204,6 +196,21 @@ bool DirLightShader::InitializeBlendDesc(ID3D11Device* device)
 
 	// Create the blend state.
 	result = device->CreateBlendState(&blendDesc, &m_blendState);
+	return !FAILED(result);
+}
+
+bool DirLightShader::InitializeDepthStencilDesc(ID3D11Device* device)
+{
+	HRESULT result;
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+
+	// Create a depth stencil description, which will determine how depth writes work.
+	depthStencilDesc.DepthEnable    = TRUE;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	depthStencilDesc.DepthFunc      = D3D11_COMPARISON_EQUAL;
+	depthStencilDesc.StencilEnable  = FALSE;
+
+	result = device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
 	return !FAILED(result);
 }
 
