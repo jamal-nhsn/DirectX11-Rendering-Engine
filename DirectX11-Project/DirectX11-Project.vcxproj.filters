@@ -256,4 +256,9 @@
       <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Object Include="Meshes\skull.obj">
+      <Filter>Resource Files\Meshes</Filter>
+    </Object>
+  </ItemGroup>
 </Project>

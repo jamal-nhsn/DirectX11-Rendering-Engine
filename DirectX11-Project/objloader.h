@@ -4,6 +4,7 @@
 INCLUDES
 ======*/
 #include <stdio.h>
+#include <vector>
 
 #include "mesh.h"
 
@@ -14,5 +15,5 @@ public:
 	ObjLoader(ObjLoader& other);
 	~ObjLoader();
 
-	Mesh* LoadMesh(const char* fileName, ID3D11Device* device);
+	Mesh* LoadMesh(const char* filePath, ID3D11Device* device);
 };
