@@ -14,7 +14,7 @@ ObjLoader::~ObjLoader()
 
 Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 {
-	int filePathLength = strlen(filePath);
+	int filePathLength = static_cast<int>(strlen(filePath));
 
 	// Ensure the file path is long enough to contain ".obj" at the end.
 	if (filePathLength <= 4) {
@@ -77,7 +77,7 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 		{
 			int vertexCount = 0;
 			for (int i = 0; line[i] != '\0'; i++) {
-				vertexCount += line[i] == ' ' && line[i + 1] != '\n' && line[i + 1] != '\0' ? 1 : 0;
+				vertexCount += line[i] == ' ' && line[i + 1] != '\n' && line[i + 1] != '\0' && line[i + 1] != '\r' ? 1 : 0;
 			}
 
 			char* next = line + 2;
@@ -95,9 +95,9 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 				next++;
 
 				// Indices start from 1 and can be negative to refer to last added value.
-				vpi += vpi < 0 ? vertexPosition.size() : -1;
-				vti += vti < 0 ? vertexTexCoord.size() : -1;
-				vni += vni < 0 ? vertexNormal.size() : -1;
+				vpi += vpi < 0 ? static_cast<int>(vertexPosition.size()) : -1;
+				vti += vti < 0 ? static_cast<int>(vertexTexCoord.size()) : -1;
+				vni += vni < 0 ? static_cast<int>(vertexNormal.size()) : -1;
 
 				// Create key into vertex indices.
 				// This limits the vertex count to 2^21 vertices or 2,097,152 vertices for now. 
@@ -108,7 +108,7 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 
 				// Create vertex if it doesn't exist yet.
 				if (vertexKeyToIndex.find(vertex) == vertexKeyToIndex.end()) {
-					int index = vertices.size();
+					int index = static_cast<int>(vertices.size());
 					vertices.emplace_back();
 					vertices[index].position = vertexPosition[vpi];
 					vertices[index].texCoord = vertexTexCoord[vti];
@@ -119,7 +119,7 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 
 				// Triangularize faces as they may n-gons.
 				if (vertexNo >= 3) {
-					int noIndices = indices.size();
+					int noIndices = static_cast<int>(indices.size());
 					indices.emplace_back(indices[noIndices - vertexNo]);
 					indices.emplace_back(indices[noIndices - 1]);
 				}
@@ -132,7 +132,7 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 
 	// Create the mesh.
 	Mesh* mesh = new Mesh;
-	bool success = mesh->Initialize(device, vertices.data(), vertices.size(), indices.data(), indices.size(), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	bool success = mesh->Initialize(device, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	if (!success) {
 		delete mesh;

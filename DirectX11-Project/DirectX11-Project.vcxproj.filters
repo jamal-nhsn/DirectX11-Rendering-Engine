@@ -260,5 +260,8 @@
     <Object Include="Meshes\skull.obj">
       <Filter>Resource Files\Meshes</Filter>
     </Object>
+    <Object Include="Meshes\sphere.obj">
+      <Filter>Resource Files\Meshes</Filter>
+    </Object>
   </ItemGroup>
 </Project>
