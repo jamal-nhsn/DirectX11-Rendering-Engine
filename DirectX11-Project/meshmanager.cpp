@@ -57,7 +57,7 @@ bool MeshManager::InitializeObjFiles(ID3D11Device* device)
 	ObjLoader objLoader;
 	Mesh* mesh;
 	
-	mesh = objLoader.LoadMesh("Meshes/sphere.obj", device);
+	mesh = objLoader.LoadMesh("Meshes/sphere.obj", device, 5.0f, -2.0f);
 	if (mesh == 0) {
 		return false;
 	}

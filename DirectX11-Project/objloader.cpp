@@ -12,7 +12,7 @@ ObjLoader::~ObjLoader()
 {
 }
 
-Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
+Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device, float uScale, float vScale)
 {
 	int filePathLength = static_cast<int>(strlen(filePath));
 
@@ -60,8 +60,14 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 		// Read in vertex texture coordinate.
 		else if (line[0] == 'v' && line[1] == 't' && line[2] == ' ') {
 			char* next;
-			float u = strtof(line + 3, &next);
-			float v = strtof(next + 1, &next);
+			float u = uScale * strtof(line + 3, &next);
+			float v = vScale * strtof(next + 1, &next);
+
+			// Flip UV properly
+			// Negative UVs do work but keeping them positive is more consistent.
+			u += u < 0.0f ? uScale : 0.0f;
+			v += v < 0.0f ? vScale : 0.0f;
+
 			vertexTexCoord.emplace_back(u, v);
 		}
 		// Read in vertex normal.

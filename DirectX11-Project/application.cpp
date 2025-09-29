@@ -83,7 +83,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Transform>(dirLight2);
 	m_scene->AddComponent<Light>(dirLight2);
 	m_scene->GetComponent<Transform>(dirLight2).SetGlobalRotation(180.0f, 0.0f, 1.0f, 0.0f);
-	m_scene->GetComponent<Light>(dirLight2).SetColor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
+	m_scene->GetComponent<Light>(dirLight2).SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	// Add sphere to scene.
 	int sphere1 = m_scene->CreateEntity();
