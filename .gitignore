@@ -76,8 +76,6 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
-# Don't exclude meshes
-!Meshes/*.obj
 *.iobj
 *.pch
 *.pdb
@@ -99,6 +97,10 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+
+# Don't exclude meshes
+!Meshes/
+!Meshes/**/*.obj
 
 # Chutzpah Test files
 _Chutzpah*
