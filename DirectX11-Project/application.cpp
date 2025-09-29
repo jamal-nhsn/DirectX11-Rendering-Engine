@@ -61,8 +61,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Create the System objects.
 	m_transformSystem = new TransformSystem;
-	m_cameraSystem    = new CameraSystem;
-	m_renderSystem    = new RenderSystem;
+	m_cameraSystem = new CameraSystem;
+	m_renderSystem = new RenderSystem;
 
 	// Create and initialize the Scene object.
 	m_scene = new Scene;
@@ -71,15 +71,15 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Get camera entity from scene.
 	int camera = 0;
-	m_scene->GetComponent<Transform>(camera).SetGlobalPosition(0.0f, 2.0f, -2.0f);
-	m_scene->GetComponent<Transform>(camera).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
+	m_scene->GetComponent<Transform>(camera).SetGlobalPosition(0.0f, 0.0f, -50.0f);
+	//m_scene->GetComponent<Transform>(camera).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
 
 	// Add direction lights to scene.
 	int dirLight1 = m_scene->CreateEntity();
 	m_scene->AddComponent<Transform>(dirLight1);
 	m_scene->AddComponent<Light>(dirLight1);
 	//m_scene->GetComponent<Transform>(dirLight1).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
-	m_scene->GetComponent<Light>(dirLight1).SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	m_scene->GetComponent<Light>(dirLight1).SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	int dirLight2 = m_scene->CreateEntity();
 	m_scene->AddComponent<Transform>(dirLight2);
@@ -87,31 +87,41 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->GetComponent<Transform>(dirLight2).SetGlobalRotation(180.0f, 0.0f, 1.0f, 0.0f);
 	m_scene->GetComponent<Light>(dirLight2).SetColor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
 
+	// Add empty transform to scene.
+	int empty = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(empty);
+
 	// Add cube to scene.
 	int cube1 = m_scene->CreateEntity();
 	m_scene->AddComponent<Transform>(cube1);
 	m_scene->AddComponent<Model>(cube1);
-	Model& model1 = m_scene->GetComponent<Model>(cube1);
-	model1.SetMesh(m_meshManager->GetMesh("cube"));
-	model1.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
-	model1.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
-	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
-	m_scene->GetComponent<Transform>(cube1).SetGlobalScale(1.0f, 1.0f, 1.0f);
-
-	// Add another cube to scene.
-	int cube2 = m_scene->CreateEntity();
-	m_scene->AddComponent<Transform>(cube2);
-	m_scene->AddComponent<Model>(cube2);
-	Model& model2 = m_scene->GetComponent<Model>(cube2);
+	Model& model2 = m_scene->GetComponent<Model>(cube1);
 	model2.SetMesh(m_meshManager->GetMesh("cube"));
 	model2.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
 	model2.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
 	model2.SetTexture(m_textureManager->GetTexture("stoneWall"));
-	m_scene->GetComponent<Transform>(cube2).SetLocalPosition(-1.5f, 0.0f, 0.0f);
-	m_scene->GetComponent<Transform>(cube2).SetGlobalScale(0.5f, 0.5f, 0.5f);
+	m_scene->GetComponent<Transform>(cube1).SetLocalPosition(-20.0f, 0.0f, 0.0f);
+	m_scene->GetComponent<Transform>(cube1).SetGlobalScale(5.0f, 5.0f, 5.0f);
 
-	// Make cube2 a child of cube1.
-	m_scene->GetComponent<Transform>(cube1).AddChild(cube2, m_scene);
+	// Make cube1 a child of empty.
+	m_scene->GetComponent<Transform>(empty).AddChild(cube1, m_scene);
+
+	// Add skull to scene.
+	int skull = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(skull);
+	m_scene->AddComponent<Model>(skull);
+	Model& model1 = m_scene->GetComponent<Model>(skull);
+	model1.SetMesh(m_meshManager->GetMesh("skull"));
+	model1.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
+	model1.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
+	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
+	m_scene->GetComponent<Transform>(skull).SetGlobalPosition(0.0f, -10.0f, 0.0f);
+	m_scene->GetComponent<Transform>(skull).SetGlobalRotation(
+		DirectX::XMQuaternionMultiply(
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(-90.0f)),
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(180.0f))
+		)
+	);
 	
 	return success;
 }
@@ -187,7 +197,7 @@ bool Application::Tick(float dt)
 	transform2.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
 			transform2.GetLocalRotation(),
-			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(36.0f * 2.0f) * dt)
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(36.0f) * dt)
 		)
 	);
 

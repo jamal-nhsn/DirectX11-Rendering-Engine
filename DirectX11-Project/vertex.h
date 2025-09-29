@@ -12,4 +12,5 @@ struct Vertex
 	DirectX::XMFLOAT2 texCoord;
 	DirectX::XMFLOAT3 tangent;
 	DirectX::XMFLOAT4 color;
+	float padding;
 };

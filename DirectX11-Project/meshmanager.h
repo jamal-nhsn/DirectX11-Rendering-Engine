@@ -6,6 +6,7 @@ INCLUDES
 #include <unordered_map>
 
 #include "mesh.h"
+#include "objloader.h"
 
 class MeshManager
 {
@@ -22,6 +23,7 @@ private:
 	bool InitializeTriangle(ID3D11Device* device);
 	bool InitializeQuad(ID3D11Device* device);
 	bool InitializeCube(ID3D11Device* device);
+	bool InitializeObjFiles(ID3D11Device* device);
 
 private:
 	std::unordered_map<const char*, Mesh*> m_meshBank;

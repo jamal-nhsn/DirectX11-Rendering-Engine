@@ -33,6 +33,7 @@
     <ClInclude Include="mesh.h" />
     <ClInclude Include="meshmanager.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="objloader.h" />
     <ClInclude Include="rendersystem.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
@@ -60,6 +61,7 @@
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="meshmanager.cpp" />
     <ClCompile Include="model.cpp" />
+    <ClCompile Include="objloader.cpp" />
     <ClCompile Include="rendersystem.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -80,6 +82,14 @@
     <None Include="defaultlight.vs" />
     <None Include="texture.ps" />
     <None Include="texture.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\stoneWall.tga" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Meshes\skull.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </Object>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
