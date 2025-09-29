@@ -76,6 +76,8 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
+# Don't exclude meshes
+!Meshes/*.obj
 *.iobj
 *.pch
 *.pdb
