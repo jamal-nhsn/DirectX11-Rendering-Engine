@@ -79,7 +79,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->AddComponent<Transform>(dirLight1);
 	m_scene->AddComponent<Light>(dirLight1);
 	//m_scene->GetComponent<Transform>(dirLight1).SetGlobalRotation(45.0f, 1.0f, 0.0f, 0.0f);
-	m_scene->GetComponent<Light>(dirLight1).SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	m_scene->GetComponent<Light>(dirLight1).SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	int dirLight2 = m_scene->CreateEntity();
 	m_scene->AddComponent<Transform>(dirLight2);
