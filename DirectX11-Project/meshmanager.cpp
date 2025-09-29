@@ -55,7 +55,13 @@ void MeshManager::Shutdown()
 bool MeshManager::InitializeObjFiles(ID3D11Device* device)
 {
 	ObjLoader objLoader;
-	objLoader.LoadMesh("Meshes/skull.obj", device);
+	Mesh* mesh;
+	
+	mesh = objLoader.LoadMesh("Meshes/skull.obj", device);
+	if (mesh == 0) {
+		return false;
+	}
+	m_meshBank["skull"] = mesh;
 
 	return true;
 }

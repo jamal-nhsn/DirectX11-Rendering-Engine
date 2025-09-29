@@ -5,6 +5,7 @@ INCLUDES
 ======*/
 #include <stdio.h>
 #include <vector>
+#include <unordered_map>
 
 #include "mesh.h"
 

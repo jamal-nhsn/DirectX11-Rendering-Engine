@@ -39,11 +39,17 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 	}
 
 	std::vector<DirectX::XMFLOAT3> vertexPosition;
-	std::vector<DirectX::XMFLOAT3> vertexNormal;
 	std::vector<DirectX::XMFLOAT2> vertexTexCoord;
+	std::vector<DirectX::XMFLOAT3> vertexNormal;
+
+	std::vector<Vertex> vertices;
+	std::vector<unsigned long>   indices;
+	
+	std::unordered_map<uint64_t, int> vertexKeyToIndex;
 
 	char line[256];
 	while (fgets(line, sizeof(line), filePtr) != 0) {
+		// Read in vertex position.
 		if (line[0] == 'v' && line[1] == ' ') {
 			char* next;
 			float x = strtof(line + 2, &next);
@@ -51,6 +57,14 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 			float z = strtof(next + 1, &next);
 			vertexPosition.emplace_back(x, y, z);
 		}
+		// Read in vertex texture coordinate.
+		else if (line[0] == 'v' && line[1] == 't' && line[2] == ' ') {
+			char* next;
+			float u = strtof(line + 3, &next);
+			float v = strtof(next + 1, &next);
+			vertexTexCoord.emplace_back(u, v);
+		}
+		// Read in vertex normal.
 		else if (line[0] == 'v' && line[1] == 'n' && line[2] == ' ') {
 			char* next;
 			float x = strtof(line + 3, &next);
@@ -58,13 +72,72 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 			float z = strtof(next + 1, &next);
 			vertexNormal.emplace_back(x, y, z);
 		}
-		else if (line[0] == 'v' && line[1] == 't' && line[2] == ' ') {
-			char* next;
-			float u = strtof(line + 3, &next);
-			float v = strtof(next + 1, &next);
-			vertexTexCoord.emplace_back(u, v);
+		// Process face.
+		else if (line[0] == 'f' && line[1] == ' ')
+		{
+			int vertexCount = 0;
+			for (int i = 0; line[i] != '\0'; i++) {
+				vertexCount += line[i] == ' ' && line[i + 1] != '\n' && line[i + 1] != '\0' ? 1 : 0;
+			}
+
+			char* next = line + 2;
+			for (int vertexNo = 0; vertexNo < vertexCount; vertexNo++) {
+				// Read in the vertex data indices.
+				int vpi = strtol(next, &next, 10);
+				int vti = strtol(next + 1, &next, 10);
+				// File may have no texcoords.
+				next += (vti == 0) * 2;
+				int vni = strtol(next + 1, &next, 10);
+				// File may have no normals.
+				next += (vni == 0) * 2;
+
+				// Skip space.
+				next++;
+
+				// Indices start from 1 and can be negative to refer to last added value.
+				vpi += vpi < 0 ? vertexPosition.size() : -1;
+				vti += vti < 0 ? vertexTexCoord.size() : -1;
+				vni += vni < 0 ? vertexNormal.size() : -1;
+
+				// Create key into vertex indices.
+				// This limits the vertex count to 2^21 vertices or 2,097,152 vertices for now. 
+				uint64_t vertex =
+					((uint64_t)(vpi & 0x1FFFFF) << (64-21)) |
+					((uint64_t)(vti & 0x1FFFFF) << (64-42)) |
+					((uint64_t)(vni & 0x1FFFFF) << (64-63));
+
+				// Create vertex if it doesn't exist yet.
+				if (vertexKeyToIndex.find(vertex) == vertexKeyToIndex.end()) {
+					int index = vertices.size();
+					vertices.emplace_back();
+					vertices[index].position = vertexPosition[vpi];
+					vertices[index].texCoord = vertexTexCoord[vti];
+					vertices[index].normal   = vertexNormal[vni];
+
+					vertexKeyToIndex[vertex] = index;
+				}
+
+				// Triangularize faces as they may n-gons.
+				if (vertexNo >= 3) {
+					int noIndices = indices.size();
+					indices.emplace_back(indices[noIndices - vertexNo]);
+					indices.emplace_back(indices[noIndices - 1]);
+				}
+
+				// Add vertex index to indices.
+				indices.emplace_back(vertexKeyToIndex[vertex]);
+			}
 		}
 	}
 
-	return 0;
+	// Create the mesh.
+	Mesh* mesh = new Mesh;
+	bool success = mesh->Initialize(device, vertices.data(), vertices.size(), indices.data(), indices.size(), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	if (!success) {
+		delete mesh;
+		return 0;
+	}
+
+	return mesh;
 }
