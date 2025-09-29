@@ -136,8 +136,11 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device)
 
 	if (!success) {
 		delete mesh;
-		return 0;
+		mesh = 0;
 	}
+
+	// Close the file
+	fclose(filePtr);
 
 	return mesh;
 }
