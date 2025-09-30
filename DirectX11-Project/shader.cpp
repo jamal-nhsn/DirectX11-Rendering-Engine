@@ -136,11 +136,20 @@ void Shader::Shutdown()
 		m_sampleState = 0;
 	}
 
-	// Release the matrix constant buffer.
-	if (m_vertexConstantBuffer) {
-		m_vertexConstantBuffer->Release();
-		m_vertexConstantBuffer = 0;
+	// Release the blend state.
+	if (m_blendState) {
+		m_blendState->Release();
+		m_blendState = 0;
 	}
+
+	// Release the depth stencil state.
+	if (m_depthStencilState) {
+		m_depthStencilState->Release();
+		m_depthStencilState->Release();
+	}
+
+	// Release the buffers.
+	ReleaseBuffers();
 }
 
 D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout(bool usePosition, bool useNormal, bool useTexCoord, bool useTangent, bool useColor, unsigned int& numElements)
@@ -161,7 +170,7 @@ D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout(bool usePosition, bool useNormal,
 	}
 
 	int index = 0;
-	size_t offset = 0;
+	UINT offset = 0;
 
 	if (usePosition) {
 		polygonLayout[index].SemanticName         = "POSITION";

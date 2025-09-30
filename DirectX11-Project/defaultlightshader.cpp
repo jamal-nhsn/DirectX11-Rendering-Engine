@@ -10,18 +10,20 @@ DefaultLightShader::DefaultLightShader()
 	m_pixelShader = 0;
 	m_layout = 0;
 	m_sampleState = 0;
-	m_vertexConstantBuffer = 0;
-	m_pixelConstantBuffer = 0;
+
+	m_matrixBuffer = 0;
+	m_lightBuffer = 0;
 }
 
 DefaultLightShader::DefaultLightShader(const DefaultLightShader& other)
 {
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
-	m_vertexConstantBuffer = other.m_vertexConstantBuffer;
-	m_pixelConstantBuffer = other.m_pixelConstantBuffer;
 	m_sampleState = other.m_sampleState;
 	m_layout = other.m_layout;
+
+	m_matrixBuffer = other.m_matrixBuffer;
+	m_lightBuffer = other.m_lightBuffer;
 }
 
 DefaultLightShader::~DefaultLightShader()
@@ -31,8 +33,8 @@ DefaultLightShader::~DefaultLightShader()
 bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
 {
 	bool success;
-	VertexConstantBuffer vertexConstantBuffer;
-	PixelConstantBuffer pixelConstantBuffer;
+	MatrixBuffer matrixBuffer;
+	LightBuffer lightBuffer;
 	ID3D11ShaderResourceView* texture;
 
 	deviceContext->IASetInputLayout(m_layout);
@@ -40,20 +42,20 @@ bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	// Transpose the matrices to prepare them for the shader.
-	vertexConstantBuffer.model      = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
-	vertexConstantBuffer.view       = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
-	vertexConstantBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
+	matrixBuffer.model      = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
+	matrixBuffer.view       = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
+	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
 
-	// Load the directional light data into the buffer.
+	// Load the light data into the buffer.
 	DirectX::XMFLOAT3 lightPosition = lightTransform.GetGlobalPosition();
-	pixelConstantBuffer.light.position = DirectX::XMFLOAT4(lightPosition.x, lightPosition.y, lightPosition.z, 1.0f);
-	pixelConstantBuffer.light.color = light.GetColor();
-	pixelConstantBuffer.light.direction = lightTransform.GetForward();
-	pixelConstantBuffer.light.type = light.GetType();
+	lightBuffer.light.position = DirectX::XMFLOAT4(lightPosition.x, lightPosition.y, lightPosition.z, 1.0f);
+	lightBuffer.light.color = light.GetColor();
+	lightBuffer.light.direction = lightTransform.GetForward();
+	lightBuffer.light.type = light.GetType();
 
 	texture = model.GetTexture()->GetTexture2D();
 	
-	success = SetShaderParameters(deviceContext, vertexConstantBuffer, pixelConstantBuffer, texture);
+	success = SetShaderParameters(deviceContext, matrixBuffer, lightBuffer, texture);
 	if (!success) {
 		return success;
 	}
@@ -64,53 +66,56 @@ bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera
 	return success;
 }
 
-bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, VertexConstantBuffer vertexConstantBuffer, PixelConstantBuffer pixelConstantBuffer, ID3D11ShaderResourceView* texture)
+bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, LightBuffer lightBuffer, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
 
-	// Lock the constant buffer so it can be written to.
+	// Lock the matrix buffer so it can be written to.
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	result = deviceContext->Map(m_vertexConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
 
-	// Get a pointer to the data in the constant buffer.
-	VertexConstantBuffer* vertexDataPtr;
-	vertexDataPtr = (VertexConstantBuffer*)mappedResource.pData;
+	// Get a pointer to the data in the matrix buffer.
+	MatrixBuffer* vertexDataPtr;
+	vertexDataPtr = (MatrixBuffer*)mappedResource.pData;
 
-	// Copy the matrices into the constant buffer.
-	vertexDataPtr->model      = vertexConstantBuffer.model;
-	vertexDataPtr->view       = vertexConstantBuffer.view;
-	vertexDataPtr->projection = vertexConstantBuffer.projection;
+	// Copy the matrices into the matrix buffer.
+	vertexDataPtr->model      = matrixBuffer.model;
+	vertexDataPtr->view       = matrixBuffer.view;
+	vertexDataPtr->projection = matrixBuffer.projection;
 
-	// Unlock the constant buffer.
-	deviceContext->Unmap(m_vertexConstantBuffer, 0);
+	// Unlock the matrix buffer.
+	deviceContext->Unmap(m_matrixBuffer, 0);
 
-	// Set the position of the constant buffer in the vertex shader.
+	// Set the position of the matrix buffer in the vertex shader.
 	unsigned int bufferNumber = 0;
 
-	// Set the constant buffer in the vertex shader with the updated values.
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_vertexConstantBuffer);
+	// Set the matrix buffer in the vertex shader with the updated values.
+	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 
-	// Lock the constant buffer again for the pixel constant buffer.
-	result = deviceContext->Map(m_pixelConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	// Lock the light buffer so that it can be written to.
+	result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
 
-	// Get a pointer to the data in the constant buffer.
-	PixelConstantBuffer* pixelDataPtr;
-	pixelDataPtr = (PixelConstantBuffer*)mappedResource.pData;
+	// Get a pointer to the data in the light buffer.
+	LightBuffer* pixelDataPtr;
+	pixelDataPtr = (LightBuffer*)mappedResource.pData;
 
-	// Copy the light data into the constant buffer.
-	pixelDataPtr->light = pixelConstantBuffer.light;
+	// Copy the light data into the light buffer.
+	pixelDataPtr->light = lightBuffer.light;
 
-	// Set the constant buffer in the pixel shader with the updated values.
-	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_pixelConstantBuffer);
+	// Set the position of the light buffer in the pixel shader.
+	bufferNumber = 0;
 
-	// Unlock the constant buffer.
-	deviceContext->Unmap(m_pixelConstantBuffer, 0);
+	// Set the light buffer in the pixel shader with the updated values.
+	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
+
+	// Unlock the light buffer.
+	deviceContext->Unmap(m_lightBuffer, 0);
 
 	// Finally, set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
@@ -218,32 +223,47 @@ bool DefaultLightShader::InitializeDepthStencilDesc(ID3D11Device* device)
 bool DefaultLightShader::InitializeConstants(ID3D11Device* device)
 {
 	HRESULT result;
-	D3D11_BUFFER_DESC vertexConstantBufferDesc;
-	D3D11_BUFFER_DESC pixelConstantBufferDesc;
+	D3D11_BUFFER_DESC matrixBufferDesc;
+	D3D11_BUFFER_DESC lightBufferDesc;
 
 	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
-	vertexConstantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vertexConstantBufferDesc.ByteWidth = sizeof(VertexConstantBuffer);
-	vertexConstantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	vertexConstantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	vertexConstantBufferDesc.MiscFlags = 0;
-	vertexConstantBufferDesc.StructureByteStride = 0;
+	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	matrixBufferDesc.ByteWidth = sizeof(MatrixBuffer);
+	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	matrixBufferDesc.MiscFlags = 0;
+	matrixBufferDesc.StructureByteStride = 0;
 
-	// Create the vertex constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	result = device->CreateBuffer(&vertexConstantBufferDesc, NULL, &m_vertexConstantBuffer);
+	// Create the matrix buffer pointer so we can access the matrix buffer in the vertex shader.
+	result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
 	if (FAILED(result)) {
 		return false;
 	}
 
 	// Setup the description of the dynamic light constant buffer that is in the pixel shader.
-	pixelConstantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	pixelConstantBufferDesc.ByteWidth = sizeof(PixelConstantBuffer);
-	pixelConstantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	pixelConstantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	pixelConstantBufferDesc.MiscFlags = 0;
-	pixelConstantBufferDesc.StructureByteStride = 0;
+	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	lightBufferDesc.ByteWidth = sizeof(LightBuffer);
+	lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	lightBufferDesc.MiscFlags = 0;
+	lightBufferDesc.StructureByteStride = 0;
 
-	// Create the pixel constant buffer pointer so we can access the pixel shader constant buffer from within this class.
-	result = device->CreateBuffer(&pixelConstantBufferDesc, NULL, &m_pixelConstantBuffer);
+	// Create the light buffer pointer so we can access light buffer in the pixel shader.
+	result = device->CreateBuffer(&lightBufferDesc, NULL, &m_lightBuffer);
 	return !FAILED(result);
+}
+
+void DefaultLightShader::ReleaseBuffers()
+{
+	// Release matrix buffer.
+	if (m_matrixBuffer) {
+		m_matrixBuffer->Release();
+		m_matrixBuffer = 0;
+	}
+
+	// Release light buffer.
+	if (m_lightBuffer) {
+		m_lightBuffer->Release();
+		m_lightBuffer = 0;
+	}
 }

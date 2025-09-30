@@ -33,6 +33,8 @@ protected:
 	virtual bool InitializeDepthStencilDesc(ID3D11Device* device);
 	virtual bool InitializeConstants(ID3D11Device* device) = 0;
 
+	virtual void ReleaseBuffers() = 0;
+
 protected:
 	wchar_t m_vertexShaderSource[128];
 	wchar_t m_pixelShaderSource[128];
@@ -43,6 +45,4 @@ protected:
 	ID3D11SamplerState*      m_sampleState;
 	ID3D11BlendState*        m_blendState;
 	ID3D11DepthStencilState* m_depthStencilState;
-	ID3D11Buffer*            m_vertexConstantBuffer;
-	ID3D11Buffer*            m_pixelConstantBuffer;
 };
