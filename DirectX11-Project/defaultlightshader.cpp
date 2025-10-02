@@ -3,8 +3,8 @@
 
 DefaultLightShader::DefaultLightShader()
 {
-	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/defaultlight.vs");
-	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/defaultlight.ps");
+	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/defaultlightvertex.hlsl");
+	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/defaultlightpixel.hlsl");
 
 	m_vertexShader = 0;
 	m_pixelShader = 0;

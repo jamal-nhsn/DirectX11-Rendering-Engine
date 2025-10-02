@@ -3,8 +3,8 @@
 
 TextureShader::TextureShader()
 {
-	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/texture.vs");
-	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/texture.ps");
+	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/texturevertex.hlsl");
+	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/texturepixel.hlsl");
 
 	m_vertexShader = 0;
 	m_pixelShader = 0;

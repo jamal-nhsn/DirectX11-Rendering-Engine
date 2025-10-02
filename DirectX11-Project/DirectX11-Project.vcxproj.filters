@@ -226,28 +226,28 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="color.vs">
+    <None Include="colorvertex.hlsl">
       <Filter>Source Files\Shaders\Base Pass\Color Shader</Filter>
     </None>
-    <None Include="color.ps">
+    <None Include="colorpixel.hlsl">
       <Filter>Source Files\Shaders\Base Pass\Color Shader</Filter>
     </None>
-    <None Include="texture.vs">
+    <None Include="texturevertex.hlsl">
       <Filter>Source Files\Shaders\Base Pass\Texture Shader</Filter>
     </None>
-    <None Include="texture.ps">
+    <None Include="texturepixel.hlsl">
       <Filter>Source Files\Shaders\Base Pass\Texture Shader</Filter>
     </None>
-    <None Include="defaultlight.ps">
+    <None Include="defaultlightpixel.hlsl">
       <Filter>Source Files\Shaders\Light Pass\Default Light Shader</Filter>
     </None>
-    <None Include="defaultlight.vs">
+    <None Include="defaultlightvertex.hlsl">
       <Filter>Source Files\Shaders\Light Pass\Default Light Shader</Filter>
     </None>
-    <None Include="defaultbase.ps">
+    <None Include="defaultbasepixel.hlsl">
       <Filter>Source Files\Shaders\Base Pass\Default Base Shader</Filter>
     </None>
-    <None Include="defaultbase.vs">
+    <None Include="defaultbasevertex.hlsl">
       <Filter>Source Files\Shaders\Base Pass\Default Base Shader</Filter>
     </None>
   </ItemGroup>

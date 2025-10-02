@@ -3,8 +3,8 @@
 
 ColorShader::ColorShader()
 {
-	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/color.vs");
-	wcscpy_s(m_pixelShaderSource,  128, L"../DirectX11-Project/color.ps");
+	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/colorvertex.hlsl");
+	wcscpy_s(m_pixelShaderSource,  128, L"../DirectX11-Project/colorpixel.hlsl");
 
 	m_vertexShader   = 0;
 	m_pixelShader    = 0;

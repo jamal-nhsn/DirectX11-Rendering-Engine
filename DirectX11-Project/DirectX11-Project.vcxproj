@@ -74,14 +74,14 @@
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="color.ps" />
-    <None Include="color.vs" />
-    <None Include="defaultbase.ps" />
-    <None Include="defaultbase.vs" />
-    <None Include="defaultlight.ps" />
-    <None Include="defaultlight.vs" />
-    <None Include="texture.ps" />
-    <None Include="texture.vs" />
+    <None Include="colorpixel.hlsl" />
+    <None Include="colorvertex.hlsl" />
+    <None Include="defaultbasepixel.hlsl" />
+    <None Include="defaultbasevertex.hlsl" />
+    <None Include="defaultlightpixel.hlsl" />
+    <None Include="defaultlightvertex.hlsl" />
+    <None Include="texturepixel.hlsl" />
+    <None Include="texturevertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\stoneWall.tga" />

@@ -3,8 +3,8 @@
 
 DefaultBaseShader::DefaultBaseShader()
 {
-	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/defaultbase.vs");
-	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/defaultbase.ps");
+	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/defaultbasevertex.hlsl");
+	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/defaultbasepixel.hlsl");
 
 	m_vertexShader = 0;
 	m_pixelShader = 0;
