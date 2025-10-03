@@ -9,15 +9,21 @@ Model::Model(int entityId)
 	m_baseShader  = 0;
 	m_lightShader = 0;
 	m_texture     = 0;
+
+	m_specularTint = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_shininess    = 32.0f;
 }
 
 Model::Model(const Model& other)
 {
-	m_entityId     = other.m_entityId;
-	m_mesh         = other.m_mesh;
-	m_baseShader   = other.m_baseShader;
-	m_lightShader  = other.m_lightShader;
-	m_texture      = other.m_texture;
+	m_entityId    = other.m_entityId;
+	m_mesh        = other.m_mesh;
+	m_baseShader  = other.m_baseShader;
+	m_lightShader = other.m_lightShader;
+	m_texture     = other.m_texture;
+
+	m_specularTint = other.m_specularTint;
+	m_shininess    = other.m_shininess;
 }
 
 Model::~Model()
@@ -49,6 +55,16 @@ void Model::SetTexture(Texture* texture)
 	m_texture = texture;
 }
 
+void Model::SetSpecularTint(DirectX::XMFLOAT4 specularTint)
+{
+	m_specularTint = specularTint;
+}
+
+void Model::SetShininess(float shininess)
+{
+	m_shininess = shininess;
+}
+
 Mesh* Model::GetMesh()
 {
 	return m_mesh;
@@ -67,4 +83,14 @@ Shader* Model::GetLightShader()
 Texture* Model::GetTexture()
 {
 	return m_texture;
+}
+
+DirectX::XMFLOAT4 Model::GetSpecularTint()
+{
+	return m_specularTint;
+}
+
+float Model::GetShininess()
+{
+	return m_shininess;
 }
