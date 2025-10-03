@@ -33,6 +33,9 @@ protected:
 	virtual bool InitializeDepthStencilDesc(ID3D11Device* device);
 	virtual bool InitializeConstants(ID3D11Device* device) = 0;
 
+	template<typename BufferType>
+	bool LoadBuffer(ID3D11DeviceContext* deviceContext, ID3D11Buffer* buffer, BufferType data);
+
 	virtual void ReleaseBuffers() = 0;
 
 protected:
@@ -46,3 +49,24 @@ protected:
 	ID3D11BlendState*        m_blendState;
 	ID3D11DepthStencilState* m_depthStencilState;
 };
+
+template<typename BufferType>
+bool Shader::LoadBuffer(ID3D11DeviceContext* deviceContext, ID3D11Buffer* buffer, BufferType data)
+{
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+	// Lock the buffer so it can be written to.
+	result = deviceContext->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) {
+		return false;
+	}
+	// Copy the data into the buffer
+	BufferType* bufferDataPtr;
+	bufferDataPtr = (BufferType*)mappedResource.pData;
+	*bufferDataPtr = data;
+	// Unlock the buffer.
+	deviceContext->Unmap(buffer, 0);
+
+	return true;
+}

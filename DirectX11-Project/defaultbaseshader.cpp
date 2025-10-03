@@ -64,34 +64,20 @@ bool DefaultBaseShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera,
 
 bool DefaultBaseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, AmbientLightBuffer ambientLightBuffer, ID3D11ShaderResourceView* texture)
 {
-	HRESULT result;
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	bool success;
 
-	// Lock the matrix buffer so it can be written to.
-	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) {
+	// Set the matrix buffer in the vertex shader with the updated values.
+	success = LoadBuffer<MatrixBuffer>(deviceContext, m_matrixBuffer, matrixBuffer);
+	if (!success) {
 		return false;
 	}
-	// Copy the matrix data into the buffer
-	MatrixBuffer* matrixDataPtr;
-	matrixDataPtr = (MatrixBuffer*)mappedResource.pData;
-	*matrixDataPtr = matrixBuffer;
-	// Unlock the matrix buffer.
-	deviceContext->Unmap(m_matrixBuffer, 0);
-
-	// Lock the ambient light buffer so it can be written to.
-	result = deviceContext->Map(m_ambientLightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) {
-		return false;
-	}
-	// Copy the ambient light data into the buffer.
-	AmbientLightBuffer* ambientLightDataPtr;
-	ambientLightDataPtr = (AmbientLightBuffer*)mappedResource.pData;
-	*ambientLightDataPtr = ambientLightBuffer;
-	// Unlock the ambient light buffer.
-	deviceContext->Unmap(m_ambientLightBuffer, 0);
+	deviceContext->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
 
 	// Set the ambient light buffer in the pixel shader with the updated values.
+	success = LoadBuffer<AmbientLightBuffer>(deviceContext, m_ambientLightBuffer, ambientLightBuffer);
+	if (!success) {
+		return false;
+	}
 	deviceContext->PSSetConstantBuffers(0, 1, &m_ambientLightBuffer);
 
 	// Finally, set shader texture resource in the pixel shader.

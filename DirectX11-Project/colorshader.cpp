@@ -55,22 +55,13 @@ bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model
 
 bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer)
 {
-	HRESULT result;
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-
-	// Lock the matrix buffer so it can be written to.
-	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) {
-		return false;
-	}
-	// Copy the matrix data into the buffer
-	MatrixBuffer* matrixDataPtr;
-	matrixDataPtr = (MatrixBuffer*)mappedResource.pData;
-	*matrixDataPtr = matrixBuffer;
-	// Unlock the matrix buffer.
-	deviceContext->Unmap(m_matrixBuffer, 0);
+	bool success;
 
 	// Set the matrix buffer in the vertex shader with the updated values.
+	success = LoadBuffer<MatrixBuffer>(deviceContext, m_matrixBuffer, matrixBuffer);
+	if (!success) {
+		return false;
+	}
 	deviceContext->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
 
 	return true;
