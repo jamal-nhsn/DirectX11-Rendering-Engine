@@ -104,7 +104,7 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 }
 
 // If either of these are called, the renderer called the wrong Bind for the shader.
-bool Shader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) {
+bool Shader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) {
 	return false;
 }
 

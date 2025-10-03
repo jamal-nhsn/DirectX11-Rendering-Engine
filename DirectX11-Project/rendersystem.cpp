@@ -20,6 +20,8 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 	ID3D11DeviceContext* deviceContext = direct3d->GetDeviceContext();
 
 	Camera& camera = scene->GetComponent<Camera>(0);
+	Transform& cameraTransform = scene->GetComponent<Transform>(0);
+
 	DirectX::XMFLOAT4 ambientLight = scene->GetAmbientLight();
 
 	direct3d->Clear(0.0f, 0.0f, 0.0f, 1.0f);
@@ -57,7 +59,7 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 		for (Light& light : (*lights)) {
 			Transform& lightTransform = scene->GetComponent<Transform>(light.GetEntityId());
 
-			shader->Bind(deviceContext, camera, model, modelTransform, light, lightTransform);
+			shader->Bind(deviceContext, camera, cameraTransform, model, modelTransform, light, lightTransform);
 			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 		}
 	}
