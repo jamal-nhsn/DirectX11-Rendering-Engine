@@ -59,31 +59,22 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Mod
 bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
 	// Lock the matrix buffer so it can be written to.
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
-
-	// Get a pointer to the data in the matrix buffer.
-	MatrixBuffer* vertexDataPtr;
-	vertexDataPtr = (MatrixBuffer*)mappedResource.pData;
-
-	// Copy the matrices into the matrix buffer.
-	vertexDataPtr->model = matrixBuffer.model;
-	vertexDataPtr->view = matrixBuffer.view;
-	vertexDataPtr->projection = matrixBuffer.projection;
-
+	// Copy the matrix data into the buffer
+	MatrixBuffer* matrixDataPtr;
+	matrixDataPtr = (MatrixBuffer*)mappedResource.pData;
+	*matrixDataPtr = matrixBuffer;
 	// Unlock the matrix buffer.
 	deviceContext->Unmap(m_matrixBuffer, 0);
 
-	// Set the position of the matrix buffer in the vertex shader.
-	unsigned int bufferNumber = 0;
-
 	// Set the matrix buffer in the vertex shader with the updated values.
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
+	deviceContext->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
 
 	// Finally, set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);

@@ -65,53 +65,34 @@ bool DefaultBaseShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera,
 bool DefaultBaseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, AmbientLightBuffer ambientLightBuffer, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
 	// Lock the matrix buffer so it can be written to.
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
-
-	// Get a pointer to the data in the matrix buffer.
-	MatrixBuffer* vertexDataPtr;
-	vertexDataPtr = (MatrixBuffer*)mappedResource.pData;
-
-	// Copy the matrices into the matrix buffer.
-	vertexDataPtr->model = matrixBuffer.model;
-	vertexDataPtr->view = matrixBuffer.view;
-	vertexDataPtr->projection = matrixBuffer.projection;
-
+	// Copy the matrix data into the buffer
+	MatrixBuffer* matrixDataPtr;
+	matrixDataPtr = (MatrixBuffer*)mappedResource.pData;
+	*matrixDataPtr = matrixBuffer;
 	// Unlock the matrix buffer.
 	deviceContext->Unmap(m_matrixBuffer, 0);
-
-	// Set the position of the matrix buffer in the vertex shader.
-	unsigned int bufferNumber = 0;
-
-	// Set the matrix buffer in the vertex shader with the updated values.
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 
 	// Lock the ambient light buffer so it can be written to.
 	result = deviceContext->Map(m_ambientLightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
-
-	// Get a pointer to the data in the ambient light buffer.
-	AmbientLightBuffer* pixelDataPtr;
-	pixelDataPtr = (AmbientLightBuffer*)mappedResource.pData;
-
-	// Copy the ambient light data into the ambient light buffer.
-	pixelDataPtr->ambientLight = ambientLightBuffer.ambientLight;
-
-	// Set the position of the ambient light buffer in the pixel shader.
-	bufferNumber = 0;
+	// Copy the ambient light data into the buffer.
+	AmbientLightBuffer* ambientLightDataPtr;
+	ambientLightDataPtr = (AmbientLightBuffer*)mappedResource.pData;
+	*ambientLightDataPtr = ambientLightBuffer;
+	// Unlock the ambient light buffer.
+	deviceContext->Unmap(m_ambientLightBuffer, 0);
 
 	// Set the ambient light buffer in the pixel shader with the updated values.
-	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_ambientLightBuffer);
-
-	// Unlock the ambiennt light buffer.
-	deviceContext->Unmap(m_ambientLightBuffer, 0);
+	deviceContext->PSSetConstantBuffers(0, 1, &m_ambientLightBuffer);
 
 	// Finally, set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);

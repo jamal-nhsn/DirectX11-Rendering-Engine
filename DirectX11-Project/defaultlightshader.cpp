@@ -84,98 +84,63 @@ bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera
 bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, CameraBuffer cameraBuffer, LightBuffer lightBuffer, MaterialBuffer materialBuffer, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
-
-	// Lock the matrix buffer so it can be written to.
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	
+	// Lock the matrix buffer so that it can be written to.
 	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
-
-	// Get a pointer to the data in the matrix buffer.
+	// Copy the matrix data into the buffer.
 	MatrixBuffer* matrixDataPtr;
 	matrixDataPtr = (MatrixBuffer*)mappedResource.pData;
-
-	// Copy the matrices into the matrix buffer.
-	matrixDataPtr->model      = matrixBuffer.model;
-	matrixDataPtr->view       = matrixBuffer.view;
-	matrixDataPtr->projection = matrixBuffer.projection;
-
+	*matrixDataPtr = matrixBuffer;
 	// Unlock the matrix buffer.
 	deviceContext->Unmap(m_matrixBuffer, 0);
 
-	// Set the position of the matrix buffer in the vertex shader.
-	unsigned int bufferNumber = 0;
-
-	// Set the matrix buffer in the vertex shader with the updated values.
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
-
-	// Lock the camera buffer so it can be written to.
+	// Lock the camera buffer so that it can be written to.
 	result = deviceContext->Map(m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
-
-	// Get a pointer to the data in the camera buffer.
+	// Copy the camera data into the buffer.
 	CameraBuffer* cameraDataPtr;
 	cameraDataPtr = (CameraBuffer*)mappedResource.pData;
-
-	// Copy the camera position into the camera buffer.
-	cameraDataPtr->cameraPos = cameraBuffer.cameraPos;
-
+	*cameraDataPtr = cameraBuffer;
 	// Unlock the camera buffer.
 	deviceContext->Unmap(m_cameraBuffer, 0);
+	
+	// Set the buffers in the vertex shader with the updated values.
+	ID3D11Buffer* vertexConstantBuffers[] = { m_matrixBuffer, m_cameraBuffer };
+	deviceContext->VSSetConstantBuffers(0, 2, vertexConstantBuffers);
 
-	// Set the position of the camera buffer in the vertex shader.
-	bufferNumber = 1;
-
-	// Set the camera buffer in the vertex shader with the updated values.
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_cameraBuffer);
-
-	// Lock the light buffer so that it can be written to.
+	// Lock the light buffer.
 	result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
-
-	// Get a pointer to the data in the light buffer.
+	// Copy the light data into the buffer.
 	LightBuffer* lightDataPtr;
 	lightDataPtr = (LightBuffer*)mappedResource.pData;
-
-	// Copy the light data into the light buffer.
-	lightDataPtr->light = lightBuffer.light;
-
-	// Unlock the light buffer.
+	*lightDataPtr = lightBuffer;
+	// Unlock light buffer.
 	deviceContext->Unmap(m_lightBuffer, 0);
 
-	// Set the position of the light buffer in the pixel shader.
-	bufferNumber = 0;
-
-	// Set the light buffer in the pixel shader with the updated values.
-	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
-
-	// Lock the material buffer so that it can be written to.
+	// Lock the material buffer.
 	result = deviceContext->Map(m_materialBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) {
 		return false;
 	}
-
-	// Get a pointer to the data in the material buffer.
+	// Copy the material data into the buffer.
 	MaterialBuffer* materialDataPtr;
 	materialDataPtr = (MaterialBuffer*)mappedResource.pData;
-
-	// Copy the material data into the material buffer.
-	materialDataPtr->specularTint = materialBuffer.specularTint;
-	materialDataPtr->shininess    = materialBuffer.shininess;
-
+	*materialDataPtr = materialBuffer;
 	// Unlock the material buffer.
 	deviceContext->Unmap(m_materialBuffer, 0);
 
-	// Set the position of the material buffer in the pixel shader.
-	bufferNumber = 1;
-
-	// Set the material buffer in the pixel shader with the updated values.
-	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_materialBuffer);
+	// Set the buffers in the pixel shader with the updated values.
+	ID3D11Buffer* pixelConstantBuffers[] = { m_lightBuffer, m_materialBuffer };
+	deviceContext->PSSetConstantBuffers(0, 2, pixelConstantBuffers);
 
 	// Finally, set shader texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
