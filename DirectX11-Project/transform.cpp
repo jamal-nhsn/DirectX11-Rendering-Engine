@@ -76,6 +76,10 @@ void Transform::Update(Scene* scene)
 		if (parent.m_dirtyFlag) {
 			parent.Update(scene);
 		}
+		
+		m_parentScale = parent.GetGlobalScale();
+		m_parentRotation = parent.GetGlobalRotation();
+		m_parentTranslation = parent.GetGlobalPosition();
 
 		m_modelMatrix *= parent.m_modelMatrix;
 	}

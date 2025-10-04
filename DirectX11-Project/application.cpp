@@ -73,17 +73,27 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	int camera = 0;
 	m_scene->GetComponent<Transform>(camera).SetGlobalPosition(0.0f, 0.0f, -3.0f);
 
-	// Add direction lights to scene.
-	int dirLight1 = m_scene->CreateEntity();
-	m_scene->AddComponent<Transform>(dirLight1);
-	m_scene->AddComponent<Light>(dirLight1);
-	m_scene->GetComponent<Light>(dirLight1).SetColor(DirectX::XMFLOAT4(0.5f, 0.5f, 1.0f, 1.0f));
+	// Add lights to scene.
+	int lightParent = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(lightParent);
 
-	int dirLight2 = m_scene->CreateEntity();
-	m_scene->AddComponent<Transform>(dirLight2);
-	m_scene->AddComponent<Light>(dirLight2);
-	m_scene->GetComponent<Transform>(dirLight2).SetGlobalRotation(180.0f, 0.0f, 1.0f, 0.0f);
-	m_scene->GetComponent<Light>(dirLight2).SetColor(DirectX::XMFLOAT4(1.0f, 0.5f, 0.5f, 1.0f));
+	int spotLight1 = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(spotLight1);
+	m_scene->GetComponent<Transform>(spotLight1).SetGlobalPosition(0.0f, 0.0f, -4.0f);
+	m_scene->AddComponent<Light>(spotLight1);
+	m_scene->GetComponent<Light>(spotLight1).SetType(SPOT_LIGHT_TYPE);
+	m_scene->GetComponent<Light>(spotLight1).SetColor(DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+
+	int pointLight1 = m_scene->CreateEntity();
+	m_scene->AddComponent<Transform>(pointLight1);
+	m_scene->GetComponent<Transform>(pointLight1).SetGlobalRotation(180.0f, 0.0f, 1.0f, 0.0f);
+	m_scene->GetComponent<Transform>(pointLight1).SetGlobalPosition(0.0f, 0.0f, 1.125f);
+	m_scene->AddComponent<Light>(pointLight1);
+	m_scene->GetComponent<Light>(pointLight1).SetType(POINT_LIGHT_TYPE);
+	m_scene->GetComponent<Light>(pointLight1).SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+
+	m_scene->GetComponent<Transform>(lightParent).AddChild(spotLight1, m_scene);
+	m_scene->GetComponent<Transform>(lightParent).AddChild(pointLight1, m_scene);
 
 	// Add sphere to scene.
 	int sphere1 = m_scene->CreateEntity();
@@ -94,6 +104,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	model1.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
 	model1.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
 	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
+	model1.SetShininess(64);
 	
 	return success;
 }
@@ -161,14 +172,6 @@ bool Application::Tick(float dt)
 	transform1.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
 			transform1.GetLocalRotation(),
-			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(36.0f) * dt)
-		)
-	);
-
-	Transform& transform2 = m_scene->GetComponent<Transform>(2);
-	transform2.SetLocalRotation(
-		DirectX::XMQuaternionMultiply(
-			transform2.GetLocalRotation(),
 			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(36.0f) * dt)
 		)
 	);

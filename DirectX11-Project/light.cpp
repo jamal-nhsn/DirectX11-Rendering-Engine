@@ -10,8 +10,8 @@ Light::Light(int entityId)
 	SetInnerCutOffAngle(12.0f);
 	SetOuterCutOffAngle(36.0f);
 	m_constantAtten  = 1.0f;
-	m_linearAtten    = 0.0f;
-	m_quadraticAtten = 1.0f;
+	m_linearAtten    = 0.09f;
+	m_quadraticAtten = 0.032f;
 }
 
 Light::Light(const Light& other)

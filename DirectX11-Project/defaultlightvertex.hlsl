@@ -27,6 +27,7 @@ struct VertexInputType
 struct PixelInputType
 {
     float4 position : SV_POSITION;
+    float4 worldPos : WORLD_POS;
     float3 normal   : NORMAL;
     float2 tex      : TEXCOORD;
     float3 viewDir  : VIEWDIR;
@@ -38,19 +39,18 @@ VERTEX SHADER
 PixelInputType VertexMain(VertexInputType input)
 {
     PixelInputType output;
-    float4 worldPosition;
     
     // Change the position vector to be 4 units for proper matrix calculations.
     input.position.w = 1.0f;
 
     // Calculate the position of the vertex in world space.
-    worldPosition   = mul(input.position, modelMatrix);
+    output.worldPos = mul(input.position, modelMatrix);
     
     // Calculate the view direction.
-    output.viewDir = normalize(cameraPosition - worldPosition.xyz);
+    output.viewDir = normalize(cameraPosition - output.worldPos.xyz);
     
     // Multiply the world space position by the view, and projection matrices to get the position in clip space.
-    output.position = mul(worldPosition, viewMatrix);
+    output.position = mul(output.worldPos, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
 
     // Calculate the normals in world space.
