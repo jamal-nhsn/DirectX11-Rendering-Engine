@@ -97,6 +97,9 @@ bool Scene::RemoveComponent(int entityId)
 template<typename ComponentType>
 ComponentType& Scene::GetComponent(int entityId)
 {
+	if (!HasComponent<ComponentType>(entityId)) {
+		AddComponent<ComponentType>(entityId);
+	}
 	int index = m_components[entityId * static_cast<int>(ComponentId::COMPONENT_COUNT) + static_cast<int>(ComponentType::ID)];
 	return (*static_cast<std::vector<ComponentType>*>(m_componentLists[static_cast<int>(ComponentType::ID)]))[index];
 }

@@ -310,7 +310,8 @@ DirectX::XMFLOAT3 Transform::GetGlobalPosition()
 		DirectX::XMVector3Transform(
 			DirectX::XMLoadFloat3(&m_localTranslation),
 			DirectX::XMMatrixTranslationFromVector(DirectX::XMLoadFloat3(&m_parentTranslation)) *
-			DirectX::XMMatrixRotationQuaternion(m_parentRotation)
+			DirectX::XMMatrixRotationQuaternion(m_parentRotation) *
+			DirectX::XMMatrixScalingFromVector(DirectX::XMLoadFloat3(&m_parentScale))
 		)
 	);
 	return ans;

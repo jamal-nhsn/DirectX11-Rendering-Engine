@@ -28,6 +28,8 @@ float4 PixelMain(PixelInputType input) : SV_TARGET
     // Sample the pixel color from the texture using the sampler at this texture coordinate location.
     textureColor = shaderTexture.Sample(sampleType, input.tex);
 
+    float4 ambientColor = float4(ambientLight.xyz * ambientLight.w, 1.0f);
+    
     // Multiply by the ambient light.
-    return textureColor * ambientLight;
+    return textureColor * ambientColor;
 }

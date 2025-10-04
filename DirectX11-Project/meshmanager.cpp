@@ -82,11 +82,11 @@ bool MeshManager::InitializeTriangle(ID3D11Device* device)
 		return false;
 	}
 
-	float quarterRoot3 = 0.433012694f;
+	float halfRoot3 = 0.866025388;
 
-	vertices[0].position = DirectX::XMFLOAT3(-quarterRoot3, -0.5f, 0.0f);
+	vertices[0].position = DirectX::XMFLOAT3(-halfRoot3, -0.5f, 0.0f);
 	vertices[1].position = DirectX::XMFLOAT3(         0.0f,  0.5f, 0.0f);
-	vertices[2].position = DirectX::XMFLOAT3( quarterRoot3, -0.5f, 0.0f);
+	vertices[2].position = DirectX::XMFLOAT3(halfRoot3, -0.5f, 0.0f);
 
 	vertices[0].texCoord = DirectX::XMFLOAT2(0.0f, 1.0f);
 	vertices[1].texCoord = DirectX::XMFLOAT2(0.5f, 0.0f);

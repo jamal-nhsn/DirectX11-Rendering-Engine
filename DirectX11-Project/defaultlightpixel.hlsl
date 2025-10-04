@@ -78,10 +78,6 @@ float4 SpotLightDiffuseSpecular(float4 textureColor, float4 lightColor, float3 w
     float4 diffuse = 0.0f;
     float4 specular = 0.0f;
         
-    // Calculate the light attenuation.
-    float distance = length(light.position - worldPosition);
-    float attenuation = 1.0f / (light.constantAtt + light.linearAtt * distance + light.quadraticAtt * (distance * distance));
-    
     // Calculate the diffuse lighting factor for the fragment.
     float3 lightDir = normalize(light.position - worldPosition);
     float diffuseFactor = saturate(dot(normal, lightDir));
@@ -92,12 +88,12 @@ float4 SpotLightDiffuseSpecular(float4 textureColor, float4 lightColor, float3 w
     float intensity = saturate((theta - light.outercutoff) / epsilon);
     
     // Calculate the difuse lighting contribution for the fragment.
-    diffuse = attenuation * intensity * textureColor * saturate(lightColor * diffuseFactor);
+    diffuse = intensity * textureColor * saturate(lightColor * diffuseFactor);
     
     // Calculate the specular lighting contribution for the fragment.
     float3 reflectDir = reflect(-lightDir, normal);
     float specularFactor = saturate(dot(reflectDir, viewDir));
-    specular = intensity * attenuation * lightColor * specularTint * specularFactor * pow(specularFactor, shininess);
+    specular = intensity * lightColor * specularTint * specularFactor * pow(specularFactor, shininess);
     
     return saturate(diffuse + specular);
 }
