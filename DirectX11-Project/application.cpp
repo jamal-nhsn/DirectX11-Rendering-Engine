@@ -104,7 +104,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	model1.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
 	model1.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
 	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
-	model1.SetShininess(64);
+	model1.SetShininess(4);
 	
 	return success;
 }
