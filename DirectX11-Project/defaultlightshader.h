@@ -22,7 +22,7 @@ private:
 
 	struct LightBuffer
 	{
-		LightStruct light;
+		LightData lightData;
 	};
 	struct MaterialBuffer
 	{

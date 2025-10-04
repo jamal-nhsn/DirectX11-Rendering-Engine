@@ -59,10 +59,8 @@ bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera
 
 	// Load the light data into the buffer.
 	DirectX::XMFLOAT3 lightPosition = lightTransform.GetGlobalPosition();
-	lightBuffer.light.position = DirectX::XMFLOAT4(lightPosition.x, lightPosition.y, lightPosition.z, 1.0f);
-	lightBuffer.light.color = light.GetColor();
-	lightBuffer.light.direction = lightTransform.GetForward();
-	lightBuffer.light.type = light.GetType();
+	DirectX::XMFLOAT3 lightDirection = lightTransform.GetForward();
+	light.FillLightData(&lightBuffer.lightData, lightPosition, lightDirection);
 
 	// Load the material data into the buffer.
 	materialBuffer.specularTint = model.GetSpecularTint();
