@@ -310,6 +310,100 @@ bool Direct3D::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	return true;
 }
 
+bool Direct3D::Resize(int screenWidth, int screenHeight)
+{
+	HRESULT result;
+
+	// Release render target view.
+	if (m_renderTargetView) {
+		m_renderTargetView->Release();
+		m_renderTargetView = 0;
+	}
+	// Release depth stencil view.
+	if (m_depthStencilView) {
+		m_depthStencilView->Release();
+		m_depthStencilView = 0;
+	}
+	// Release depth stencil buffer.
+	if (m_depthStencilBuffer) {
+		m_depthStencilBuffer->Release();
+		m_depthStencilBuffer = 0;
+	}
+
+	// Resize the swap chain buffers.
+	m_swapChain->ResizeBuffers(0, screenWidth, screenHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
+
+	// Recreate render target view.
+	// Get the pointer to the back buffer.
+	ID3D11Texture2D* backBufferPtr;
+	result = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr);
+	if (FAILED(result)) {
+		return false;
+	}
+	// Create the render target view with the back buffer pointer.
+	result = m_device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView);
+	if (FAILED(result)) {
+		return false;
+	}
+	// Release pointer to the back buffer as we no longer need it.
+	backBufferPtr->Release();
+	backBufferPtr = 0;
+
+	// Re-Initialize the description of the depth buffer.
+	D3D11_TEXTURE2D_DESC depthBufferDesc;
+	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
+
+	// Set up the description of the depth buffer.
+	depthBufferDesc.Width = screenWidth;
+	depthBufferDesc.Height = screenHeight;
+	depthBufferDesc.MipLevels = 1;
+	depthBufferDesc.ArraySize = 1;
+	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthBufferDesc.SampleDesc.Count = 1;
+	depthBufferDesc.SampleDesc.Quality = 0;
+	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthBufferDesc.CPUAccessFlags = 0;
+	depthBufferDesc.MiscFlags = 0;
+
+	// Create the texture for the depth buffer using the filled out description.
+	result = m_device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
+	if (FAILED(result)) {
+		return false;
+	}
+
+	// Re-Initialize the depth stencil view.
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
+
+	// Set up the depth stencil view description.
+	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthStencilViewDesc.Texture2D.MipSlice = 0;
+
+	// Create the depth stencil view.
+	result = m_device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_depthStencilView);
+	if (FAILED(result)) {
+		return false;
+	}
+
+	// Bind the render target view and depth stencil buffer to the output render pipeline.
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+
+	// Setup the viewport for rendering again.
+	m_viewport.Width    = (float)screenWidth;
+	m_viewport.Height   = (float)screenHeight;
+	m_viewport.MinDepth = 0.0f;
+	m_viewport.MaxDepth = 1.0f;
+	m_viewport.TopLeftX = 0.0f;
+	m_viewport.TopLeftY = 0.0f;
+
+	// Create the viewport.
+	m_deviceContext->RSSetViewports(1, &m_viewport);
+
+	return true;
+}
+
 void Direct3D::Shutdown() {
 	// Before shutting down set to windowed mode or when you release the swap chain it will throw an exception.
 	if (m_swapChain) {

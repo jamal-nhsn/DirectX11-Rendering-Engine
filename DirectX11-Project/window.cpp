@@ -73,7 +73,7 @@ bool Window::Initialize()
 		WS_EX_APPWINDOW,
 		m_applicationName,
 		m_applicationName,
-		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+		WS_OVERLAPPEDWINDOW,
 		posX,
 		posY,
 		screenWidth,
@@ -175,7 +175,6 @@ bool Window::Tick(float dt)
 	if (m_input->IsKeyDown(VK_ESCAPE)) {
 		return false;
 	}
-
 	return m_application->Tick(dt);
 }
 
@@ -194,6 +193,15 @@ LRESULT CALLBACK Window::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPA
 			// If a key is released then send it to the input object so it can unset the state for that key.
 			m_input->KeyUp((unsigned int)wparam);
 			return 0;
+		}
+
+		// Check if the window was resized.
+		case WM_SIZE: {
+			if (m_application && ApplicationHandle && wparam != SIZE_MINIMIZED) {
+				int width = LOWORD(lparam);
+				int height = HIWORD(lparam);
+				m_application->Resize(width, height, m_hwnd);
+			}
 		}
 
 		// Any other messages send to the default message handler as our application won't make use of them.

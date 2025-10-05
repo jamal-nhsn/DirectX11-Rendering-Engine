@@ -20,6 +20,7 @@ public:
 	~Direct3D();
 
 	bool Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
+	bool Resize(int screenWidth, int screenHeight);
 	void Shutdown();
 
 	void Clear(float red, float green, float blue, float alpha);

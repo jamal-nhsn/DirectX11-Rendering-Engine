@@ -224,3 +224,11 @@ bool Application::Tick(float dt)
 	
 	return success;
 }
+
+void Application::Resize(int width, int height, HWND hwnd)
+{
+	if (m_direct3d != 0) {
+		m_direct3d->Resize(width, height);
+	}
+	m_scene->GetComponent<Camera>(0).SetAspectRatio((float)width / (float)height);
+}
