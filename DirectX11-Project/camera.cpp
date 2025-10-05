@@ -8,6 +8,8 @@ Camera::Camera(int entityId)
 	m_dirtyFlag = true;
 
 	// Default camera settings:
+	m_renderMask = 1 << static_cast<int>(RenderLayer::Default);
+
 	m_fovy = DirectX::XMConvertToRadians(60.0f);
 	m_aspectRatio = 1.0f;
 	m_nearPlane = 0.1f;
@@ -22,6 +24,7 @@ Camera::Camera(const Camera& other)
 {
 	m_entityId = other.m_entityId;
 	m_dirtyFlag = other.m_dirtyFlag;
+	m_renderMask = other.m_renderMask;
 	m_fovy = other.m_fovy;
 	m_aspectRatio = other.m_aspectRatio;
 	m_nearPlane = other.m_nearPlane;
@@ -54,6 +57,11 @@ void Camera::Update(DirectX::XMMATRIX modelMatrix)
 	m_dirtyFlag = false;
 }
 
+int Camera::GetRenderMask()
+{
+	return m_renderMask;
+}
+
 float Camera::GetFovY()
 {
 	return m_fovy;
@@ -72,6 +80,11 @@ float Camera::GetNearPlane()
 float Camera::GetFarPlane()
 {
 	return m_farPlane;
+}
+
+void Camera::SetRenderMask(int renderMask)
+{
+	m_renderMask = renderMask;
 }
 
 void Camera::SetFovY(float fovy)

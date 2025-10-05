@@ -7,6 +7,7 @@ INCLUDES
 #include <cmath>
 
 #include "components.h"
+#include "renderer.h"
 
 class Camera
 {
@@ -19,11 +20,13 @@ public:
 
 	void Update(DirectX::XMMATRIX modelMatrix);
 
+	int GetRenderMask();
 	float GetFovY();
 	float GetAspectRatio();
 	float GetNearPlane();
 	float GetFarPlane();
 
+	void SetRenderMask(int renderMask);
 	void SetFovY(float fovy);
 	void SetAspectRatio(float aspectRatio);
 	void SetNearPlane(float nearPlane);
@@ -38,6 +41,8 @@ public:
 
 private:
 	int m_entityId;
+
+	int m_renderMask;
 
 	bool m_dirtyFlag;
 

@@ -32,7 +32,6 @@ void Scene::Initialize(float screenWidth, float screenHeight)
 int Scene::CreateEntity()
 {
 	m_entities.emplace_back(m_entities.size());
-
 	// Reserve space for all components even if the entity wont use them all.
 	m_components.resize(m_components.size() + static_cast<int>(ComponentId::COMPONENT_COUNT), -1);
 

@@ -8,6 +8,8 @@ Entity::Entity(int id)
 
 Entity::Entity(const Entity& other)
 {
+	m_id = other.m_id;
+	m_componentMask = other.m_componentMask;
 }
 
 Entity::~Entity()

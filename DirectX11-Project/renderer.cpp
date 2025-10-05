@@ -5,7 +5,7 @@ const ComponentId Renderer::ID = ComponentId::Renderer;
 Renderer::Renderer(int entityId)
 	: m_entityId(entityId)
 {
-	m_layer = static_cast<int>(RenderLayer::Default);
+	m_layer = 1 << static_cast<int>(RenderLayer::Default);
 }
 
 Renderer::Renderer(const Renderer& other)
@@ -30,5 +30,5 @@ int Renderer::GetLayer()
 
 void Renderer::SetLayer(RenderLayer layer)
 {
-	m_layer = static_cast<int>(layer);
+	m_layer = 1 << static_cast<int>(layer);
 }

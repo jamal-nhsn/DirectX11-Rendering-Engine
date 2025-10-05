@@ -15,55 +15,83 @@ RenderSystem::~RenderSystem()
 
 void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 {
-	std::vector<Model>* models = scene->GetComponents<Model>();
-	std::vector<Light>* lights = scene->GetComponents<Light>();
+	std::vector<Camera>* cameras = scene->GetComponents<Camera>();
+	std::vector<Model>* models   = scene->GetComponents<Model>();
+	std::vector<Light>* lights   = scene->GetComponents<Light>();
+
 	ID3D11DeviceContext* deviceContext = direct3d->GetDeviceContext();
-
-	Camera& camera = scene->GetComponent<Camera>(0);
-	Transform& cameraTransform = scene->GetComponent<Transform>(0);
-
-	DirectX::XMFLOAT4 ambientLight = scene->GetAmbientLight();
 
 	direct3d->Clear(0.0f, 0.0f, 0.0f, 1.0f);
 
-	/*-----------BASE-PASS-----------*/
-	for (Model& model : (*models)) {
-		Mesh* mesh = model.GetMesh();
-		Texture* texture = model.GetTexture();
-		Shader* shader = model.GetBaseShader();
+	DirectX::XMFLOAT4 ambientLight = scene->GetAmbientLight();
 
-		if (shader == 0) {
-			continue;
-		}
+	for (Camera& camera : (*cameras)) {
 
-		mesh->Bind(deviceContext);
-		Transform& modelTransform = scene->GetComponent<Transform>(model.GetEntityId());
+		Transform& cameraTransform = scene->GetComponent<Transform>(0);
+		int renderMask = camera.GetRenderMask();
 
-		shader->Bind(deviceContext, camera, model, modelTransform, ambientLight);
-		deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
-	}
+		/*-----------BASE-PASS-----------*/
+		for (Model& model : (*models)) {
 
-	/*----------LIGHT-PASS----------*/
-	for (Model& model : (*models)) {
-		Mesh* mesh = model.GetMesh();
-		Texture* texture = model.GetTexture();
-		Shader* shader = model.GetLightShader();
+			int entity = model.GetEntityId();
 
-		if (shader == 0) {
-			continue;
-		}
+			if (!scene->HasComponent<Renderer>(entity)) {
+				continue;
+			}
+			int renderLayer = scene->GetComponent<Renderer>(entity).GetLayer();
 
-		mesh->Bind(deviceContext);
-		Transform& modelTransform = scene->GetComponent<Transform>(model.GetEntityId());
+			if (!(renderLayer & renderMask)) {
+				continue;
+			}
 
-		for (Light& light : (*lights)) {
-			Transform& lightTransform = scene->GetComponent<Transform>(light.GetEntityId());
+			Mesh* mesh = model.GetMesh();
+			Texture* texture = model.GetTexture();
+			Shader* shader = model.GetBaseShader();
 
-			shader->Bind(deviceContext, camera, cameraTransform, model, modelTransform, light, lightTransform);
+			if (shader == 0) {
+				continue;
+			}
+
+			mesh->Bind(deviceContext);
+			Transform& modelTransform = scene->GetComponent<Transform>(entity);
+
+			shader->Bind(deviceContext, camera, model, modelTransform, ambientLight);
 			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 		}
-	}
 
+		/*----------LIGHT-PASS----------*/
+		for (Model& model : (*models)) {
+
+			int entity = model.GetEntityId();
+
+			if (!scene->HasComponent<Renderer>(entity)) {
+				continue;
+			}
+			int renderLayer = scene->GetComponent<Renderer>(entity).GetLayer();
+
+			if (!(renderLayer & renderMask)) {
+				continue;
+			}
+
+			Mesh* mesh = model.GetMesh();
+			Texture* texture = model.GetTexture();
+			Shader* shader = model.GetLightShader();
+
+			if (shader == 0) {
+				continue;
+			}
+
+			mesh->Bind(deviceContext);
+			Transform& modelTransform = scene->GetComponent<Transform>(entity);
+
+			for (Light& light : (*lights)) {
+				Transform& lightTransform = scene->GetComponent<Transform>(light.GetEntityId());
+
+				shader->Bind(deviceContext, camera, cameraTransform, model, modelTransform, light, lightTransform);
+				deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+			}
+		}
+	}
 
 	direct3d->Render();
 }

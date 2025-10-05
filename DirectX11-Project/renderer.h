@@ -8,7 +8,8 @@ INCLUDES
 enum class RenderLayer
 {
 	Default,
-	UI
+	UI,
+	Invisible
 };
 
 class Renderer

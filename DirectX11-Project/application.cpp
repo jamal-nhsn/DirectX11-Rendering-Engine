@@ -119,6 +119,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	model1.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
 	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
 	model1.SetShininess(4);
+	Renderer& sphere1Renderer = m_scene->GetComponent<Renderer>(sphere1);
+	sphere1Renderer.SetLayer(RenderLayer::Default);
 
 	// Create room.
 	int roomParent = m_scene->CreateEntity();
@@ -146,6 +148,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		quadTransform.SetGlobalPosition(sign * 0.5f * x[i / 2], sign * 0.5f * y[i / 2], sign * 0.5f * z[i / 2]);
 		quadTransform.SetGlobalRotation(float(i != 4) * 90.0f * sign, xr[i / 2], yr[i / 2], 0.0f);
 
+		m_scene->AddComponent<Renderer>(quad);
 		m_scene->GetComponent<Transform>(roomParent).AddChild(quad, m_scene);
 	}
 	
