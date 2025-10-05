@@ -6,5 +6,6 @@ enum class ComponentId
 	Model,
 	Camera,
 	Light,
+	Renderer,
 	COMPONENT_COUNT
 };

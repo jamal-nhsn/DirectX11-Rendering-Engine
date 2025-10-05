@@ -10,6 +10,7 @@ INCLUDES
 #include "model.h"
 #include "camera.h"
 #include "light.h"
+#include "renderer.h"
 
 class Scene
 {
@@ -51,6 +52,7 @@ private:
 	std::vector<Model>     m_models;
 	std::vector<Camera>	   m_cameras;
 	std::vector<Light>     m_lights;
+	std::vector<Renderer>  m_renderers;
 
 	void* m_componentLists[static_cast<int>(ComponentId::COMPONENT_COUNT)]; // Table of component lists for generalized access.
 };

@@ -16,8 +16,9 @@ C++ SIDE
 /*======
 INCLUDES
 ======*/
-#include "components.h"
 #include <directxmath.h>
+
+#include "components.h"
 
 struct LightData
 {
