@@ -5,7 +5,7 @@ INCLUDES
 ======*/
 #include <unordered_map>
 
-#include "texture.h"
+#include "targaloader.h"
 
 class TextureManager
 {

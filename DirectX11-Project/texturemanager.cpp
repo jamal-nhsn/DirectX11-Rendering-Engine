@@ -14,19 +14,17 @@ TextureManager::~TextureManager()
 
 bool TextureManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
+	TargaLoader targaLoader;
 	Texture* texture;
-	bool success = false;
 
-	// Create stoneWallTexture
-	texture = new Texture();
-	success = texture->Initialize(device, deviceContext, "../DirectX11-Project/Textures/stoneWall.tga");
-	if (!success) {
-		delete texture;
-		return success;
+	// Create stoneWall texture.
+	texture = targaLoader.LoadTexture("../DirectX11-Project/Textures/stoneWall.tga", device, deviceContext);
+	if (!texture) {
+		return false;
 	}
 	m_textureBank["stoneWall"] = texture;
 
-	return success;
+	return true;
 }
 
 Texture* TextureManager::GetTexture(const char* textureName)

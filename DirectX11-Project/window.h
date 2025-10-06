@@ -48,6 +48,6 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lpar
 GLOBALS
 =====*/
 static Window* ApplicationHandle = NULL;
-const int WINDOWED_WIDTH = 800;
-const int WINDOWED_HEIGHT = 600;
+const int WINDOWED_WIDTH = 1280;
+const int WINDOWED_HEIGHT = 720;
 const bool SHOW_CURSOR = true;

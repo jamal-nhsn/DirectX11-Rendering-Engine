@@ -67,6 +67,18 @@
     <Filter Include="Resource Files\Meshes">
       <UniqueIdentifier>{437e2e87-d32b-49e5-a9c9-c714de2e3761}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Resources\Loaders">
+      <UniqueIdentifier>{ad271b22-b836-45b0-8d6a-98fe9dc632c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry\Loaders">
+      <UniqueIdentifier>{8152dd02-6658-46aa-a2fc-b1327c1e5100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Geometry\Loaders">
+      <UniqueIdentifier>{252e5a60-4133-4257-9d19-e8062b4601ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources\Loaders">
+      <UniqueIdentifier>{81d19f92-8916-44b8-8027-a4f57afc3f51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -144,11 +156,14 @@
     <ClInclude Include="light.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="objloader.h">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="renderer.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="objloader.h">
+      <Filter>Header Files\Geometry\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="targaloader.h">
+      <Filter>Header Files\Resources\Loaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,11 +239,14 @@
     <ClCompile Include="light.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="objloader.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="renderer.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="objloader.cpp">
+      <Filter>Source Files\Geometry\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="targaloader.cpp">
+      <Filter>Source Files\Resources\Loaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
