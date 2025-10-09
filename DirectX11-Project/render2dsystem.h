@@ -32,7 +32,7 @@ public:
 private:
 	bool Initialize(ID3D11Device* device);
 	void CreateBatches(Scene* scene);
-	void RenderBatches(Direct3D* direct3d);
+	void RenderBatches(Direct3D* direct3d, Camera2D& camera);
 	void ClearBatches();
 
 private:

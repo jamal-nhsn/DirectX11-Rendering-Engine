@@ -9,6 +9,7 @@ INCLUDES
 #include "transform.h"
 #include "model.h"
 #include "camera3d.h"
+#include "camera2d.h"
 #include "light.h"
 #include "renderer.h"
 #include "sprite.h"
@@ -52,6 +53,7 @@ private:
 	std::vector<Transform> m_transforms;
 	std::vector<Model>     m_models;
 	std::vector<Camera3D>  m_camera3Ds;
+	std::vector<Camera2D>  m_camera2Ds;
 	std::vector<Light>     m_lights;
 	std::vector<Renderer>  m_renderers;
 	std::vector<Sprite>    m_sprites;

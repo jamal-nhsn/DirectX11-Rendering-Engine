@@ -101,25 +101,25 @@ void Render2DSystem::CreateBatches(Scene* scene)
 		DirectX::XMStoreFloat3(&bottomLeft.position, positions.r[0]);
 		bottomLeft.color = color;
 		bottomLeft.texCoord = DirectX::XMFLOAT2(uvBounds.x, uvBounds.y);
-		bottomLeft.textureIndex = textureIndex;
+		bottomLeft.textureIndex = static_cast<int>(textureIndex);
 
 		Vertex2D topLeft;
 		DirectX::XMStoreFloat3(&topLeft.position, positions.r[1]);
 		topLeft.color = color;
 		topLeft.texCoord = DirectX::XMFLOAT2(uvBounds.x, uvBounds.w);
-		topLeft.textureIndex = textureIndex;
+		topLeft.textureIndex = static_cast<int>(textureIndex);
 
 		Vertex2D topRight;
 		DirectX::XMStoreFloat3(&topRight.position, positions.r[2]);
 		topRight.color = color;
 		topRight.texCoord = DirectX::XMFLOAT2(uvBounds.z, uvBounds.w);
-		topRight.textureIndex = textureIndex;
+		topRight.textureIndex = static_cast<int>(textureIndex);
 
 		Vertex2D bottomRight;
 		DirectX::XMStoreFloat3(&bottomRight.position, positions.r[3]);
 		bottomRight.color = color;
 		bottomRight.texCoord = DirectX::XMFLOAT2(uvBounds.z, uvBounds.y);
-		bottomRight.textureIndex = textureIndex;
+		bottomRight.textureIndex = static_cast<int>(textureIndex);
 
 		m_batches[batchIndex].vertices.emplace_back(bottomLeft);
 		m_batches[batchIndex].vertices.emplace_back(topLeft);
@@ -130,7 +130,7 @@ void Render2DSystem::CreateBatches(Scene* scene)
 	}
 }
 
-void Render2DSystem::RenderBatches(Direct3D* direct3d)
+void Render2DSystem::RenderBatches(Direct3D* direct3d, Camera2D& camera)
 {
 	HRESULT result;
 	ID3D11DeviceContext* deviceContext = direct3d->GetDeviceContext();
@@ -155,9 +155,9 @@ void Render2DSystem::RenderBatches(Direct3D* direct3d)
 		deviceContext->IASetVertexBuffers(0, 1, &m_vbo, &stride, &offset);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		deviceContext->PSSetShaderResources(0, batch.textures.size(), batch.textures.data());
+		deviceContext->PSSetShaderResources(0, static_cast<unsigned int>(batch.textures.size()), batch.textures.data());
 
-		deviceContext->Draw(batch.vertices.size(), 0);
+		deviceContext->Draw(static_cast<unsigned int>(batch.vertices.size()), 0);
 	}
 }
 
@@ -170,10 +170,12 @@ void Render2DSystem::ClearBatches()
 
 void Render2DSystem::Update(Direct3D* direct3d, Scene* scene)
 {
-	/*
+	std::vector<Camera2D>* cameras = scene->GetComponents<Camera2D>();
+
 	CreateBatches(scene);
-	RenderBatches(direct3d, camera);
+	for (Camera2D& camera : *cameras) {
+		RenderBatches(direct3d, camera);
+	}
 	ClearBatches();
-	*/
 }
 

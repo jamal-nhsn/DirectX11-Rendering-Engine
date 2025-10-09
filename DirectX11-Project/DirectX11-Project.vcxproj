@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
+    <ClInclude Include="camera2d.h" />
     <ClInclude Include="camera3d.h" />
     <ClInclude Include="camerasystem.h" />
     <ClInclude Include="colorshader.h" />
@@ -52,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="camera2d.cpp" />
     <ClCompile Include="camera3d.cpp" />
     <ClCompile Include="camerasystem.cpp" />
     <ClCompile Include="colorshader.cpp" />
