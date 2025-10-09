@@ -10,8 +10,8 @@ Camera2D::Camera2D(int entityId)
 	// Default Camera2D settings:
 	m_renderMask = 1 << static_cast<int>(RenderLayer::Default);
 
-	m_fovy = DirectX::XMConvertToRadians(60.0f);
-	m_aspectRatio = 1.0f;
+	m_viewWidth = 1.0f;
+	m_viewHeight = 1.0f;
 	m_nearPlane = 0.1f;
 	m_farPlane = 1000.0f;
 
@@ -25,8 +25,8 @@ Camera2D::Camera2D(const Camera2D& other)
 	m_entityId = other.m_entityId;
 	m_dirtyFlag = other.m_dirtyFlag;
 	m_renderMask = other.m_renderMask;
-	m_fovy = other.m_fovy;
-	m_aspectRatio = other.m_aspectRatio;
+	m_viewWidth = other.m_viewWidth;
+	m_viewHeight = other.m_viewHeight;
 	m_nearPlane = other.m_nearPlane;
 	m_farPlane = other.m_farPlane;
 	m_viewMatrix = other.m_viewMatrix;
@@ -62,14 +62,14 @@ int Camera2D::GetRenderMask()
 	return m_renderMask;
 }
 
-float Camera2D::GetFovY()
+float Camera2D::GetViewWidth()
 {
-	return m_fovy;
+	return m_viewWidth;
 }
 
-float Camera2D::GetAspectRatio()
+float Camera2D::GetViewHeight()
 {
-	return m_aspectRatio;
+	return m_viewHeight;
 }
 
 float Camera2D::GetNearPlane()
@@ -87,17 +87,16 @@ void Camera2D::SetRenderMask(int renderMask)
 	m_renderMask = renderMask;
 }
 
-void Camera2D::SetFovY(float fovy)
+void Camera2D::SetViewWidth(float viewWidth)
 {
-	float newFovY = DirectX::XMConvertToRadians(fovy);
-	m_dirtyFlag = m_fovy != newFovY;
-	m_fovy = newFovY;
+	m_dirtyFlag = m_viewWidth != viewWidth;
+	m_viewWidth = viewWidth;
 }
 
-void Camera2D::SetAspectRatio(float aspectRatio)
+void Camera2D::SetViewHeight(float viewHeight)
 {
-	m_dirtyFlag = m_aspectRatio != aspectRatio;
-	m_aspectRatio = aspectRatio;
+	m_dirtyFlag = m_viewHeight != viewHeight;
+	m_viewHeight = viewHeight;
 }
 
 void Camera2D::SetNearPlane(float nearPlane)

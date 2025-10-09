@@ -18,17 +18,17 @@ public:
 
 	int GetEntityId();
 
-	void Update(DirectX::XMMATRIX modelMatrix, int screenWidth, int screenHeight);
+	void Update(DirectX::XMMATRIX modelMatrix, int viewWidth, int viewHeight);
 
 	int GetRenderMask();
-	float GetFovY();
-	float GetAspectRatio();
+	float GetViewWidth();
+	float GetViewHeight();
 	float GetNearPlane();
 	float GetFarPlane();
 
 	void SetRenderMask(int renderMask);
-	void SetFovY(float fovy);
-	void SetAspectRatio(float aspectRatio);
+	void SetViewWidth(float viewWidth);
+	void SetViewHeight(float viewHeight);
 	void SetNearPlane(float nearPlane);
 	void SetFarPlane(float farPlane);
 
@@ -46,8 +46,8 @@ private:
 
 	bool m_dirtyFlag;
 
-	float m_fovy;
-	float m_aspectRatio;
+	float m_viewWidth;
+	float m_viewHeight;
 	float m_nearPlane;
 	float m_farPlane;
 

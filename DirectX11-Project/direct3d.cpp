@@ -486,6 +486,11 @@ ID3D11DeviceContext* Direct3D::GetDeviceContext()
 	return m_deviceContext;
 }
 
+D3D11_VIEWPORT Direct3D::GetViewport()
+{
+	return m_viewport;
+}
+
 void Direct3D::GetVideoCardInfo(char* cardName, int& memory)
 {
 	strcpy_s(cardName, 128, m_videoCardDescription);
