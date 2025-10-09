@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
-    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="camera3d.cpp" />
     <ClCompile Include="camerasystem.cpp" />
     <ClCompile Include="colorshader.cpp" />
     <ClCompile Include="defaultbaseshader.cpp" />

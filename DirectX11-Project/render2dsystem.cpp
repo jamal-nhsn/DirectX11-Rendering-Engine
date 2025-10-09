@@ -85,42 +85,38 @@ void Render2DSystem::CreateBatches(Scene* scene)
 			textureIndex = 0;
 		}
 
-		DirectX::XMVECTOR position;
 		DirectX::XMMATRIX modelMatrix = transform.GetModelMatrix();
+		DirectX::XMMATRIX positions = DirectX::XMMATRIX(
+			-0.5f, -0.5f, 0.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 1.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f
+		);
 
-		DirectX::XMFLOAT4 bottomLeftPos  = DirectX::XMFLOAT4(-0.5f, 0.0f, -0.5f, 1.0f);
-		DirectX::XMFLOAT4 topLeftPos     = DirectX::XMFLOAT4(-0.5f, 0.0f,  0.5f, 1.0f);
-		DirectX::XMFLOAT4 topRightPos    = DirectX::XMFLOAT4( 0.5f, 0.0f,  0.5f, 1.0f);
-		DirectX::XMFLOAT4 bottomRightPos = DirectX::XMFLOAT4( 0.5f, 0.0f, -0.5f, 1.0f);
-
+		positions = DirectX::XMMatrixMultiply(positions, modelMatrix);
 		DirectX::XMFLOAT4 color = sprite.GetTint();
-
 		DirectX::XMFLOAT4 uvBounds = sprite.GetUVBounds();
 
 		Vertex2D bottomLeft;
-		position = DirectX::XMVector4Transform(DirectX::XMLoadFloat4(&bottomLeftPos), modelMatrix);
-		bottomLeft.position = DirectX::XMFLOAT3(DirectX::XMVectorGetX(position), DirectX::XMVectorGetY(position), DirectX::XMVectorGetZ(position));
+		DirectX::XMStoreFloat3(&bottomLeft.position, positions.r[0]);
 		bottomLeft.color = color;
 		bottomLeft.texCoord = DirectX::XMFLOAT2(uvBounds.x, uvBounds.y);
 		bottomLeft.textureIndex = textureIndex;
 
 		Vertex2D topLeft;
-		position = DirectX::XMVector4Transform(DirectX::XMLoadFloat4(&topLeftPos), modelMatrix);
-		topLeft.position = DirectX::XMFLOAT3(DirectX::XMVectorGetX(position), DirectX::XMVectorGetY(position), DirectX::XMVectorGetZ(position));
+		DirectX::XMStoreFloat3(&topLeft.position, positions.r[1]);
 		topLeft.color = color;
 		topLeft.texCoord = DirectX::XMFLOAT2(uvBounds.x, uvBounds.w);
 		topLeft.textureIndex = textureIndex;
 
 		Vertex2D topRight;
-		position = DirectX::XMVector4Transform(DirectX::XMLoadFloat4(&topRightPos), modelMatrix);
-		topRight.position = DirectX::XMFLOAT3(DirectX::XMVectorGetX(position), DirectX::XMVectorGetY(position), DirectX::XMVectorGetZ(position));
+		DirectX::XMStoreFloat3(&topRight.position, positions.r[2]);
 		topRight.color = color;
 		topRight.texCoord = DirectX::XMFLOAT2(uvBounds.z, uvBounds.w);
 		topRight.textureIndex = textureIndex;
 
 		Vertex2D bottomRight;
-		position = DirectX::XMVector4Transform(DirectX::XMLoadFloat4(&bottomRightPos), modelMatrix);
-		bottomRight.position = DirectX::XMFLOAT3(DirectX::XMVectorGetX(position), DirectX::XMVectorGetY(position), DirectX::XMVectorGetZ(position));
+		DirectX::XMStoreFloat3(&bottomRight.position, positions.r[3]);
 		bottomRight.color = color;
 		bottomRight.texCoord = DirectX::XMFLOAT2(uvBounds.z, uvBounds.y);
 		bottomRight.textureIndex = textureIndex;

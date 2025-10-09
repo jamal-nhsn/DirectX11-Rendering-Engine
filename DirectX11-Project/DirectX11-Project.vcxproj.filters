@@ -221,7 +221,7 @@
     <ClCompile Include="rendersystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="camera3d.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="camerasystem.cpp">
