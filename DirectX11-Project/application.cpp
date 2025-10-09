@@ -233,5 +233,8 @@ void Application::Resize(int width, int height, HWND hwnd)
 	if (m_direct3d != 0) {
 		m_direct3d->Resize(width, height);
 	}
-	m_scene->GetComponent<Camera>(0).SetAspectRatio((float)width / (float)height);
+	std::vector<Camera3D>* camera3Ds = m_scene->GetComponents<Camera3D>();
+	for (Camera3D& camera3D : *camera3Ds) {
+		camera3D.SetAspectRatio((float)width / (float)height);
+	}
 }

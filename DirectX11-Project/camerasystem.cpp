@@ -14,10 +14,10 @@ CameraSystem::~CameraSystem()
 
 void CameraSystem::Update(Scene* scene)
 {
-	std::vector<Camera>* cameras = scene->GetComponents<Camera>();
+	std::vector<Camera3D>* camera3Ds = scene->GetComponents<Camera3D>();
 
-	for (Camera& camera : (*cameras)) {
-		Transform& transform = scene->GetComponent<Transform>(camera.GetEntityId());
-		camera.Update(transform.GetModelMatrix());
+	for (Camera3D& camera3D : (*camera3Ds)) {
+		Transform& transform = scene->GetComponent<Transform>(camera3D.GetEntityId());
+		camera3D.Update(transform.GetModelMatrix());
 	}
 }

@@ -30,7 +30,7 @@ DefaultBaseShader::~DefaultBaseShader()
 {
 }
 
-bool DefaultBaseShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
+bool DefaultBaseShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
 {
 	bool success;
 	MatrixBuffer matrixBuffer;
@@ -43,8 +43,8 @@ bool DefaultBaseShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera,
 
 	// Transpose the matrices to prepare them for the shader.
 	matrixBuffer.model = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
-	matrixBuffer.view = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
-	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
+	matrixBuffer.view = DirectX::XMMatrixTranspose(camera3D.GetViewMatrix());
+	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera3D.GetProjectionMatrix());
 
 	// Pass the ambient light to the pixel shader.
 	ambientLightBuffer.ambientLight = ambientLight;

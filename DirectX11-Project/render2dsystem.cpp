@@ -134,7 +134,7 @@ void Render2DSystem::CreateBatches(Scene* scene)
 	}
 }
 
-void Render2DSystem::RenderBatches(Direct3D* direct3d, Camera& camera)
+void Render2DSystem::RenderBatches(Direct3D* direct3d)
 {
 	HRESULT result;
 	ID3D11DeviceContext* deviceContext = direct3d->GetDeviceContext();
@@ -174,13 +174,10 @@ void Render2DSystem::ClearBatches()
 
 void Render2DSystem::Update(Direct3D* direct3d, Scene* scene)
 {
-	std::vector<Camera>* cameras = scene->GetComponents<Camera>();
-
+	/*
 	CreateBatches(scene);
-	for (Camera& camera : *cameras) {
-		RenderBatches(direct3d, camera);
-	}
+	RenderBatches(direct3d, camera);
 	ClearBatches();
-
+	*/
 }
 

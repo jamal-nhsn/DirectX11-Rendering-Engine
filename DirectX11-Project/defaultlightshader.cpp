@@ -36,7 +36,7 @@ DefaultLightShader::~DefaultLightShader()
 {
 }
 
-bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
+bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
 {
 	bool success;
 	MatrixBuffer matrixBuffer;
@@ -51,8 +51,8 @@ bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera
 
 	// Transpose the matrices to prepare them for the shader.
 	matrixBuffer.model      = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
-	matrixBuffer.view       = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
-	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
+	matrixBuffer.view       = DirectX::XMMatrixTranspose(camera3D.GetViewMatrix());
+	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera3D.GetProjectionMatrix());
 
 	// Get the cameras position.
 	cameraBuffer.cameraPos = cameraTransform.GetGlobalPosition();

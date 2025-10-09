@@ -8,7 +8,7 @@ INCLUDES
 #include "entity.h"
 #include "transform.h"
 #include "model.h"
-#include "camera.h"
+#include "camera3d.h"
 #include "light.h"
 #include "renderer.h"
 #include "sprite.h"
@@ -51,7 +51,7 @@ private:
 	// All component lists.
 	std::vector<Transform> m_transforms;
 	std::vector<Model>     m_models;
-	std::vector<Camera>	   m_cameras;
+	std::vector<Camera3D>  m_camera3Ds;
 	std::vector<Light>     m_lights;
 	std::vector<Renderer>  m_renderers;
 	std::vector<Sprite>    m_sprites;

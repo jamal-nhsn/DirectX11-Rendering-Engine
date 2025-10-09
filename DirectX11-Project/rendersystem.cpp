@@ -15,9 +15,9 @@ RenderSystem::~RenderSystem()
 
 void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 {
-	std::vector<Camera>* cameras = scene->GetComponents<Camera>();
-	std::vector<Model>* models   = scene->GetComponents<Model>();
-	std::vector<Light>* lights   = scene->GetComponents<Light>();
+	std::vector<Camera3D>* camera3Ds = scene->GetComponents<Camera3D>();
+	std::vector<Model>* models       = scene->GetComponents<Model>();
+	std::vector<Light>* lights       = scene->GetComponents<Light>();
 
 	ID3D11DeviceContext* deviceContext = direct3d->GetDeviceContext();
 
@@ -25,7 +25,7 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 
 	DirectX::XMFLOAT4 ambientLight = scene->GetAmbientLight();
 
-	for (Camera& camera : (*cameras)) {
+	for (Camera3D& camera : (*camera3Ds)) {
 
 		Transform& cameraTransform = scene->GetComponent<Transform>(0);
 		int renderMask = camera.GetRenderMask();

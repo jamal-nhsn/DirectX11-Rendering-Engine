@@ -7,7 +7,6 @@ INCLUDES
 
 #include "scene.h"
 #include "direct3d.h"
-#include "camera.h"
 #include "sprite.h"
 #include "vertex.h"
 
@@ -33,7 +32,7 @@ public:
 private:
 	bool Initialize(ID3D11Device* device);
 	void CreateBatches(Scene* scene);
-	void RenderBatches(Direct3D* direct3d, Camera& camera);
+	void RenderBatches(Direct3D* direct3d);
 	void ClearBatches();
 
 private:

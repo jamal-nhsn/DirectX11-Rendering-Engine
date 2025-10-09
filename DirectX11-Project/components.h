@@ -4,7 +4,7 @@ enum class ComponentId
 {
 	Transform,
 	Model,
-	Camera,
+	Camera3D,
 	Light,
 	Renderer,
 	Sprite,

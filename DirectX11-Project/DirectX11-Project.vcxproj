@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
-    <ClInclude Include="camera.h" />
+    <ClInclude Include="camera3d.h" />
     <ClInclude Include="camerasystem.h" />
     <ClInclude Include="colorshader.h" />
     <ClInclude Include="components.h" />

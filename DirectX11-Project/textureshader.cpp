@@ -28,7 +28,7 @@ TextureShader::~TextureShader()
 {
 }
 
-bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
+bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
 {
 	bool success;
 	MatrixBuffer matrixBuffer;
@@ -40,8 +40,8 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Mod
 
 	// Transpose the matrices to prepare them for the shader.
 	matrixBuffer.model = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
-	matrixBuffer.view = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
-	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
+	matrixBuffer.view = DirectX::XMMatrixTranspose(camera3D.GetViewMatrix());
+	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera3D.GetProjectionMatrix());
 
 	texture = model.GetTexture()->GetTexture2D();
 	

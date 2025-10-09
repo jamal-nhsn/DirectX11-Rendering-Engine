@@ -8,7 +8,7 @@ INCLUDES
 #include <d3dcompiler.h>
 #include <fstream>
 
-#include "camera.h"
+#include "camera3d.h"
 #include "transform.h"
 #include "light.h"
 
@@ -18,8 +18,8 @@ class Shader
 {
 public:
 	bool Initialize(ID3D11Device* device, HWND hwnd);
-	virtual bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform);
-	virtual bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight);
+	virtual bool Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform);
+	virtual bool Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight);
 	void Shutdown();
 
 protected:

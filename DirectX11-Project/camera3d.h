@@ -9,12 +9,12 @@ INCLUDES
 #include "components.h"
 #include "renderer.h"
 
-class Camera
+class Camera3D
 {
 public:
-	Camera(int entityId);
-	Camera(const Camera&);
-	~Camera();
+	Camera3D(int entityId);
+	Camera3D(const Camera3D&);
+	~Camera3D();
 
 	int GetEntityId();
 
