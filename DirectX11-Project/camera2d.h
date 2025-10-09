@@ -18,7 +18,7 @@ public:
 
 	int GetEntityId();
 
-	void Update(DirectX::XMMATRIX modelMatrix, int viewWidth, int viewHeight);
+	void Update(DirectX::XMMATRIX modelMatrix);
 
 	int GetRenderMask();
 	float GetViewWidth();

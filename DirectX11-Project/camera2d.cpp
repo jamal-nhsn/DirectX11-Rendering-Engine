@@ -43,7 +43,7 @@ int Camera2D::GetEntityId()
 	return m_entityId;
 }
 
-void Camera2D::Update(DirectX::XMMATRIX modelMatrix, int screenWidth, int screenHeight)
+void Camera2D::Update(DirectX::XMMATRIX modelMatrix)
 {
 	m_viewMatrix = DirectX::XMMatrixInverse(NULL, modelMatrix);
 	m_matrix = DirectX::XMMatrixMultiply(m_viewMatrix, m_projectionMatrix);
@@ -52,7 +52,7 @@ void Camera2D::Update(DirectX::XMMATRIX modelMatrix, int screenWidth, int screen
 		return;
 	}
 
-	m_projectionMatrix = DirectX::XMMatrixOrthographicLH(static_cast<float>(screenWidth), static_cast<float>(screenHeight), m_nearPlane, m_farPlane);
+	m_projectionMatrix = DirectX::XMMatrixOrthographicLH(m_viewWidth, m_viewHeight, m_nearPlane, m_farPlane);
 
 	m_dirtyFlag = false;
 }

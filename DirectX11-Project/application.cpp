@@ -66,7 +66,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Create and initialize the Scene object.
 	m_scene = new Scene;
-	m_scene->Initialize(screenWidth, screenHeight);
+	m_scene->Initialize(static_cast<float>(screenWidth), static_cast<float>(screenHeight));
 	m_scene->SetAmbientLight(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.25f));
 
 	// Get camera entity from scene.
@@ -77,7 +77,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	int lightParent = m_scene->CreateEntity();
 	m_scene->AddComponent<Transform>(lightParent);
 
-	float halfRoot3 = 0.866025388;
+	float halfRoot3 = 0.866025388f;
 
 	int pointLight1 = m_scene->CreateEntity();
 	Transform& pointLight1Transform = m_scene->GetComponent<Transform>(pointLight1);
@@ -234,7 +234,17 @@ void Application::Resize(int width, int height, HWND hwnd)
 		m_direct3d->Resize(width, height);
 	}
 	std::vector<Camera3D>* camera3Ds = m_scene->GetComponents<Camera3D>();
+	std::vector<Camera2D>* camera2Ds = m_scene->GetComponents<Camera2D>();
+
+	float fwidth = static_cast<float>(width);
+	float fheight = static_cast<float>(height);
+
 	for (Camera3D& camera3D : *camera3Ds) {
-		camera3D.SetAspectRatio((float)width / (float)height);
+		camera3D.SetAspectRatio(fwidth / fheight);
+	}
+
+	for (Camera2D& camera2D : *camera2Ds) {
+		camera2D.SetViewWidth(fwidth);
+		camera2D.SetViewHeight(fheight);
 	}
 }
