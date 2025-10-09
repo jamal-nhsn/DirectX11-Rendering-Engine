@@ -72,6 +72,7 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shadermanager.cpp" />
+    <ClCompile Include="sprite.cpp" />
     <ClCompile Include="targaloader.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="texturemanager.cpp" />

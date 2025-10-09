@@ -7,6 +7,7 @@ Scene::Scene()
 	m_componentLists[static_cast<int>(ComponentId::Camera)]    = &m_cameras;
 	m_componentLists[static_cast<int>(ComponentId::Light)]     = &m_lights;
 	m_componentLists[static_cast<int>(ComponentId::Renderer)]  = &m_renderers;
+	m_componentLists[static_cast<int>(ComponentId::Sprite)]    = &m_sprites;
 
 	m_ambientLight = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 }

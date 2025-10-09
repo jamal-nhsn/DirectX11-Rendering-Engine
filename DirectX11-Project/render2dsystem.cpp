@@ -125,7 +125,12 @@ void Render2DSystem::CreateBatches(Scene* scene)
 		bottomRight.texCoord = DirectX::XMFLOAT2(uvBounds.z, uvBounds.y);
 		bottomRight.textureIndex = textureIndex;
 
-		m_batches[batchIndex].vertices.emplace_back(bottomLeft, topLeft, topRight, bottomLeft, topRight, bottomRight);
+		m_batches[batchIndex].vertices.emplace_back(bottomLeft);
+		m_batches[batchIndex].vertices.emplace_back(topLeft);
+		m_batches[batchIndex].vertices.emplace_back(topRight);
+		m_batches[batchIndex].vertices.emplace_back(bottomLeft);
+		m_batches[batchIndex].vertices.emplace_back(topRight);
+		m_batches[batchIndex].vertices.emplace_back(bottomRight);
 	}
 }
 

@@ -22,7 +22,7 @@ public:
 	Shader* GetShader();
 	Texture* GetTexture();
 
-	void SetColor(float red, float green, float blue, float alpha);
+	void SetTint(float red, float green, float blue, float alpha);
 	void SetWidth(int width);
 	void SetHeight(int height);
 	void SetSourceX(int sourceX);

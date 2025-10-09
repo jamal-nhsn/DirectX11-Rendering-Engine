@@ -24,6 +24,10 @@ private:
 	};
 
 public:
+	Render2DSystem();
+	Render2DSystem(const Render2DSystem& other);
+	~Render2DSystem();
+
 	void Update(Direct3D* direct3d, Scene* scene);
 
 private:

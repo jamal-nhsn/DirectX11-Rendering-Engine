@@ -11,6 +11,7 @@ INCLUDES
 #include "camera.h"
 #include "light.h"
 #include "renderer.h"
+#include "sprite.h"
 
 class Scene
 {
@@ -53,6 +54,7 @@ private:
 	std::vector<Camera>	   m_cameras;
 	std::vector<Light>     m_lights;
 	std::vector<Renderer>  m_renderers;
+	std::vector<Sprite>    m_sprites;
 
 	void* m_componentLists[static_cast<int>(ComponentId::COMPONENT_COUNT)]; // Table of component lists for generalized access.
 };
