@@ -7,5 +7,6 @@ enum class ComponentId
 	Camera,
 	Light,
 	Renderer,
+	Sprite,
 	COMPONENT_COUNT
 };

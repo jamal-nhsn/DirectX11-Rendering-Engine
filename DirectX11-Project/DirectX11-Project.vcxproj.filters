@@ -165,6 +165,12 @@
     <ClInclude Include="targaloader.h">
       <Filter>Header Files\Resources\Loaders</Filter>
     </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="render2dsystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -247,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="targaloader.cpp">
       <Filter>Source Files\Resources\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="render2dsystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -14,7 +14,7 @@ public:
 	Mesh(const Mesh&);
 	~Mesh();
 
-	bool Initialize(ID3D11Device* device, Vertex* vertices, int vertexCount, unsigned long* indices, int indexCount, D3D_PRIMITIVE_TOPOLOGY primitiveType);
+	bool Initialize(ID3D11Device* device, Vertex3D* vertices, int vertexCount, unsigned long* indices, int indexCount, D3D_PRIMITIVE_TOPOLOGY primitiveType);
 	void Bind(ID3D11DeviceContext* deviceContext);
 	void Shutdown();
 

@@ -31,6 +31,8 @@ bool Texture::Initialize(ID3D11Texture2D* texture, ID3D11ShaderResourceView* tex
 	m_textureView = textureView;
 	m_width = width;
 	m_height = height;
+
+	return true;
 }
 
 void Texture::Shutdown()

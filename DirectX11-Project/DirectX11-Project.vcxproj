@@ -35,10 +35,12 @@
     <ClInclude Include="model.h" />
     <ClInclude Include="objloader.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="render2dsystem.h" />
     <ClInclude Include="rendersystem.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shadermanager.h" />
+    <ClInclude Include="sprite.h" />
     <ClInclude Include="targaloader.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="texturemanager.h" />
@@ -65,6 +67,7 @@
     <ClCompile Include="model.cpp" />
     <ClCompile Include="objloader.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="render2dsystem.cpp" />
     <ClCompile Include="rendersystem.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />

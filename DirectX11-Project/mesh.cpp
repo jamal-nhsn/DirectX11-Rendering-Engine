@@ -22,7 +22,7 @@ Mesh::~Mesh()
 {
 }
 
-bool Mesh::Initialize(ID3D11Device* device, Vertex* vertices, int vertexCount, unsigned long* indices, int indexCount, D3D_PRIMITIVE_TOPOLOGY primitiveType)
+bool Mesh::Initialize(ID3D11Device* device, Vertex3D* vertices, int vertexCount, unsigned long* indices, int indexCount, D3D_PRIMITIVE_TOPOLOGY primitiveType)
 {
 	m_vertexCount = vertexCount;
 	m_indexCount  = indexCount;
@@ -33,7 +33,7 @@ bool Mesh::Initialize(ID3D11Device* device, Vertex* vertices, int vertexCount, u
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	vertexBufferDesc.Usage               = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth           = sizeof(Vertex) * vertexCount;
+	vertexBufferDesc.ByteWidth           = sizeof(Vertex3D) * vertexCount;
 	vertexBufferDesc.BindFlags           = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags      = 0;
 	vertexBufferDesc.MiscFlags           = 0;
@@ -70,7 +70,7 @@ bool Mesh::Initialize(ID3D11Device* device, Vertex* vertices, int vertexCount, u
 void Mesh::Bind(ID3D11DeviceContext* deviceContext)
 {
 	// Set vertex buffer stride and offset.
-	unsigned int stride = sizeof(Vertex);
+	unsigned int stride = sizeof(Vertex3D);
 	unsigned int offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
