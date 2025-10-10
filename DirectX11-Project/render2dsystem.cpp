@@ -7,7 +7,6 @@ Render2DSystem::Render2DSystem()
 
 Render2DSystem::Render2DSystem(const Render2DSystem& other)
 {
-	m_vbo = other.m_vbo;
 }
 
 Render2DSystem::~Render2DSystem()
@@ -34,7 +33,7 @@ bool Render2DSystem::Initialize(ID3D11Device* device)
 	// Create the dynamic vertex buffer.
 	result = device->CreateBuffer(&vertexBufferDesc, 0, &m_vbo);
 
-	return FAILED(result);
+	return !FAILED(result);
 }
 
 void Render2DSystem::CreateBatches(Scene* scene)
@@ -140,10 +139,13 @@ void Render2DSystem::RenderBatches(Direct3D* direct3d, Camera2D& camera)
 
 	for (Batch& batch : m_batches) {
 
+		if (batch.vertices.empty()) {
+			continue;
+		}
+
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		result = deviceContext->Map(m_vbo, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		if (FAILED(result))
-		{
+		if (FAILED(result)) {
 			return;
 		}
 
@@ -154,6 +156,8 @@ void Render2DSystem::RenderBatches(Direct3D* direct3d, Camera2D& camera)
 
 		deviceContext->IASetVertexBuffers(0, 1, &m_vbo, &stride, &offset);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		//batch.shader->Bind()
 
 		deviceContext->PSSetShaderResources(0, static_cast<unsigned int>(batch.textures.size()), batch.textures.data());
 
