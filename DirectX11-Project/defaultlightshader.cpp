@@ -9,7 +9,6 @@ DefaultLightShader::DefaultLightShader()
 	m_vertexShader = 0;
 	m_pixelShader = 0;
 	m_layout = 0;
-	m_sampleState = 0;
 
 	m_matrixBuffer = 0;
 	m_cameraBuffer = 0;
@@ -22,7 +21,6 @@ DefaultLightShader::DefaultLightShader(const DefaultLightShader& other)
 {
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
-	m_sampleState = other.m_sampleState;
 	m_layout = other.m_layout;
 
 	m_matrixBuffer = other.m_materialBuffer;
@@ -44,6 +42,7 @@ bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& came
 	LightBuffer lightBuffer;
 	MaterialBuffer materialBuffer;
 	ID3D11ShaderResourceView* texture;
+	ID3D11SamplerState* samplerState;
 
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
@@ -67,8 +66,9 @@ bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& came
 	materialBuffer.shininess = model.GetShininess();
 
 	texture = model.GetTexture()->GetTexture2D();
+	samplerState = model.GetTexture()->GetSamplerState();
 	
-	success = SetShaderParameters(deviceContext, matrixBuffer, cameraBuffer, lightBuffer, materialBuffer, texture);
+	success = SetShaderParameters(deviceContext, matrixBuffer, cameraBuffer, lightBuffer, materialBuffer, texture, samplerState);
 	if (!success) {
 		return success;
 	}
@@ -79,7 +79,7 @@ bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& came
 	return success;
 }
 
-bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, CameraBuffer cameraBuffer, LightBuffer lightBuffer, MaterialBuffer materialBuffer, ID3D11ShaderResourceView* texture)
+bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, CameraBuffer cameraBuffer, LightBuffer lightBuffer, MaterialBuffer materialBuffer, ID3D11ShaderResourceView* texture, ID3D11SamplerState* samplerState)
 {	
 	bool success;
 
@@ -101,7 +101,8 @@ bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 	}
 	deviceContext->PSSetConstantBuffers(0, 2, pixelConstantBuffers);
 
-	// Finally, set shader texture resource in the pixel shader.
+	// Finally, set shader texture resource and sampler in the pixel shader.
+	deviceContext->PSSetSamplers(0, 1, &samplerState);
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 
 	return true;
@@ -136,31 +137,6 @@ bool DefaultLightShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vert
 
 	delete[] polygonLayout;
 
-	return !FAILED(result);
-}
-
-bool DefaultLightShader::InitializeSamplerDesc(ID3D11Device* device)
-{
-	HRESULT result;
-	D3D11_SAMPLER_DESC samplerDesc;
-
-	// Create a texture sampler state description.
-	samplerDesc.Filter         = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerDesc.AddressU       = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressV       = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW       = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.MipLODBias     = 0.0f;
-	samplerDesc.MaxAnisotropy  = 1;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	samplerDesc.BorderColor[0] = 0;
-	samplerDesc.BorderColor[1] = 0;
-	samplerDesc.BorderColor[2] = 0;
-	samplerDesc.BorderColor[3] = 0;
-	samplerDesc.MinLOD         = 0;
-	samplerDesc.MaxLOD         = D3D11_FLOAT32_MAX;
-
-	// Create the texture sampler state.
-	result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
 	return !FAILED(result);
 }
 

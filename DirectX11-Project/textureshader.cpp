@@ -9,7 +9,6 @@ TextureShader::TextureShader()
 	m_vertexShader = 0;
 	m_pixelShader = 0;
 	m_layout = 0;
-	m_sampleState = 0;
 
 	m_matrixBuffer = 0;
 }
@@ -18,7 +17,6 @@ TextureShader::TextureShader(const TextureShader& other)
 {
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
-	m_sampleState = other.m_sampleState;
 	m_layout = other.m_layout;
 
 	m_matrixBuffer = other.m_matrixBuffer;
@@ -33,6 +31,7 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D,
 	bool success;
 	MatrixBuffer matrixBuffer;
 	ID3D11ShaderResourceView* texture;
+	ID3D11SamplerState* samplerState;
 
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
@@ -44,8 +43,9 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D,
 	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera3D.GetProjectionMatrix());
 
 	texture = model.GetTexture()->GetTexture2D();
-	
-	success = SetShaderParameters(deviceContext, matrixBuffer, texture);
+	samplerState = model.GetTexture()->GetSamplerState();
+
+	success = SetShaderParameters(deviceContext, matrixBuffer, texture, samplerState);
 	if (!success) {
 		return success;
 	}
@@ -56,7 +56,7 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D,
 	return success;
 }
 
-bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, ID3D11ShaderResourceView* texture)
+bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, ID3D11ShaderResourceView* texture, ID3D11SamplerState* samplerState)
 {
 	bool success;
 
@@ -67,7 +67,8 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matr
 	}
 	deviceContext->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
 
-	// Finally, set shader texture resource in the pixel shader.
+	// Finally, set shader texture resource and sampler in the pixel shader.
+	deviceContext->PSSetSamplers(0, 1, &samplerState);
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 
 	return true;
@@ -102,31 +103,6 @@ bool TextureShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexSha
 
 	delete[] polygonLayout;
 
-	return !FAILED(result);
-}
-
-bool TextureShader::InitializeSamplerDesc(ID3D11Device* device)
-{
-	HRESULT result;
-	D3D11_SAMPLER_DESC samplerDesc;
-
-	// Create a texture sampler state description.
-	samplerDesc.Filter         = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerDesc.AddressU       = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressV       = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW       = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.MipLODBias     = 0.0f;
-	samplerDesc.MaxAnisotropy  = 1;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	samplerDesc.BorderColor[0] = 0;
-	samplerDesc.BorderColor[1] = 0;
-	samplerDesc.BorderColor[2] = 0;
-	samplerDesc.BorderColor[3] = 0;
-	samplerDesc.MinLOD         = 0;
-	samplerDesc.MaxLOD         = D3D11_FLOAT32_MAX;
-
-	// Create the texture sampler state.
-	result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
 	return !FAILED(result);
 }
 

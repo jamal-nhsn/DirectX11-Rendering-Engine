@@ -81,12 +81,6 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 	pixelShaderBuffer->Release();
 	pixelShaderBuffer = 0;
 
-	// Setup sampler description.
-	bool samplerDescInitialized = InitializeSamplerDesc(device);
-	if (!samplerDescInitialized) {
-		return false;
-	}
-
 	// Setup blend description.
 	bool blendDescInitialized = InitializeBlendDesc(device);
 	if (!blendDescInitialized) {
@@ -128,12 +122,6 @@ void Shader::Shutdown()
 	if (m_layout) {
 		m_layout->Release();
 		m_layout = 0;
-	}
-
-	// Release the sample state.
-	if (m_sampleState) {
-		m_sampleState->Release();
-		m_sampleState = 0;
 	}
 
 	// Release the blend state.
@@ -243,9 +231,6 @@ D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout(bool usePosition, bool useNormal,
 
 void Shader::SetShaderStates(ID3D11DeviceContext* deviceContext)
 {
-	// Set the sampler state in the pixel shader.
-	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
-
 	// Set the blend state in the output merger.
 	deviceContext->OMSetBlendState(m_blendState, 0, 0xffffffff);
 
@@ -277,12 +262,6 @@ void Shader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR
 
 	// Pop a message up on the screen to notify the user to check the text file for compile errors.
 	MessageBox(hwnd, L"Error compiling shader.  Check shader-error.txt for message.", shaderSource, MB_OK);
-}
-
-bool Shader::InitializeSamplerDesc(ID3D11Device* device)
-{
-	// Default to no sampler.
-	return true;
 }
 
 bool Shader::InitializeBlendDesc(ID3D11Device* device)
