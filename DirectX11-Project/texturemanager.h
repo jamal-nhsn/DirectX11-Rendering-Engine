@@ -6,6 +6,7 @@ INCLUDES
 #include <unordered_map>
 
 #include "targaloader.h"
+#include "texturemetaloader.h"
 
 class TextureManager
 {

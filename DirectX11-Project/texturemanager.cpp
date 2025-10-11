@@ -15,6 +15,7 @@ TextureManager::~TextureManager()
 bool TextureManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	TargaLoader targaLoader;
+	TextureMetaLoader textureMetaLoader;
 	Texture* texture;
 
 	// Create stoneWall texture.
@@ -22,6 +23,9 @@ bool TextureManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* devic
 	if (!texture) {
 		return false;
 	}
+	textureMetaLoader.LoadTextureMeta(texture, "../DirectX11-Project/Textures/stoneWall.texturemeta", device, deviceContext);
+
+
 	m_textureBank["stoneWall"] = texture;
 
 	return true;

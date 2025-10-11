@@ -1,0 +1,9 @@
+#SAMPLER_SETTINGS
+	Filter: POINT
+	Texture_Address_Mode: WRAP
+	Mip_LOD Bias: 0
+	Max_Anisotropy: 1
+	Comparison_Function: ALWAYS
+	Border_Color: I(0, 0, 0, 0)
+	Minimum_LOD: 0
+	Maximum_LOD: MAX
