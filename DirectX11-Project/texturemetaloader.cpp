@@ -40,21 +40,40 @@ bool TextureMetaLoader::LoadTextureMeta(Texture* texture, const char* filePath, 
 		return false;
 	}
 
+	bool success = true;
 	char line[128];
-	while (fgets(line, sizeof(line), filePtr) != 0) {
+	while (success && fgets(line, sizeof(line), filePtr) != 0) {
 		if (strcmp(line, "#SAMPLING SETTINGS")) {
-			LoadSamplerSettings(texture, filePtr, deviceContext);
+			success = success && LoadSamplerSettings(texture, filePtr, device, deviceContext);
 		}
 	}
+
+	// Close the file
+	fclose(filePtr);
+
+	return success;
 }
 
-bool TextureMetaLoader::LoadSamplerSettings(Texture* texture, FILE* filePtr, ID3D11DeviceContext* deviceContext)
+bool TextureMetaLoader::LoadSamplerSettings(Texture* texture, FILE* filePtr, ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	D3D11_SAMPLER_DESC samplerDesc;
+	// Initialize default sampler description in case input is malformed.
+	samplerDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.BorderColor[0] = 0;
+	samplerDesc.BorderColor[1] = 0;
+	samplerDesc.BorderColor[2] = 0;
+	samplerDesc.BorderColor[3] = 0;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	char line[128];
 	while (fgets(line, sizeof(line), filePtr) != 0) {
-
 		char* data = &line[0];
 		char* field = strtok_s(data, s_delimiters, &data);
 		if (!field) {
@@ -87,15 +106,21 @@ bool TextureMetaLoader::LoadSamplerSettings(Texture* texture, FILE* filePtr, ID3
 		}
 	}
 
-	return true;
+	// Create the texture sampler state.
+	ID3D11SamplerState* samplerState;
+	HRESULT result = device->CreateSamplerState(&samplerDesc, &samplerState);
+	if (!FAILED(result)) {
+		texture->SetSamplerState(samplerState);
+	}
+
+	return !FAILED(result);
 }
 
 void TextureMetaLoader::LoadSamplerFilter(D3D11_SAMPLER_DESC& samplerDesc, char* data)
 {
 	char* token = strtok_s(data, s_delimiters, &data);
-	// Default to bilinear filtering if input is malformed.
+	// Use defualt value if input is malformed.
 	if (token == 0) {
-		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
 		return;
 	}
 
@@ -129,11 +154,8 @@ void TextureMetaLoader::LoadSamplerFilter(D3D11_SAMPLER_DESC& samplerDesc, char*
 void TextureMetaLoader::LoadSamplerTextureAddressMode(D3D11_SAMPLER_DESC& samplerDesc, char* data)
 {
 	char* token = strtok_s(data, s_delimiters, &data);
-	// Default to wrapped addressing if input is malformed.
+	// Use defualt values if input is malformed.
 	if (token == 0) {
-		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		return;
 	}
 
@@ -167,24 +189,113 @@ void TextureMetaLoader::LoadSamplerTextureAddressMode(D3D11_SAMPLER_DESC& sample
 
 void TextureMetaLoader::LoadSamplerMipLODBias(D3D11_SAMPLER_DESC& samplerDesc, char* data)
 {
+	char* token = strtok_s(data, s_delimiters, &data);
+	// Use defualt value if input is malformed.
+	if (token == 0) {
+		return;
+	}
+
+	samplerDesc.MipLODBias = strtof(token, &token);
+	return;
 }
 
 void TextureMetaLoader::LoadSamplerMaxAnisotropy(D3D11_SAMPLER_DESC& samplerDesc, char* data)
 {
+	char* token = strtok_s(data, s_delimiters, &data);
+	// Use defualt value if input is malformed.
+	if (token == 0) {
+		return;
+	}
+
+	int value = strtol(token, &token, 10);
+	samplerDesc.MaxAnisotropy = value < 1 ? 1 : value;
+	return;
 }
 
 void TextureMetaLoader::LoadSamplerComparisonFunction(D3D11_SAMPLER_DESC& samplerDesc, char* data)
 {
+	char* token = strtok_s(data, s_delimiters, &data);
+	// Use defualt value if input is malformed.
+	if (token == 0) {
+		return;
+	}
+
+	if (strcmp(token, "NEVER") == 0) {
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	}
+	else if (strcmp(token, "LESS") == 0) {
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS;
+	}
+	else if (strcmp(token, "EQUAL") == 0) {
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_EQUAL;
+	}
+	else if (strcmp(token, "LESS_EQUAL") == 0) {
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
+	}
+	else if (strcmp(token, "GREATER") == 0) {
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_GREATER;
+	}
+	else if (strcmp(token, "NOT_EQUAL") == 0) {
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_NOT_EQUAL;
+	}
+	else if (strcmp(token, "GREATER_EQUAL") == 0) {
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_GREATER_EQUAL;
+	}
+	else if (strcmp(token, "ALWAYS") == 0) {
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	}
+
+	return;
 }
 
 void TextureMetaLoader::LoadSamplerBorderColor(D3D11_SAMPLER_DESC& samplerDesc, char* data)
 {
+	char* token = strtok_s(data, s_delimiters, &data);
+	// Use defualt value if input is malformed.
+	if (token == 0) {
+		return;
+	}
+
+	float divisor = strcmp(token, "I") == 0 ? 255.0f : 1.0f;
+
+	for (int i = 0; i < 4; i++) {
+		token = strtok_s(data, s_delimiters, &data);
+		if (token != 0) {
+			float value = static_cast<float>(strtof(token, &token)) / divisor;
+			samplerDesc.BorderColor[i] = value < 0.0f ? 0.0f : value > 1.0f ? 1.0f : value;
+		}
+	}
+
+	return;
 }
 
 void TextureMetaLoader::LoadSamplerMinimumLOD(D3D11_SAMPLER_DESC& samplerDesc, char* data)
 {
+	char* token = strtok_s(data, s_delimiters, &data);
+	// Use defualt value if input is malformed.
+	if (token == 0) {
+		return;
+	}
+
+	float value = strtof(token, &token);
+	samplerDesc.MinLOD = value < 0.0f ? 0.0f : value;
+	return;
 }
 
 void TextureMetaLoader::LoadSamplerMaximumLOD(D3D11_SAMPLER_DESC& samplerDesc, char* data)
 {
+	char* token = strtok_s(data, s_delimiters, &data);
+	// Use defualt value if input is malformed.
+	if (token == 0) {
+		return;
+	}
+
+	if (strcmp(token, "MAX") == 0) {
+		samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+		return;
+	}
+
+	float value = strtof(token, &token);
+	samplerDesc.MaxLOD = value < samplerDesc.MinLOD ? samplerDesc.MinLOD : value;
+	return;
 }

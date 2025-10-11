@@ -17,6 +17,9 @@ public:
 	void Shutdown();
 
 	ID3D11ShaderResourceView* GetTexture2D();
+	ID3D11SamplerState* GetSamplerState();
+
+	void SetSamplerState(ID3D11SamplerState* samplerState);
 
 	int GetWidth();
 	int GetHeight();
@@ -24,6 +27,8 @@ public:
 private:
 	ID3D11Texture2D* m_texture;
 	ID3D11ShaderResourceView* m_textureView;
+	ID3D11SamplerState* m_samplerState;
+
 	int m_width;
 	int m_height;
 };

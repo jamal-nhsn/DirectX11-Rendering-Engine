@@ -4,6 +4,7 @@ Texture::Texture()
 {
 	m_texture     = 0;
 	m_textureView = 0;
+	m_samplerState = 0;
 
 	m_width  = 0;
 	m_height = 0;
@@ -13,6 +14,7 @@ Texture::Texture(const Texture& other)
 {
 	m_texture     = other.m_texture;
 	m_textureView = other.m_textureView;
+	m_samplerState = other.m_samplerState;
 
 	m_width  = other.m_width;
 	m_height = other.m_height;
@@ -48,11 +50,27 @@ void Texture::Shutdown()
 		m_texture->Release();
 		m_texture = 0;
 	}
+
+	// Release the sampler state
+	if (m_samplerState) {
+		m_samplerState->Release();
+		m_samplerState;
+	}
 }
 
 ID3D11ShaderResourceView* Texture::GetTexture2D()
 {
 	return m_textureView;
+}
+
+ID3D11SamplerState* Texture::GetSamplerState()
+{
+	return m_samplerState;
+}
+
+void Texture::SetSamplerState(ID3D11SamplerState* samplerState)
+{
+	m_samplerState = samplerState;
 }
 
 int Texture::GetWidth()
