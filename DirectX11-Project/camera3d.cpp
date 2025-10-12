@@ -43,8 +43,10 @@ int Camera3D::GetEntityId()
 	return m_entityId;
 }
 
-void Camera3D::Update(DirectX::XMMATRIX modelMatrix)
+void Camera3D::Update(DirectX::XMMATRIX modelMatrix, float viewWidth, float viewHeight)
 {
+	m_aspectRatio = viewWidth / viewHeight;
+
 	m_viewMatrix = DirectX::XMMatrixInverse(NULL, modelMatrix);
 	m_matrix = DirectX::XMMatrixMultiply(m_viewMatrix, m_projectionMatrix);
 

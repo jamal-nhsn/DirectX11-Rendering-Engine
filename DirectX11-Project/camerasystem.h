@@ -5,6 +5,7 @@ INCLUDES
 ======*/
 #include <vector>
 
+#include "direct3d.h"
 #include "scene.h"
 
 class CameraSystem
@@ -14,5 +15,5 @@ public:
 	CameraSystem(const CameraSystem&);
 	~CameraSystem();
 
-	void Update(Scene* scene);
+	void Update(Direct3D* direct3d, Scene* scene);
 };

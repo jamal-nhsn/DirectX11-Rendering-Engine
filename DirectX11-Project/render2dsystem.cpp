@@ -37,7 +37,7 @@ bool Render2DSystem::Initialize(ID3D11Device* device)
 	return !FAILED(result);
 }
 
-void Render2DSystem::CreateBatches(Scene* scene)
+void Render2DSystem::CreateBatches(Scene* scene, float viewWidth, float viewHeight)
 {
 	std::vector<Sprite>* sprites = scene->GetComponents<Sprite>();
 	for (Sprite& sprite : *sprites) {
@@ -155,12 +155,12 @@ void Render2DSystem::Update(Direct3D* direct3d, Scene* scene)
 
 	direct3d->Clear(0.0f, 0.0f, 0.0f, 0.0f);
 
-	CreateBatches(scene);
+	
 	for (Camera2D& camera : *cameras) {
+		CreateBatches(scene, camera.GetViewWidth(), camera.GetViewHeight());
 		RenderBatches(direct3d, camera);
+		m_batches.clear();
 	}
-	// Clear the batches.
-	m_batches.clear();
 
 	direct3d->Render();
 }

@@ -43,8 +43,11 @@ int Camera2D::GetEntityId()
 	return m_entityId;
 }
 
-void Camera2D::Update(DirectX::XMMATRIX modelMatrix)
+void Camera2D::Update(DirectX::XMMATRIX modelMatrix, float viewWidth, float viewHeight)
 {
+	m_viewWidth = viewWidth;
+	m_viewHeight = viewHeight;
+
 	m_viewMatrix = DirectX::XMMatrixInverse(NULL, modelMatrix);
 	m_matrix = DirectX::XMMatrixMultiply(m_viewMatrix, m_projectionMatrix);
 

@@ -486,9 +486,14 @@ ID3D11DeviceContext* Direct3D::GetDeviceContext()
 	return m_deviceContext;
 }
 
-D3D11_VIEWPORT Direct3D::GetViewport()
+float Direct3D::GetViewWidth()
 {
-	return m_viewport;
+	return m_viewport.Width;
+}
+
+float Direct3D::GetViewHeight()
+{
+	return m_viewport.Height;
 }
 
 void Direct3D::GetVideoCardInfo(char* cardName, int& memory)

@@ -28,7 +28,9 @@ public:
 
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
-	D3D11_VIEWPORT GetViewport();
+
+	float GetViewWidth();
+	float GetViewHeight();
 
 	void GetVideoCardInfo(char* cardName, int& memory);
 

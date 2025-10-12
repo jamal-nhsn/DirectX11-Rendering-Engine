@@ -32,7 +32,7 @@ public:
 	void Update(Direct3D* direct3d, Scene* scene);
 
 private:
-	void CreateBatches(Scene* scene);
+	void CreateBatches(Scene* scene, float viewWidth, float viewHeight);
 	void RenderBatches(Direct3D* direct3d, Camera2D& camera);
 
 private:

@@ -162,7 +162,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	int sprite1Entity = m_scene->CreateEntity();
 	Transform& sprite1Transform = m_scene->GetComponent<Transform>(sprite1Entity);
-	sprite1Transform.SetGlobalScale(0.5f, 0.5f, 1.0f);
+	sprite1Transform.SetGlobalScale(100.0f, 100.0f, 1.0f);
 	Sprite& sprite1 = m_scene->GetComponent<Sprite>(sprite1Entity);
 	sprite1.SetShader(m_shaderManager->GetShader<DefaultSpriteShader>());
 	Texture* sprite1Texture = m_textureManager->GetTexture("stoneWall");
@@ -241,10 +241,11 @@ bool Application::Tick(float dt)
 	bool success = true;
 	
 	m_transformSystem->Update(m_scene);
-	m_cameraSystem->Update(m_scene);
+	m_cameraSystem->Update(m_direct3d, m_scene);
 	//m_renderSystem->Update(m_direct3d, m_scene);
 	m_render2DSystem->Update(m_direct3d, m_scene);
 
+	/*
 	Transform& transform1 = m_scene->GetComponent<Transform>(1);
 	transform1.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
@@ -252,6 +253,7 @@ bool Application::Tick(float dt)
 			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), DirectX::XMConvertToRadians(180.0f) * dt)
 		)
 	);
+	*/
 
 	
 	return success;
@@ -261,19 +263,5 @@ void Application::Resize(int width, int height, HWND hwnd)
 {
 	if (m_direct3d != 0) {
 		m_direct3d->Resize(width, height);
-	}
-	std::vector<Camera3D>* camera3Ds = m_scene->GetComponents<Camera3D>();
-	std::vector<Camera2D>* camera2Ds = m_scene->GetComponents<Camera2D>();
-
-	float fwidth = static_cast<float>(width);
-	float fheight = static_cast<float>(height);
-
-	for (Camera3D& camera3D : *camera3Ds) {
-		camera3D.SetAspectRatio(fwidth / fheight);
-	}
-
-	for (Camera2D& camera2D : *camera2Ds) {
-		camera2D.SetViewWidth(fwidth);
-		camera2D.SetViewHeight(fheight);
 	}
 }
