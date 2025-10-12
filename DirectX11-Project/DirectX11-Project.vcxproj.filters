@@ -325,6 +325,8 @@
     <FxCompile Include="defaultspriteshadervertex.hlsl">
       <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
     </FxCompile>
-    <FxCompile Include="defaultspriteshaderpixel.hlsl" />
+    <FxCompile Include="defaultspriteshaderpixel.hlsl">
+      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
