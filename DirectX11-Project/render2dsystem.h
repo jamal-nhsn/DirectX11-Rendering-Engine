@@ -27,11 +27,11 @@ public:
 	Render2DSystem(const Render2DSystem& other);
 	~Render2DSystem();
 
-	void Update(Direct3D* direct3d, Scene* scene);
+	bool Initialize(ID3D11Device* device);
 	void Shutdown();
+	void Update(Direct3D* direct3d, Scene* scene);
 
 private:
-	bool Initialize(ID3D11Device* device);
 	void CreateBatches(Scene* scene);
 	void RenderBatches(Direct3D* direct3d, Camera2D& camera);
 

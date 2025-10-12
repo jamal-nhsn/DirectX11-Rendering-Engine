@@ -98,6 +98,21 @@ bool DefaultSpriteShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* ver
 	return !FAILED(result);
 }
 
+bool DefaultSpriteShader::InitializeDepthStencilDesc(ID3D11Device* device)
+{
+	HRESULT result;
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+
+	// Create a depth stencil description, which will determine how depth writes work.
+	depthStencilDesc.DepthEnable = FALSE;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+	depthStencilDesc.StencilEnable = FALSE;
+
+	result = device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
+	return !FAILED(result);
+}
+
 bool DefaultSpriteShader::InitializeConstants(ID3D11Device* device)
 {
 	HRESULT result;

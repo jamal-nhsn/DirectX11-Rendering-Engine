@@ -9,8 +9,8 @@ TYPEDEFS
 ======*/
 struct PixelInputType
 {
-    float4 position : POSITION;
-    float2 texcoord : TEXCOORD;
+    float4 position : SV_POSITION;
+    float2 texcoord : TEXCOORD0;
     float4 color : COLOR;
 };
 
@@ -24,4 +24,5 @@ float4 PixelMain(PixelInputType input) : SV_TARGET
 
     // Tint the output by the color.
     return textureColor * input.color;
+
 }

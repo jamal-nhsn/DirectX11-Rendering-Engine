@@ -10,6 +10,7 @@ INCLUDES
 #include "transformsystem.h"
 #include "camerasystem.h"
 #include "rendersystem.h"
+#include "render2dsystem.h"
 #include "scene.h"
 
 class Application
@@ -34,6 +35,7 @@ private:
 	TransformSystem* m_transformSystem;
 	CameraSystem* m_cameraSystem;
 	RenderSystem* m_renderSystem;
+	Render2DSystem* m_render2DSystem;
 
 	Scene* m_scene;
 };

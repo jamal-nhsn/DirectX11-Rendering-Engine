@@ -86,10 +86,10 @@ void Sprite::SetSourceY(int sourceY)
 DirectX::XMFLOAT4 Sprite::GetUVBounds()
 {
 	float x1 = static_cast<float>(m_sourceX) / static_cast<float>(m_texture->GetWidth());
-	float y1 = static_cast<float>(m_sourceY) / static_cast<float>(m_texture->GetHeight());
+	float y1 = 1.0f - static_cast<float>(m_sourceY) / static_cast<float>(m_texture->GetHeight());
 
 	float x2 = static_cast<float>(m_sourceX + m_width ) / static_cast<float>(m_texture->GetWidth());
-	float y2 = static_cast<float>(m_sourceY + m_height) / static_cast<float>(m_texture->GetHeight());
+	float y2 = 1.0f - static_cast<float>(m_sourceY + m_height) / static_cast<float>(m_texture->GetHeight());
 
 	return DirectX::XMFLOAT4(x1, y1, x2, y2);
 }

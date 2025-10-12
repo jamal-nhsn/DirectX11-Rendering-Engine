@@ -74,9 +74,11 @@ void Render2DSystem::CreateBatches(Scene* scene)
 			{  0.5f, -0.5f, 0.0f, 1.0f }  // Bottom-Right
 		};
 
+		DirectX::XMMATRIX modelMatrix = transform.GetModelMatrix();
+
 		// Transform the vertices by the sprite's model matrix.
 		for (int i = 0; i < 4; ++i)
-			positions[i] = DirectX::XMVector4Transform(positions[i], transform.GetModelMatrix());
+			positions[i] = DirectX::XMVector4Transform(positions[i], modelMatrix);
 
 		// Generate the vertices for the sprite.
 		Vertex2D bottomLeft;
@@ -151,12 +153,16 @@ void Render2DSystem::Update(Direct3D* direct3d, Scene* scene)
 {
 	std::vector<Camera2D>* cameras = scene->GetComponents<Camera2D>();
 
+	direct3d->Clear(0.0f, 0.0f, 0.0f, 0.0f);
+
 	CreateBatches(scene);
 	for (Camera2D& camera : *cameras) {
 		RenderBatches(direct3d, camera);
 	}
 	// Clear the batches.
 	m_batches.clear();
+
+	direct3d->Render();
 }
 
 void Render2DSystem::Shutdown() {

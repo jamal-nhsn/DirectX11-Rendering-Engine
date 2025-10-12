@@ -63,12 +63,15 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_transformSystem = new TransformSystem;
 	m_cameraSystem = new CameraSystem;
 	m_renderSystem = new RenderSystem;
+	m_render2DSystem = new Render2DSystem;
+	m_render2DSystem->Initialize(m_direct3d->GetDevice());
 
 	// Create and initialize the Scene object.
 	m_scene = new Scene;
 	m_scene->Initialize(static_cast<float>(screenWidth), static_cast<float>(screenHeight));
 	m_scene->SetAmbientLight(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.25f));
 
+	/*
 	// Get camera entity from scene.
 	int camera = 0;
 	m_scene->GetComponent<Transform>(camera).SetGlobalPosition(0.0f, 0.0f, -15.0f);
@@ -154,6 +157,25 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	
 	float roomSize = 10.0f;
 	m_scene->GetComponent<Transform>(roomParent).SetGlobalScale(roomSize, roomSize, roomSize);
+	*/
+
+
+	int sprite1Entity = m_scene->CreateEntity();
+	Transform& sprite1Transform = m_scene->GetComponent<Transform>(sprite1Entity);
+	sprite1Transform.SetGlobalScale(0.5f, 0.5f, 1.0f);
+	Sprite& sprite1 = m_scene->GetComponent<Sprite>(sprite1Entity);
+	sprite1.SetShader(m_shaderManager->GetShader<DefaultSpriteShader>());
+	Texture* sprite1Texture = m_textureManager->GetTexture("stoneWall");
+	sprite1.SetTexture(sprite1Texture);
+	sprite1.SetWidth(sprite1Texture->GetWidth());
+	sprite1.SetHeight(sprite1Texture->GetHeight());
+	sprite1.SetSourceX(0);
+	sprite1.SetSourceY(0);
+
+	int camera2DEntity = m_scene->CreateEntity();
+	Transform& camera2DTransform = m_scene->GetComponent<Transform>(camera2DEntity);
+	camera2DTransform.SetGlobalPosition(0.0f, 0.0f, -5.0f);
+	Camera2D& camera2D = m_scene->GetComponent<Camera2D>(camera2DEntity);
 
 	return success;
 }
@@ -201,6 +223,11 @@ void Application::Shutdown()
 		delete m_renderSystem;
 		m_renderSystem = 0;
 	}
+	if (m_render2DSystem) {
+		m_render2DSystem->Shutdown();
+		delete m_render2DSystem;
+		m_render2DSystem = 0;
+	}
 
 	// Release the Scene object.
 	if (m_scene) {
@@ -215,15 +242,17 @@ bool Application::Tick(float dt)
 	
 	m_transformSystem->Update(m_scene);
 	m_cameraSystem->Update(m_scene);
-	m_renderSystem->Update(m_direct3d, m_scene);
+	//m_renderSystem->Update(m_direct3d, m_scene);
+	m_render2DSystem->Update(m_direct3d, m_scene);
 
 	Transform& transform1 = m_scene->GetComponent<Transform>(1);
 	transform1.SetLocalRotation(
 		DirectX::XMQuaternionMultiply(
 			transform1.GetLocalRotation(),
-			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), DirectX::XMConvertToRadians(180.0f) * dt)
+			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), DirectX::XMConvertToRadians(180.0f) * dt)
 		)
 	);
+
 	
 	return success;
 }
