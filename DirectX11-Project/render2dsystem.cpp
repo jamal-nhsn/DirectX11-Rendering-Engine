@@ -44,67 +44,26 @@ void Render2DSystem::CreateBatches(Scene* scene)
 
 		// Read in relevant data from sprite.
 		Shader* shader = sprite.GetShader();
-		ID3D11SamplerState* sampler = sprite.GetTexture()->GetSamplerState();
-		ID3D11ShaderResourceView* texture = sprite.GetTexture()->GetTexture2D();
+		Texture* texture = sprite.GetTexture();
 		Transform& transform = scene->GetComponent<Transform>(sprite.GetEntityId());
+		DirectX::XMFLOAT4 color = sprite.GetTint();
+		DirectX::XMFLOAT4 uvBounds = sprite.GetUVBounds();
 
 		// Try to find a batch.
 		size_t batchIndex;
-		size_t samplerIndex;
-		size_t textureIndex;
 		for (batchIndex = 0; batchIndex < m_batches.size(); batchIndex++) {
-
-			// Keep looking if shader mismatch or the batch is full.
-			if (shader != m_batches[batchIndex].shader || m_batches[batchIndex].vertices.size() >= 6 * MAX_SPRITE_BATCH_SIZE) {
-				continue;
+			if (shader  == m_batches[batchIndex].shader  && 
+				texture == m_batches[batchIndex].texture &&
+				m_batches[batchIndex].vertices.size() < 6 * MAX_SPRITE_BATCH_SIZE) {
+				break;
 			}
-
-			// Try to find a matching sampler in the batch.
-			for (samplerIndex = 0; samplerIndex < m_batches[batchIndex].samplers.size(); samplerIndex++) {
-				if (m_batches[batchIndex].samplers[samplerIndex] == sampler) {
-					break;
-				}
-			}
-
-			// Try to find a matching a texture in the batch.
-			for (textureIndex = 0; textureIndex < m_batches[batchIndex].textures.size(); textureIndex++) {
-				if (m_batches[batchIndex].textures[textureIndex] == texture) {
-					break;
-				}
-			}
-
-			// Keep looking if no matching sampler and samplers are full.
-			if (samplerIndex == m_batches[batchIndex].samplers.size() && m_batches[batchIndex].samplers.size() >= D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT) {
-				continue;
-			}
-
-			// Keep looking if no matching texture and textures are full.
-			if (textureIndex == m_batches[batchIndex].textures.size() && m_batches[batchIndex].textures.size() >= D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT) {
-				continue;
-			}
-
-			// Register a new sampler if no matching sampler was found and batch has space for one.
-			if (samplerIndex == m_batches[batchIndex].samplers.size()) {
-				m_batches[batchIndex].samplers.emplace_back(sampler);
-			}
-
-			// Register a new texture if no matching texture was found and batch has space for one.
-			if (textureIndex == m_batches[batchIndex].textures.size()) {
-				m_batches[batchIndex].textures.emplace_back(texture);
-			}
-
-			// Found a viable batch, stop looking.
-			break;
 		}
 
 		// Could not find a viable batch, create a new one.
 		if (batchIndex == m_batches.size()) {
 			m_batches.emplace_back();
 			m_batches[batchIndex].shader = shader;
-			m_batches[batchIndex].samplers.emplace_back(sampler);
-			m_batches[batchIndex].textures.emplace_back(texture);
-			samplerIndex = 0;
-			textureIndex = 0;
+			m_batches[batchIndex].texture = texture;
 		}
 
 		// Positions of the vertices of the unit quad centered at the origin.
@@ -119,38 +78,26 @@ void Render2DSystem::CreateBatches(Scene* scene)
 		for (int i = 0; i < 4; ++i)
 			positions[i] = DirectX::XMVector4Transform(positions[i], transform.GetModelMatrix());
 
-		// Read in additional sprite data.
-		DirectX::XMFLOAT4 color = sprite.GetTint();
-		DirectX::XMFLOAT4 uvBounds = sprite.GetUVBounds();
-
 		// Generate the vertices for the sprite.
 		Vertex2D bottomLeft;
 		DirectX::XMStoreFloat3(&bottomLeft.position, positions[0]);
 		bottomLeft.color = color;
 		bottomLeft.texCoord = DirectX::XMFLOAT2(uvBounds.x, uvBounds.y);
-		bottomLeft.samplerIndex = static_cast<float>(samplerIndex);
-		bottomLeft.textureIndex = static_cast<float>(textureIndex);
 
 		Vertex2D topLeft;
 		DirectX::XMStoreFloat3(&topLeft.position, positions[1]);
 		topLeft.color = color;
 		topLeft.texCoord = DirectX::XMFLOAT2(uvBounds.x, uvBounds.w);
-		topLeft.samplerIndex = static_cast<float>(samplerIndex);
-		topLeft.textureIndex = static_cast<float>(textureIndex);
 
 		Vertex2D topRight;
 		DirectX::XMStoreFloat3(&topRight.position, positions[2]);
 		topRight.color = color;
 		topRight.texCoord = DirectX::XMFLOAT2(uvBounds.z, uvBounds.w);
-		topRight.samplerIndex = static_cast<float>(samplerIndex);
-		topRight.textureIndex = static_cast<float>(textureIndex);
 
 		Vertex2D bottomRight;
 		DirectX::XMStoreFloat3(&bottomRight.position, positions[3]);
 		bottomRight.color = color;
 		bottomRight.texCoord = DirectX::XMFLOAT2(uvBounds.z, uvBounds.y);
-		bottomRight.samplerIndex = static_cast<float>(samplerIndex);
-		bottomRight.textureIndex = static_cast<float>(textureIndex);
 
 		// Add the vertices to the batch.
 		m_batches[batchIndex].vertices.emplace_back(bottomLeft);
@@ -186,12 +133,16 @@ void Render2DSystem::RenderBatches(Direct3D* direct3d, Camera2D& camera)
 		deviceContext->IASetVertexBuffers(0, 1, &m_vbo, &stride, &offset);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		//batch.shader->Bind()
+		// Bind the shader.
+		batch.shader->Bind(deviceContext, camera.GetViewMatrix(), camera.GetProjectionMatrix());
 
 		// Set the textures and sampler states in the pixel shader.
-		deviceContext->PSSetShaderResources(0, static_cast<unsigned int>(batch.textures.size()), batch.textures.data());
-		deviceContext->PSSetSamplers(0, static_cast<unsigned int>(batch.samplers.size()), batch.samplers.data());
+		ID3D11SamplerState* sampler = batch.texture->GetSamplerState();
+		ID3D11ShaderResourceView* texture = batch.texture->GetTexture2D();
 
+		deviceContext->PSSetSamplers(0, 1, &sampler);
+		deviceContext->PSSetShaderResources(0, 1, &texture);
+		
 		deviceContext->Draw(static_cast<unsigned int>(batch.vertices.size()), 0);
 	}
 }

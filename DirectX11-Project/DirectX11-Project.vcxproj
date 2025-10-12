@@ -26,6 +26,7 @@
     <ClInclude Include="colorshader.h" />
     <ClInclude Include="components.h" />
     <ClInclude Include="defaultbaseshader.h" />
+    <ClInclude Include="defaultspriteshader.h" />
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="defaultlightshader.h" />
     <ClInclude Include="entity.h" />
@@ -59,6 +60,7 @@
     <ClCompile Include="camerasystem.cpp" />
     <ClCompile Include="colorshader.cpp" />
     <ClCompile Include="defaultbaseshader.cpp" />
+    <ClCompile Include="defaultspriteshader.cpp" />
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="defaultlightshader.cpp" />
@@ -108,10 +110,10 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <None Include="defaultspriteshaderpixel.hlsl">
+    <None Include="defaultspritepixel.hlsl">
       <FileType>Document</FileType>
     </None>
-    <None Include="defaultspriteshadervertex.hlsl">
+    <None Include="defaultspritevertex.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

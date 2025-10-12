@@ -49,6 +49,7 @@ public:
 
 protected:
 	D3D11_INPUT_ELEMENT_DESC* CreateLayout(bool usePosition, bool useNormal, bool useTexCoord, bool useTangent, bool useColor, unsigned int& numElements);
+	D3D11_INPUT_ELEMENT_DESC* CreateLayout2D(bool usePosition, bool useTexCoord, bool useColor, unsigned int& numElements);
 	void SetShaderStates(ID3D11DeviceContext* device);
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderSource);
 

@@ -18,8 +18,7 @@ private:
 	struct Batch
 	{
 		Shader* shader;
-		std::vector<ID3D11SamplerState*> samplers;
-		std::vector<ID3D11ShaderResourceView*> textures;
+		Texture* texture;
 		std::vector<Vertex2D> vertices;
 	};
 

@@ -183,6 +183,9 @@
     <ClInclude Include="texturemetaloader.h">
       <Filter>Header Files\Resources\Loaders</Filter>
     </ClInclude>
+    <ClInclude Include="defaultspriteshader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -278,6 +281,9 @@
     <ClCompile Include="texturemetaloader.cpp">
       <Filter>Source Files\Resources\Loaders</Filter>
     </ClCompile>
+    <ClCompile Include="defaultspriteshader.cpp">
+      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="colorvertex.hlsl">
@@ -307,6 +313,12 @@
     <None Include="Textures\stoneWall.texturemeta">
       <Filter>Resource Files\Textures</Filter>
     </None>
+    <None Include="defaultspritepixel.hlsl">
+      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
+    </None>
+    <None Include="defaultspritevertex.hlsl">
+      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\stoneWall.tga">
@@ -320,13 +332,5 @@
     <Object Include="Meshes\sphere.obj">
       <Filter>Resource Files\Meshes</Filter>
     </Object>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="defaultspriteshadervertex.hlsl">
-      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="defaultspriteshaderpixel.hlsl">
-      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

@@ -15,8 +15,6 @@ struct VertexInputType
     float4 position : POSITION;
     float2 texcoord : TEXCOORD;
     float4 color : COLOR;
-    nointerpolation float samplerIndex : SAMPLER_INDEX;
-    nointerpolation float textureIndex : TEXTURE_INDEX;
 };
 
 struct PixelInputType
@@ -24,8 +22,6 @@ struct PixelInputType
     float4 position : POSITION;
     float2 texcoord : TEXCOORD;
     float4 color : COLOR;
-    float samplerIndex : SAMPLER_INDEX;
-    float textureIndex : TEXTURE_INDEX;
 };
 
 /*===========
@@ -45,8 +41,6 @@ PixelInputType VertexMain(VertexInputType input)
     // Store the input variables for the pixel shader to use.
     output.texcoord = input.texcoord;
     output.color = input.color;
-    output.samplerIndex = input.samplerIndex;
-    output.textureIndex = input.textureIndex;
     
     return output;
 }

@@ -255,6 +255,66 @@ D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout(bool usePosition, bool useNormal,
 	return polygonLayout;
 }
 
+D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout2D(bool usePosition, bool useTexCoord, bool useColor, unsigned int& numElements)
+{
+	numElements =
+		(usePosition ? 1 : 0) +
+		(useTexCoord ? 1 : 0) +
+		(useColor ? 1 : 0);
+
+	// Create the vertex input layout description.
+	// This setup needs to match the Vertex stucture.
+	D3D11_INPUT_ELEMENT_DESC* polygonLayout = new D3D11_INPUT_ELEMENT_DESC[numElements];
+
+	if (!polygonLayout) {
+		return polygonLayout;
+	}
+
+	int index = 0;
+	UINT offset = 0;
+
+	if (usePosition) {
+		polygonLayout[index].SemanticName = "POSITION";
+		polygonLayout[index].SemanticIndex = 0;
+		polygonLayout[index].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		polygonLayout[index].InputSlot = 0;
+		polygonLayout[index].AlignedByteOffset = offset;
+		polygonLayout[index].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		polygonLayout[index].InstanceDataStepRate = 0;
+
+		index++;
+	}
+
+	offset += sizeof(DirectX::XMFLOAT3); // Position size.
+
+
+	if (useTexCoord) {
+		polygonLayout[index].SemanticName = "TEXCOORD";
+		polygonLayout[index].SemanticIndex = 0;
+		polygonLayout[index].Format = DXGI_FORMAT_R32G32_FLOAT;
+		polygonLayout[index].InputSlot = 0;
+		polygonLayout[index].AlignedByteOffset = offset;
+		polygonLayout[index].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		polygonLayout[index].InstanceDataStepRate = 0;
+
+		index++;
+	}
+
+	offset += sizeof(DirectX::XMFLOAT2); // TexCoord size.
+
+	if (useColor) {
+		polygonLayout[index].SemanticName = "COLOR";
+		polygonLayout[index].SemanticIndex = 0;
+		polygonLayout[index].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		polygonLayout[index].InputSlot = 0;
+		polygonLayout[index].AlignedByteOffset = offset;
+		polygonLayout[index].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		polygonLayout[index].InstanceDataStepRate = 0;
+	}
+
+	return polygonLayout;
+}
+
 void Shader::SetShaderStates(ID3D11DeviceContext* deviceContext)
 {
 	// Set the blend state in the output merger.
