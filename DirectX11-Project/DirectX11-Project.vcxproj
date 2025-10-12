@@ -108,8 +108,12 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="defaultspriteshaderpixel.hlsl" />
-    <FxCompile Include="defaultspriteshadervertex.hlsl" />
+    <None Include="defaultspriteshaderpixel.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="defaultspriteshadervertex.hlsl">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
