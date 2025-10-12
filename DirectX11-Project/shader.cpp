@@ -97,12 +97,38 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 	return InitializeConstants(device);
 }
 
-// If either of these are called, the renderer called the wrong Bind for the shader.
-bool Shader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) {
+// If any of these are called, the renderer called the wrong Bind for the shader.
+bool Shader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX modelMatrix,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix,
+	DirectX::XMFLOAT4 ambientLight
+)
+{
 	return false;
 }
 
-bool Shader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight) {
+bool Shader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX modelMatrix,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix,
+	DirectX::XMFLOAT3 cameraPosition,
+	DirectX::XMFLOAT4 specularTint,
+	float shininess,
+	LightData lightData
+)
+{
+	return false;
+}
+
+bool Shader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix
+)
+{
 	return false;
 }
 

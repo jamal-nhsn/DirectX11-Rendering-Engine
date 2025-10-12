@@ -27,7 +27,10 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 
 	for (Camera3D& camera : (*camera3Ds)) {
 
-		Transform& cameraTransform = scene->GetComponent<Transform>(0);
+		DirectX::XMMATRIX viewMatrix = camera.GetViewMatrix();
+		DirectX::XMMATRIX projectionMatrix = camera.GetProjectionMatrix();
+		DirectX::XMFLOAT3 cameraPosition = scene->GetComponent<Transform>(camera.GetEntityId()).GetGlobalPosition();
+
 		int renderMask = camera.GetRenderMask();
 
 		/*-----------BASE-PASS-----------*/
@@ -52,10 +55,23 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 				continue;
 			}
 
-			mesh->Bind(deviceContext);
-			Transform& modelTransform = scene->GetComponent<Transform>(entity);
+			ID3D11SamplerState* samplerState = texture->GetSamplerState();
+			ID3D11ShaderResourceView* shaderResourceView = texture->GetTexture2D();
 
-			shader->Bind(deviceContext, camera, model, modelTransform, ambientLight);
+			direct3d->GetDeviceContext()->PSSetSamplers(0, 1, &samplerState);
+			direct3d->GetDeviceContext()->PSSetShaderResources(0, 1, &shaderResourceView);
+
+			mesh->Bind(deviceContext);
+			DirectX::XMMATRIX modelMatrix = scene->GetComponent<Transform>(entity).GetModelMatrix();
+
+			shader->Bind(
+				deviceContext,
+				modelMatrix,
+				viewMatrix,
+				projectionMatrix,
+				ambientLight
+			);
+
 			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 		}
 
@@ -81,13 +97,35 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 				continue;
 			}
 
+			ID3D11SamplerState* samplerState = texture->GetSamplerState();
+			ID3D11ShaderResourceView* shaderResourceView = texture->GetTexture2D();
+
+			direct3d->GetDeviceContext()->PSSetSamplers(0, 1, &samplerState);
+			direct3d->GetDeviceContext()->PSSetShaderResources(0, 1, &shaderResourceView);
+
 			mesh->Bind(deviceContext);
-			Transform& modelTransform = scene->GetComponent<Transform>(entity);
+			DirectX::XMMATRIX modelMatrix = scene->GetComponent<Transform>(entity).GetModelMatrix();
+
+			DirectX::XMFLOAT4 specularTint = model.GetSpecularTint();
+			float shininess = model.GetShininess();
 
 			for (Light& light : (*lights)) {
+			
+				LightData lightData;
 				Transform& lightTransform = scene->GetComponent<Transform>(light.GetEntityId());
+				light.FillLightData(&lightData, lightTransform.GetGlobalPosition(), lightTransform.GetForward());
 
-				shader->Bind(deviceContext, camera, cameraTransform, model, modelTransform, light, lightTransform);
+				shader->Bind(
+					deviceContext,
+					modelMatrix,
+					viewMatrix,
+					projectionMatrix,
+					cameraPosition,
+					specularTint,
+					shininess,
+					lightData
+				);
+
 				deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 			}
 		}

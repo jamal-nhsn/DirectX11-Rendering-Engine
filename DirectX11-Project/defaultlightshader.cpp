@@ -34,41 +34,43 @@ DefaultLightShader::~DefaultLightShader()
 {
 }
 
-bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform)
+bool DefaultLightShader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX modelMatrix,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix,
+	DirectX::XMFLOAT3 cameraPosition,
+	DirectX::XMFLOAT4 specularTint,
+	float shininess,
+	LightData lightData
+)
 {
 	bool success;
 	MatrixBuffer matrixBuffer;
 	CameraBuffer cameraBuffer;
 	LightBuffer lightBuffer;
 	MaterialBuffer materialBuffer;
-	ID3D11ShaderResourceView* texture;
-	ID3D11SamplerState* samplerState;
 
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	// Transpose the matrices to prepare them for the shader.
-	matrixBuffer.model      = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
-	matrixBuffer.view       = DirectX::XMMatrixTranspose(camera3D.GetViewMatrix());
-	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera3D.GetProjectionMatrix());
+	matrixBuffer.model = DirectX::XMMatrixTranspose(modelMatrix);
+	matrixBuffer.view = DirectX::XMMatrixTranspose(viewMatrix);
+	matrixBuffer.projection = DirectX::XMMatrixTranspose(projectionMatrix);
 
-	// Get the cameras position.
-	cameraBuffer.cameraPos = cameraTransform.GetGlobalPosition();
-
-	// Load the light data into the buffer.
-	DirectX::XMFLOAT3 lightPosition = lightTransform.GetGlobalPosition();
-	DirectX::XMFLOAT3 lightDirection = lightTransform.GetForward();
-	light.FillLightData(&lightBuffer.lightData, lightPosition, lightDirection);
+	// Load the camera position.
+	cameraBuffer.cameraPos = cameraPosition;
 
 	// Load the material data into the buffer.
-	materialBuffer.specularTint = model.GetSpecularTint();
-	materialBuffer.shininess = model.GetShininess();
+	materialBuffer.specularTint = specularTint;
+	materialBuffer.shininess = shininess;
 
-	texture = model.GetTexture()->GetTexture2D();
-	samplerState = model.GetTexture()->GetSamplerState();
-	
-	success = SetShaderParameters(deviceContext, matrixBuffer, cameraBuffer, lightBuffer, materialBuffer, texture, samplerState);
+	// Load the light data into the buffer.
+	lightBuffer.lightData = lightData;
+
+	success = SetShaderParameters(deviceContext, matrixBuffer, cameraBuffer, lightBuffer, materialBuffer);
 	if (!success) {
 		return success;
 	}
@@ -79,7 +81,7 @@ bool DefaultLightShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& came
 	return success;
 }
 
-bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, CameraBuffer cameraBuffer, LightBuffer lightBuffer, MaterialBuffer materialBuffer, ID3D11ShaderResourceView* texture, ID3D11SamplerState* samplerState)
+bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, CameraBuffer cameraBuffer, LightBuffer lightBuffer, MaterialBuffer materialBuffer)
 {	
 	bool success;
 
@@ -97,15 +99,11 @@ bool DefaultLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 	success = LoadBuffer<LightBuffer>(deviceContext, m_lightBuffer, lightBuffer);
 	success = success && LoadBuffer<MaterialBuffer>(deviceContext, m_materialBuffer, materialBuffer);
 	if (!success) {
-		return false;
+		return success;
 	}
 	deviceContext->PSSetConstantBuffers(0, 2, pixelConstantBuffers);
 
-	// Finally, set shader texture resource and sampler in the pixel shader.
-	deviceContext->PSSetSamplers(0, 1, &samplerState);
-	deviceContext->PSSetShaderResources(0, 1, &texture);
-
-	return true;
+	return success;
 }
 
 bool DefaultLightShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer)

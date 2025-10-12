@@ -26,7 +26,13 @@ ColorShader::~ColorShader()
 {
 }
 
-bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
+bool ColorShader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX modelMatrix,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix,
+	DirectX::XMFLOAT4 ambientLight
+)
 {
 	bool success;
 	MatrixBuffer matrixBuffer;
@@ -36,9 +42,9 @@ bool ColorShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, M
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	// Transpose the matrices to prepare them for the shader.
-	matrixBuffer.model      = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
-	matrixBuffer.view       = DirectX::XMMatrixTranspose(camera3D.GetViewMatrix());
-	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera3D.GetProjectionMatrix());
+	matrixBuffer.model = DirectX::XMMatrixTranspose(modelMatrix);
+	matrixBuffer.view = DirectX::XMMatrixTranspose(viewMatrix);
+	matrixBuffer.projection = DirectX::XMMatrixTranspose(projectionMatrix);
 
 	success = SetShaderParameters(deviceContext, matrixBuffer);
 	if (!success) {

@@ -24,10 +24,16 @@ public:
 	DefaultBaseShader(const DefaultBaseShader&);
 	~DefaultBaseShader();
 
-	bool Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight) override;
+	bool Bind(
+		ID3D11DeviceContext* deviceContext,
+		DirectX::XMMATRIX modelMatrix,
+		DirectX::XMMATRIX viewMatrix,
+		DirectX::XMMATRIX projectionMatrix,
+		DirectX::XMFLOAT4 ambientLight
+	) override;
 
 private:
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, AmbientLightBuffer ambientLightBuffer, ID3D11ShaderResourceView* texture, ID3D11SamplerState* samplerState);
+	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, AmbientLightBuffer ambientLightBuffer);
 
 protected:
 	bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) override;

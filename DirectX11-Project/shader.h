@@ -18,8 +18,33 @@ class Shader
 {
 public:
 	bool Initialize(ID3D11Device* device, HWND hwnd);
-	virtual bool Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform);
-	virtual bool Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight);
+	
+	// Base Shaders
+	virtual bool Bind(
+		ID3D11DeviceContext* deviceContext,
+		DirectX::XMMATRIX modelMatrix,
+		DirectX::XMMATRIX viewMatrix,
+		DirectX::XMMATRIX projectionMatrix,
+		DirectX::XMFLOAT4 ambientLight
+	);
+	// Lighting Shaders
+	virtual bool Bind(
+		ID3D11DeviceContext* deviceContext,
+		DirectX::XMMATRIX modelMatrix,
+		DirectX::XMMATRIX viewMatrix,
+		DirectX::XMMATRIX projectionMatrix,
+		DirectX::XMFLOAT3 cameraPosition,
+		DirectX::XMFLOAT4 specularTint,
+		float shininess,
+		LightData lightData
+	);
+	// 2D Shaders;
+	virtual bool Bind(
+		ID3D11DeviceContext* deviceContext,
+		DirectX::XMMATRIX viewMatrix,
+		DirectX::XMMATRIX projectionMatrix
+	);
+
 	void Shutdown();
 
 protected:

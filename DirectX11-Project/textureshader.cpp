@@ -26,26 +26,27 @@ TextureShader::~TextureShader()
 {
 }
 
-bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
+bool TextureShader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX modelMatrix,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix,
+	DirectX::XMFLOAT4 ambientLight
+)
 {
 	bool success;
 	MatrixBuffer matrixBuffer;
-	ID3D11ShaderResourceView* texture;
-	ID3D11SamplerState* samplerState;
 
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	// Transpose the matrices to prepare them for the shader.
-	matrixBuffer.model = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
-	matrixBuffer.view = DirectX::XMMatrixTranspose(camera3D.GetViewMatrix());
-	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera3D.GetProjectionMatrix());
+	matrixBuffer.model = DirectX::XMMatrixTranspose(modelMatrix);
+	matrixBuffer.view = DirectX::XMMatrixTranspose(viewMatrix);
+	matrixBuffer.projection = DirectX::XMMatrixTranspose(projectionMatrix);
 
-	texture = model.GetTexture()->GetTexture2D();
-	samplerState = model.GetTexture()->GetSamplerState();
-
-	success = SetShaderParameters(deviceContext, matrixBuffer, texture, samplerState);
+	success = SetShaderParameters(deviceContext, matrixBuffer);
 	if (!success) {
 		return success;
 	}
@@ -56,22 +57,18 @@ bool TextureShader::Bind(ID3D11DeviceContext* deviceContext, Camera3D& camera3D,
 	return success;
 }
 
-bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, ID3D11ShaderResourceView* texture, ID3D11SamplerState* samplerState)
+bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer)
 {
 	bool success;
 
 	// Set the matrix buffer in the vertex shader with the updated values.
 	success = LoadBuffer<MatrixBuffer>(deviceContext, m_matrixBuffer, matrixBuffer);
 	if (!success) {
-		return false;
+		return success;
 	}
 	deviceContext->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
 
-	// Finally, set shader texture resource and sampler in the pixel shader.
-	deviceContext->PSSetSamplers(0, 1, &samplerState);
-	deviceContext->PSSetShaderResources(0, 1, &texture);
-
-	return true;
+	return success;
 }
 
 bool TextureShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer)
