@@ -79,6 +79,12 @@
     <Filter Include="Source Files\Resources\Loaders">
       <UniqueIdentifier>{81d19f92-8916-44b8-8027-a4f57afc3f51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\2D">
+      <UniqueIdentifier>{738e146c-da9c-4d76-a1d5-96504f08a7eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\2D\Default Sprite Shader">
+      <UniqueIdentifier>{b613be4b-4a8b-4431-9ad5-f623db896628}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -314,5 +320,11 @@
     <Object Include="Meshes\sphere.obj">
       <Filter>Resource Files\Meshes</Filter>
     </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="defaultspriteshadervertex.hlsl">
+      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="defaultspriteshaderpixel.hlsl" />
   </ItemGroup>
 </Project>
