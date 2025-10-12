@@ -159,18 +159,35 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_scene->GetComponent<Transform>(roomParent).SetGlobalScale(roomSize, roomSize, roomSize);
 	*/
 
+	int spriteWidth = 25;
+	int spriteHeight = 25;
 
-	int sprite1Entity = m_scene->CreateEntity();
-	Transform& sprite1Transform = m_scene->GetComponent<Transform>(sprite1Entity);
-	sprite1Transform.SetGlobalScale(100.0f, 100.0f, 1.0f);
-	Sprite& sprite1 = m_scene->GetComponent<Sprite>(sprite1Entity);
-	sprite1.SetShader(m_shaderManager->GetShader<DefaultSpriteShader>());
-	Texture* sprite1Texture = m_textureManager->GetTexture("stoneWall");
-	sprite1.SetTexture(sprite1Texture);
-	sprite1.SetWidth(sprite1Texture->GetWidth());
-	sprite1.SetHeight(sprite1Texture->GetHeight());
-	sprite1.SetSourceX(0);
-	sprite1.SetSourceY(0);
+	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
+	Texture* spriteTexture = m_textureManager->GetTexture("stoneWall");
+
+	int columns = 100;
+	int rows = 100;
+
+	int columnSpacing = 25;
+	int rowSpacing = 25;
+
+	for (int i = 0; i < columns; i++) {
+		for (int j = 0; j < rows; j++) {
+			int spriteEntity = m_scene->CreateEntity();
+
+			Sprite& sprite = m_scene->GetComponent<Sprite>(spriteEntity);
+			sprite.SetShader(spriteShader);
+			sprite.SetTexture(spriteTexture);
+			sprite.SetWidth(spriteTexture->GetWidth());
+			sprite.SetHeight(spriteTexture->GetHeight());
+			sprite.SetSourceX(0);
+			sprite.SetSourceY(0);
+
+			Transform& spriteTransform = m_scene->GetComponent<Transform>(spriteEntity);
+			spriteTransform.SetGlobalPosition(static_cast<float>(i * columnSpacing), static_cast<float>(j * rowSpacing), 0.0f);
+			spriteTransform.SetGlobalScale(static_cast<float>(spriteWidth), static_cast<float>(spriteHeight), 1.0f);
+		}
+	}
 
 	int camera2DEntity = m_scene->CreateEntity();
 	Transform& camera2DTransform = m_scene->GetComponent<Transform>(camera2DEntity);
@@ -245,16 +262,15 @@ bool Application::Tick(float dt)
 	//m_renderSystem->Update(m_direct3d, m_scene);
 	m_render2DSystem->Update(m_direct3d, m_scene);
 
-	/*
-	Transform& transform1 = m_scene->GetComponent<Transform>(1);
-	transform1.SetLocalRotation(
-		DirectX::XMQuaternionMultiply(
-			transform1.GetLocalRotation(),
-			DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), DirectX::XMConvertToRadians(180.0f) * dt)
-		)
-	);
-	*/
-
+	for (int i = 1; i < 10001; i++) {
+		Transform& transform = m_scene->GetComponent<Transform>(i);
+		transform.SetLocalRotation(
+			DirectX::XMQuaternionMultiply(
+				transform.GetLocalRotation(),
+				DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), DirectX::XMConvertToRadians(180.0f) * dt)
+			)
+		);
+	}
 	
 	return success;
 }

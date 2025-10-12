@@ -5,8 +5,6 @@ const ComponentId Camera2D::ID = ComponentId::Camera2D;
 Camera2D::Camera2D(int entityId)
 	: m_entityId(entityId)
 {
-	m_dirtyFlag = true;
-
 	// Default Camera2D settings:
 	m_renderMask = 1 << static_cast<int>(RenderLayer::Default);
 
@@ -23,7 +21,6 @@ Camera2D::Camera2D(int entityId)
 Camera2D::Camera2D(const Camera2D& other)
 {
 	m_entityId = other.m_entityId;
-	m_dirtyFlag = other.m_dirtyFlag;
 	m_renderMask = other.m_renderMask;
 	m_viewWidth = other.m_viewWidth;
 	m_viewHeight = other.m_viewHeight;
@@ -49,15 +46,10 @@ void Camera2D::Update(DirectX::XMMATRIX modelMatrix, float viewWidth, float view
 	m_viewHeight = viewHeight;
 
 	m_viewMatrix = DirectX::XMMatrixInverse(NULL, modelMatrix);
+	//m_projectionMatrix = DirectX::XMMatrixOrthographicLH(m_viewWidth, m_viewHeight, m_nearPlane, m_farPlane);
+	m_projectionMatrix = DirectX::XMMatrixOrthographicOffCenterLH(0.0f, m_viewWidth, 0.0f, m_viewHeight, m_nearPlane, m_farPlane);
+
 	m_matrix = DirectX::XMMatrixMultiply(m_viewMatrix, m_projectionMatrix);
-
-	if (!m_dirtyFlag) {
-		return;
-	}
-
-	m_projectionMatrix = DirectX::XMMatrixOrthographicLH(m_viewWidth, m_viewHeight, m_nearPlane, m_farPlane);
-
-	m_dirtyFlag = false;
 }
 
 int Camera2D::GetRenderMask()
@@ -92,25 +84,21 @@ void Camera2D::SetRenderMask(int renderMask)
 
 void Camera2D::SetViewWidth(float viewWidth)
 {
-	m_dirtyFlag = m_viewWidth != viewWidth;
 	m_viewWidth = viewWidth;
 }
 
 void Camera2D::SetViewHeight(float viewHeight)
 {
-	m_dirtyFlag = m_viewHeight != viewHeight;
 	m_viewHeight = viewHeight;
 }
 
 void Camera2D::SetNearPlane(float nearPlane)
 {
-	m_dirtyFlag = m_nearPlane != nearPlane;
 	m_nearPlane = nearPlane;
 }
 
 void Camera2D::SetFarPlane(float farPlane)
 {
-	m_dirtyFlag = m_farPlane != farPlane;
 	m_farPlane = farPlane;
 }
 

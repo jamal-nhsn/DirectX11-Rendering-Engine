@@ -44,8 +44,6 @@ private:
 
 	int m_renderMask;
 
-	bool m_dirtyFlag;
-
 	float m_viewWidth;
 	float m_viewHeight;
 	float m_nearPlane;

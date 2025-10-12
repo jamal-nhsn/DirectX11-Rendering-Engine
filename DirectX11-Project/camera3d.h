@@ -44,8 +44,6 @@ private:
 
 	int m_renderMask;
 
-	bool m_dirtyFlag;
-
 	float m_fovy;
 	float m_aspectRatio;
 	float m_nearPlane;

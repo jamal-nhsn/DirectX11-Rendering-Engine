@@ -52,8 +52,8 @@ void Render2DSystem::CreateBatches(Scene* scene, float viewWidth, float viewHeig
 		// Try to find a batch.
 		size_t batchIndex;
 		for (batchIndex = 0; batchIndex < m_batches.size(); batchIndex++) {
-			if (shader  == m_batches[batchIndex].shader  && 
-				texture == m_batches[batchIndex].texture &&
+			if ((shader  == m_batches[batchIndex].shader  || m_batches[batchIndex].shader == 0) &&
+				(texture == m_batches[batchIndex].texture || m_batches[batchIndex].texture == 0) &&
 				m_batches[batchIndex].vertices.size() < 6 * MAX_SPRITE_BATCH_SIZE) {
 				break;
 			}
@@ -62,9 +62,11 @@ void Render2DSystem::CreateBatches(Scene* scene, float viewWidth, float viewHeig
 		// Could not find a viable batch, create a new one.
 		if (batchIndex == m_batches.size()) {
 			m_batches.emplace_back();
-			m_batches[batchIndex].shader = shader;
-			m_batches[batchIndex].texture = texture;
 		}
+
+		// Always overwrite batch parameters.
+		m_batches[batchIndex].shader = shader;
+		m_batches[batchIndex].texture = texture;
 
 		// Positions of the vertices of the unit quad centered at the origin.
 		DirectX::XMVECTOR positions[4] = {
@@ -159,7 +161,13 @@ void Render2DSystem::Update(Direct3D* direct3d, Scene* scene)
 	for (Camera2D& camera : *cameras) {
 		CreateBatches(scene, camera.GetViewWidth(), camera.GetViewHeight());
 		RenderBatches(direct3d, camera);
-		m_batches.clear();
+
+		// Clear the batches.
+		for (Batch& batch : m_batches) {
+			batch.shader = 0;
+			batch.texture = 0;
+			batch.vertices.clear();
+		}
 	}
 
 	direct3d->Render();

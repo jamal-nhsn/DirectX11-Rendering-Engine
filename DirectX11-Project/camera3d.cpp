@@ -5,8 +5,6 @@ const ComponentId Camera3D::ID = ComponentId::Camera3D;
 Camera3D::Camera3D(int entityId)
 	: m_entityId(entityId)
 {
-	m_dirtyFlag = true;
-
 	// Default Camera3D settings:
 	m_renderMask = 1 << static_cast<int>(RenderLayer::Default);
 
@@ -23,7 +21,6 @@ Camera3D::Camera3D(int entityId)
 Camera3D::Camera3D(const Camera3D& other)
 {
 	m_entityId = other.m_entityId;
-	m_dirtyFlag = other.m_dirtyFlag;
 	m_renderMask = other.m_renderMask;
 	m_fovy = other.m_fovy;
 	m_aspectRatio = other.m_aspectRatio;
@@ -48,15 +45,9 @@ void Camera3D::Update(DirectX::XMMATRIX modelMatrix, float viewWidth, float view
 	m_aspectRatio = viewWidth / viewHeight;
 
 	m_viewMatrix = DirectX::XMMatrixInverse(NULL, modelMatrix);
-	m_matrix = DirectX::XMMatrixMultiply(m_viewMatrix, m_projectionMatrix);
-
-	if (!m_dirtyFlag) {
-		return;
-	}
-
 	m_projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(m_fovy, m_aspectRatio, m_nearPlane, m_farPlane);
-	
-	m_dirtyFlag = false;
+
+	m_matrix = DirectX::XMMatrixMultiply(m_viewMatrix, m_projectionMatrix);
 }
 
 int Camera3D::GetRenderMask()
@@ -92,25 +83,21 @@ void Camera3D::SetRenderMask(int renderMask)
 void Camera3D::SetFovY(float fovy)
 {
 	float newFovY = DirectX::XMConvertToRadians(fovy);
-	m_dirtyFlag = m_fovy != newFovY;
 	m_fovy = newFovY;
 }
 
 void Camera3D::SetAspectRatio(float aspectRatio)
 {
-	m_dirtyFlag = m_aspectRatio != aspectRatio;
 	m_aspectRatio = aspectRatio;
 }
 
 void Camera3D::SetNearPlane(float nearPlane)
 {
-	m_dirtyFlag = m_nearPlane != nearPlane;
 	m_nearPlane = nearPlane;
 }
 
 void Camera3D::SetFarPlane(float farPlane)
 {
-	m_dirtyFlag = m_farPlane != farPlane;
 	m_farPlane = farPlane;
 }
 
