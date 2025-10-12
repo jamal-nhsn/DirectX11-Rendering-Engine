@@ -7,6 +7,7 @@ Mesh::Mesh()
 
 	m_vertexCount = 0;
 	m_indexCount = 0;
+	m_primitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 }
 
 Mesh::Mesh(const Mesh& other)

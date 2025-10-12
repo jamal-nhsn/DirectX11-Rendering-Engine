@@ -14,47 +14,7 @@ TextureMetaLoader::~TextureMetaLoader()
 {
 }
 
-bool TextureMetaLoader::LoadTextureMeta(Texture* texture, const char* filePath, ID3D11Device* device, ID3D11DeviceContext* deviceContext)
-{
-	int filePathLength = static_cast<int>(strlen(filePath));
-
-	// Ensure the file path is long enough to contain ".texturemeta" at the end.
-	if (filePathLength <= 12) {
-		return 0;
-	}
-
-	char last5[12 + 1];
-	strcpy_s(last5, &filePath[filePathLength - 12]);
-
-	// Ensure the file extension is .texturemeta
-	if (strcmp(last5, ".texturemeta") != 0) {
-		return 0;
-	}
-
-	FILE* filePtr;
-	int error = 0;
-
-	// Open the file for reading.
-	error = fopen_s(&filePtr, filePath, "r");
-	if (error != 0) {
-		return false;
-	}
-
-	bool success = true;
-	char line[128];
-	while (success && fgets(line, sizeof(line), filePtr) != 0) {
-		if (strcmp(line, "#SAMPLING SETTINGS")) {
-			success = success && LoadSamplerSettings(texture, filePtr, device, deviceContext);
-		}
-	}
-
-	// Close the file
-	fclose(filePtr);
-
-	return success;
-}
-
-bool TextureMetaLoader::LoadSamplerSettings(Texture* texture, FILE* filePtr, ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+D3D11_SAMPLER_DESC TextureMetaLoader::LoadSamplerSettings(const char* filePath, ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	D3D11_SAMPLER_DESC samplerDesc;
 	// Initialize default sampler description in case input is malformed.
@@ -71,8 +31,42 @@ bool TextureMetaLoader::LoadSamplerSettings(Texture* texture, FILE* filePtr, ID3
 	samplerDesc.BorderColor[3] = 0;
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	
+	// Ensure the file path is long enough to contain ".texturemeta" at the end.
+	int filePathLength = static_cast<int>(strlen(filePath));
+	if (filePathLength <= 12) {
+		return samplerDesc;
+	}
 
+	// Ensure the file extension is .texturemeta
+	char last5[12 + 1];
+	strcpy_s(last5, &filePath[filePathLength - 12]);
+	if (strcmp(last5, ".texturemeta") != 0) {
+		return samplerDesc;
+	}
+
+	// Open the file for reading.
+	FILE* filePtr;
+	int error = 0;
+	error = fopen_s(&filePtr, filePath, "r");
+	if (error != 0) {
+		return samplerDesc;
+	}
+
+	// Read until the "#SAMPLING SETTINGS" or until end of file.
 	char line[128];
+	while (fgets(line, sizeof(line), filePtr) != 0 && strcmp(line, "#SAMPLING SETTINGS") == 0) {
+	}
+	// If no "#SAMPLING SETTINGS" give default description.
+	if (strcmp(line, "#SAMPLING SETTINGS") != 0) {
+		fclose(filePtr);
+		return samplerDesc;
+	}
+
+	// Close the file
+	fclose(filePtr);
+
+	// Tokenize input and read in data.
 	while (fgets(line, sizeof(line), filePtr) != 0) {
 		char* data = &line[0];
 		char* field = strtok_s(data, s_delimiters, &data);
@@ -106,14 +100,7 @@ bool TextureMetaLoader::LoadSamplerSettings(Texture* texture, FILE* filePtr, ID3
 		}
 	}
 
-	// Create the texture sampler state.
-	ID3D11SamplerState* samplerState;
-	HRESULT result = device->CreateSamplerState(&samplerDesc, &samplerState);
-	if (!FAILED(result)) {
-		texture->SetSamplerState(samplerState);
-	}
-
-	return !FAILED(result);
+	return samplerDesc;
 }
 
 void TextureMetaLoader::LoadSamplerFilter(D3D11_SAMPLER_DESC& samplerDesc, char* data)

@@ -19,5 +19,6 @@ struct Vertex2D
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT2 texCoord;
 	DirectX::XMFLOAT4 color;
-	int textureIndex;
+	float samplerIndex;
+	float textureIndex;
 };

@@ -14,20 +14,25 @@ TextureManager::~TextureManager()
 
 bool TextureManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
+	// Create stoneWall texture from targa image.
 	TargaLoader targaLoader;
-	TextureMetaLoader textureMetaLoader;
-	Texture* texture;
-
-	// Create stoneWall texture.
-	texture = targaLoader.LoadTexture("../DirectX11-Project/Textures/stoneWall.tga", device, deviceContext);
+	Texture* texture = targaLoader.LoadTexture("../DirectX11-Project/Textures/stoneWall.tga", device, deviceContext);
 	if (!texture) {
 		return false;
 	}
-	textureMetaLoader.LoadTextureMeta(texture, "../DirectX11-Project/Textures/stoneWall.texturemeta", device, deviceContext);
-
-
+	// Load the sampler description from the texture meta data.
+	TextureMetaLoader textureMetaLoader;
+	D3D11_SAMPLER_DESC samplerDesc = textureMetaLoader.LoadSamplerSettings("../DirectX11-Project/Textures/stoneWall.texturemeta", device, deviceContext);
+	// Create the texture sampler state if it doesn't exist.
+	if (m_samplerBank.find(samplerDesc) == m_samplerBank.end()) {
+		ID3D11SamplerState* samplerState;
+		HRESULT result = device->CreateSamplerState(&samplerDesc, &samplerState);
+		m_samplerBank[samplerDesc] = FAILED(result) ? 0 : samplerState;
+	}
+	// Set the sampler and register the texture.
+	texture->SetSamplerState(m_samplerBank[samplerDesc]);
 	m_textureBank["stoneWall"] = texture;
-
+	
 	return true;
 }
 
@@ -41,5 +46,8 @@ void TextureManager::Shutdown()
 	for (auto& entry : m_textureBank) {
 		entry.second->Shutdown();
 		delete entry.second;
+	}
+	for (auto& entry : m_samplerBank) {
+		entry.second->Release();
 	}
 }

@@ -18,6 +18,7 @@ private:
 	struct Batch
 	{
 		Shader* shader;
+		std::vector<ID3D11SamplerState*> samplers;
 		std::vector<ID3D11ShaderResourceView*> textures;
 		std::vector<Vertex2D> vertices;
 	};
@@ -28,12 +29,12 @@ public:
 	~Render2DSystem();
 
 	void Update(Direct3D* direct3d, Scene* scene);
+	void Shutdown();
 
 private:
 	bool Initialize(ID3D11Device* device);
 	void CreateBatches(Scene* scene);
 	void RenderBatches(Direct3D* direct3d, Camera2D& camera);
-	void ClearBatches();
 
 private:
 	std::vector<Batch> m_batches;
