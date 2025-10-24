@@ -113,10 +113,9 @@ void Render2DSystem::CreateBatches(Scene* scene, float viewWidth, float viewHeig
 	}
 }
 
-void Render2DSystem::RenderBatches(Direct3D* direct3d, Camera2D& camera)
+void Render2DSystem::RenderBatches(ID3D11DeviceContext* deviceContext, Camera2D& camera)
 {
 	HRESULT result;
-	ID3D11DeviceContext* deviceContext = direct3d->GetDeviceContext();
 
 	unsigned int stride = sizeof(Vertex2D);
 	unsigned int offset = 0;
@@ -151,16 +150,13 @@ void Render2DSystem::RenderBatches(Direct3D* direct3d, Camera2D& camera)
 	}
 }
 
-void Render2DSystem::Update(Direct3D* direct3d, Scene* scene)
+void Render2DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 {
 	std::vector<Camera2D>* cameras = scene->GetComponents<Camera2D>();
-
-	direct3d->Clear(0.0f, 0.0f, 0.0f, 0.0f);
-
 	
 	for (Camera2D& camera : *cameras) {
 		CreateBatches(scene, camera.GetViewWidth(), camera.GetViewHeight());
-		RenderBatches(direct3d, camera);
+		RenderBatches(deviceContext, camera);
 
 		// Clear the batches.
 		for (Batch& batch : m_batches) {
@@ -169,8 +165,6 @@ void Render2DSystem::Update(Direct3D* direct3d, Scene* scene)
 			batch.vertices.clear();
 		}
 	}
-
-	direct3d->Render();
 }
 
 void Render2DSystem::Shutdown() {

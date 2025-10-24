@@ -38,6 +38,7 @@
     <ClInclude Include="objloader.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="render2dsystem.h" />
+    <ClInclude Include="render3dsystem.h" />
     <ClInclude Include="rendersystem.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
@@ -73,6 +74,7 @@
     <ClCompile Include="objloader.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="render2dsystem.cpp" />
+    <ClCompile Include="render3dsystem.cpp" />
     <ClCompile Include="rendersystem.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />

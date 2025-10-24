@@ -29,11 +29,11 @@ public:
 
 	bool Initialize(ID3D11Device* device);
 	void Shutdown();
-	void Update(Direct3D* direct3d, Scene* scene);
+	void Update(ID3D11DeviceContext* deviceContext, Scene* scene);
 
 private:
 	void CreateBatches(Scene* scene, float viewWidth, float viewHeight);
-	void RenderBatches(Direct3D* direct3d, Camera2D& camera);
+	void RenderBatches(ID3D11DeviceContext* deviceContext, Camera2D& camera);
 
 private:
 	std::vector<Batch> m_batches;
