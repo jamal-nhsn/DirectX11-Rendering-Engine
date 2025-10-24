@@ -48,6 +48,14 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 	m_shaderBank[typeid(DefaultLightShader)] = defaultLightShader;
 
+	DefaultSpriteShader* defaultSpriteShader = new DefaultSpriteShader;
+	success = defaultSpriteShader->Initialize(device, hwnd);
+	if (!success) {
+		delete defaultSpriteShader;
+		return success;
+	}
+	m_shaderBank[typeid(DefaultSpriteShader)] = defaultSpriteShader;
+
 	return success;
 }
 

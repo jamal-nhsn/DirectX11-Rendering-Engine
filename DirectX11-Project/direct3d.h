@@ -29,6 +29,9 @@ public:
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
 
+	float GetViewWidth();
+	float GetViewHeight();
+
 	void GetVideoCardInfo(char* cardName, int& memory);
 
 	void SetBackBufferRenderTarget();

@@ -8,7 +8,7 @@ INCLUDES
 #include <d3dcompiler.h>
 #include <fstream>
 
-#include "camera.h"
+#include "camera3d.h"
 #include "transform.h"
 #include "light.h"
 
@@ -18,17 +18,42 @@ class Shader
 {
 public:
 	bool Initialize(ID3D11Device* device, HWND hwnd);
-	virtual bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform);
-	virtual bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight);
+	
+	// Base Shaders
+	virtual bool Bind(
+		ID3D11DeviceContext* deviceContext,
+		DirectX::XMMATRIX modelMatrix,
+		DirectX::XMMATRIX viewMatrix,
+		DirectX::XMMATRIX projectionMatrix,
+		DirectX::XMFLOAT4 ambientLight
+	);
+	// Lighting Shaders
+	virtual bool Bind(
+		ID3D11DeviceContext* deviceContext,
+		DirectX::XMMATRIX modelMatrix,
+		DirectX::XMMATRIX viewMatrix,
+		DirectX::XMMATRIX projectionMatrix,
+		DirectX::XMFLOAT3 cameraPosition,
+		DirectX::XMFLOAT4 specularTint,
+		float shininess,
+		LightData lightData
+	);
+	// 2D Shaders;
+	virtual bool Bind(
+		ID3D11DeviceContext* deviceContext,
+		DirectX::XMMATRIX viewMatrix,
+		DirectX::XMMATRIX projectionMatrix
+	);
+
 	void Shutdown();
 
 protected:
 	D3D11_INPUT_ELEMENT_DESC* CreateLayout(bool usePosition, bool useNormal, bool useTexCoord, bool useTangent, bool useColor, unsigned int& numElements);
+	D3D11_INPUT_ELEMENT_DESC* CreateLayout2D(bool usePosition, bool useTexCoord, bool useColor, unsigned int& numElements);
 	void SetShaderStates(ID3D11DeviceContext* device);
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderSource);
 
 	virtual bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) = 0;
-	virtual bool InitializeSamplerDesc(ID3D11Device* device);
 	virtual bool InitializeBlendDesc(ID3D11Device* device);
 	virtual bool InitializeDepthStencilDesc(ID3D11Device* device);
 	virtual bool InitializeConstants(ID3D11Device* device) = 0;
@@ -45,7 +70,6 @@ protected:
 	ID3D11VertexShader*      m_vertexShader;
 	ID3D11PixelShader*       m_pixelShader;
 	ID3D11InputLayout*       m_layout;
-	ID3D11SamplerState*      m_sampleState;
 	ID3D11BlendState*        m_blendState;
 	ID3D11DepthStencilState* m_depthStencilState;
 };

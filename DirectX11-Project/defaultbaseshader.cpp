@@ -9,7 +9,6 @@ DefaultBaseShader::DefaultBaseShader()
 	m_vertexShader = 0;
 	m_pixelShader = 0;
 	m_layout = 0;
-	m_sampleState = 0;
 
 	m_matrixBuffer = 0;
 	m_ambientLightBuffer = 0;
@@ -19,7 +18,6 @@ DefaultBaseShader::DefaultBaseShader(const DefaultBaseShader& other)
 {
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
-	m_sampleState = other.m_sampleState;
 	m_layout = other.m_layout;
 
 	m_matrixBuffer = other.m_matrixBuffer;
@@ -30,28 +28,31 @@ DefaultBaseShader::~DefaultBaseShader()
 {
 }
 
-bool DefaultBaseShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight)
+bool DefaultBaseShader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX modelMatrix,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix,
+	DirectX::XMFLOAT4 ambientLight
+)
 {
 	bool success;
-	MatrixBuffer matrixBuffer;
 	AmbientLightBuffer ambientLightBuffer;
-	ID3D11ShaderResourceView* texture;
+	MatrixBuffer matrixBuffer;
 
 	deviceContext->IASetInputLayout(m_layout);
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	// Transpose the matrices to prepare them for the shader.
-	matrixBuffer.model = DirectX::XMMatrixTranspose(modelTransform.GetModelMatrix());
-	matrixBuffer.view = DirectX::XMMatrixTranspose(camera.GetViewMatrix());
-	matrixBuffer.projection = DirectX::XMMatrixTranspose(camera.GetProjectionMatrix());
+	matrixBuffer.model = DirectX::XMMatrixTranspose(modelMatrix);
+	matrixBuffer.view = DirectX::XMMatrixTranspose(viewMatrix);
+	matrixBuffer.projection = DirectX::XMMatrixTranspose(projectionMatrix);
 
 	// Pass the ambient light to the pixel shader.
 	ambientLightBuffer.ambientLight = ambientLight;
 
-	texture = model.GetTexture()->GetTexture2D();
-
-	success = SetShaderParameters(deviceContext, matrixBuffer, ambientLightBuffer, texture);
+	success = SetShaderParameters(deviceContext, matrixBuffer, ambientLightBuffer);
 	if (!success) {
 		return success;
 	}
@@ -62,28 +63,25 @@ bool DefaultBaseShader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera,
 	return success;
 }
 
-bool DefaultBaseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, AmbientLightBuffer ambientLightBuffer, ID3D11ShaderResourceView* texture)
+bool DefaultBaseShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, AmbientLightBuffer ambientLightBuffer)
 {
 	bool success;
 
 	// Set the matrix buffer in the vertex shader with the updated values.
 	success = LoadBuffer<MatrixBuffer>(deviceContext, m_matrixBuffer, matrixBuffer);
 	if (!success) {
-		return false;
+		return success;
 	}
 	deviceContext->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
 
 	// Set the ambient light buffer in the pixel shader with the updated values.
 	success = LoadBuffer<AmbientLightBuffer>(deviceContext, m_ambientLightBuffer, ambientLightBuffer);
 	if (!success) {
-		return false;
+		return success;
 	}
 	deviceContext->PSSetConstantBuffers(0, 1, &m_ambientLightBuffer);
 
-	// Finally, set shader texture resource in the pixel shader.
-	deviceContext->PSSetShaderResources(0, 1, &texture);
-
-	return true;
+	return success;
 }
 
 bool DefaultBaseShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer)
@@ -115,31 +113,6 @@ bool DefaultBaseShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* verte
 
 	delete[] polygonLayout;
 
-	return !FAILED(result);
-}
-
-bool DefaultBaseShader::InitializeSamplerDesc(ID3D11Device* device)
-{
-	HRESULT result;
-	D3D11_SAMPLER_DESC samplerDesc;
-
-	// Create a texture sampler state description.
-	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.MipLODBias = 0.0f;
-	samplerDesc.MaxAnisotropy = 1;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	samplerDesc.BorderColor[0] = 0;
-	samplerDesc.BorderColor[1] = 0;
-	samplerDesc.BorderColor[2] = 0;
-	samplerDesc.BorderColor[3] = 0;
-	samplerDesc.MinLOD = 0;
-	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-	// Create the texture sampler state.
-	result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
 	return !FAILED(result);
 }
 

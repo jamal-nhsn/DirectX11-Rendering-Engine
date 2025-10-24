@@ -12,6 +12,7 @@ INCLUDES
 #include "textureshader.h"
 #include "defaultlightshader.h"
 #include "defaultbaseshader.h"
+#include "defaultspriteshader.h"
 
 class ShaderManager
 {

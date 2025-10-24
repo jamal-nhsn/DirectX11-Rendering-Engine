@@ -4,9 +4,11 @@ Scene::Scene()
 {
 	m_componentLists[static_cast<int>(ComponentId::Transform)] = &m_transforms;
 	m_componentLists[static_cast<int>(ComponentId::Model)]     = &m_models;
-	m_componentLists[static_cast<int>(ComponentId::Camera)]    = &m_cameras;
+	m_componentLists[static_cast<int>(ComponentId::Camera3D)]  = &m_camera3Ds;
+	m_componentLists[static_cast<int>(ComponentId::Camera2D)]  = &m_camera2Ds;
 	m_componentLists[static_cast<int>(ComponentId::Light)]     = &m_lights;
 	m_componentLists[static_cast<int>(ComponentId::Renderer)]  = &m_renderers;
+	m_componentLists[static_cast<int>(ComponentId::Sprite)]    = &m_sprites;
 
 	m_ambientLight = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 }
@@ -21,12 +23,12 @@ Scene::~Scene()
 
 void Scene::Initialize(float screenWidth, float screenHeight)
 {
-	int camera = CreateEntity();
-	AddComponent<Transform>(camera);
-	GetComponent<Transform>(camera).SetLocalPosition(0.0f, 0.0f, -5.0f);
+	int camera3D = CreateEntity();
+	AddComponent<Transform>(camera3D);
+	GetComponent<Transform>(camera3D).SetLocalPosition(0.0f, 0.0f, -5.0f);
 
-	AddComponent<Camera>(camera);
-	GetComponent<Camera>(camera).SetAspectRatio(screenWidth/screenHeight);
+	AddComponent<Camera3D>(camera3D);
+	GetComponent<Camera3D>(camera3D).SetAspectRatio(screenWidth/screenHeight);
 }
 
 int Scene::CreateEntity()

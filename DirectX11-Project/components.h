@@ -4,8 +4,10 @@ enum class ComponentId
 {
 	Transform,
 	Model,
-	Camera,
+	Camera3D,
+	Camera2D,
 	Light,
 	Renderer,
+	Sprite,
 	COMPONENT_COUNT
 };

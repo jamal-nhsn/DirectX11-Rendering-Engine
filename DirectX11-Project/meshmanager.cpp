@@ -71,7 +71,7 @@ bool MeshManager::InitializeTriangle(ID3D11Device* device)
 	int vertexCount = 3;
 	int indexCount = 3;
 
-	Vertex* vertices = new Vertex[vertexCount];
+	Vertex3D* vertices = new Vertex3D[vertexCount];
 	if (!vertices) {
 		return false;
 	}
@@ -123,7 +123,7 @@ bool MeshManager::InitializeQuad(ID3D11Device* device)
 	int vertexCount = 4;
 	int indexCount = 6;
 
-	Vertex* vertices = new Vertex[vertexCount];
+	Vertex3D* vertices = new Vertex3D[vertexCount];
 	if (!vertices) {
 		return false;
 	}
@@ -178,7 +178,7 @@ bool MeshManager::InitializeCube(ID3D11Device* device)
 	int vertexCount = 24;
 	int indexCount = 36;
 
-	Vertex* vertices = new Vertex[vertexCount];
+	Vertex3D* vertices = new Vertex3D[vertexCount];
 	if (!vertices) {
 		return false;
 	}

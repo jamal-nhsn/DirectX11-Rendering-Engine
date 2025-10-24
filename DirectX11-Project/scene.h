@@ -8,9 +8,11 @@ INCLUDES
 #include "entity.h"
 #include "transform.h"
 #include "model.h"
-#include "camera.h"
+#include "camera3d.h"
+#include "camera2d.h"
 #include "light.h"
 #include "renderer.h"
+#include "sprite.h"
 
 class Scene
 {
@@ -50,9 +52,11 @@ private:
 	// All component lists.
 	std::vector<Transform> m_transforms;
 	std::vector<Model>     m_models;
-	std::vector<Camera>	   m_cameras;
+	std::vector<Camera3D>  m_camera3Ds;
+	std::vector<Camera2D>  m_camera2Ds;
 	std::vector<Light>     m_lights;
 	std::vector<Renderer>  m_renderers;
+	std::vector<Sprite>    m_sprites;
 
 	void* m_componentLists[static_cast<int>(ComponentId::COMPONENT_COUNT)]; // Table of component lists for generalized access.
 };

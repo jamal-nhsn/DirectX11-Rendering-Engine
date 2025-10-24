@@ -36,14 +36,22 @@ public:
 	DefaultLightShader(const DefaultLightShader&);
 	~DefaultLightShader();
 
-	bool Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) override;
+	bool Bind(
+		ID3D11DeviceContext* deviceContext,
+		DirectX::XMMATRIX modelMatrix,
+		DirectX::XMMATRIX viewMatrix,
+		DirectX::XMMATRIX projectionMatrix,
+		DirectX::XMFLOAT3 cameraPosition,
+		DirectX::XMFLOAT4 specularTint,
+		float shininess,
+		LightData lightData
+	) override;
 
 private:
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, CameraBuffer cameraBuffer, LightBuffer lightBuffer, MaterialBuffer materialBuffer, ID3D11ShaderResourceView* texture);
+	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer, CameraBuffer cameraBuffer, LightBuffer lightBuffer, MaterialBuffer materialBuffer);
 
 protected:
 	bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) override;
-	bool InitializeSamplerDesc(ID3D11Device* device) override;
 	bool InitializeBlendDesc(ID3D11Device* device) override;
 	bool InitializeDepthStencilDesc(ID3D11Device* device) override;
 	bool InitializeConstants(ID3D11Device* device) override;

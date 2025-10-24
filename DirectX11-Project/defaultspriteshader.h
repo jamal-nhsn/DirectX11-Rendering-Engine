@@ -5,27 +5,24 @@ INCLUDES
 ======*/
 #include "shader.h"
 
-class TextureShader : public Shader
+class DefaultSpriteShader : public Shader
 {
 private:
 	struct MatrixBuffer
 	{
-		DirectX::XMMATRIX model;
 		DirectX::XMMATRIX view;
 		DirectX::XMMATRIX projection;
 	};
 
 public:
-	TextureShader();
-	TextureShader(const TextureShader&);
-	~TextureShader();
-
+	DefaultSpriteShader();
+	DefaultSpriteShader(const DefaultSpriteShader&);
+	~DefaultSpriteShader();
+	
 	bool Bind(
 		ID3D11DeviceContext* deviceContext,
-		DirectX::XMMATRIX modelMatrix,
 		DirectX::XMMATRIX viewMatrix,
-		DirectX::XMMATRIX projectionMatrix,
-		DirectX::XMFLOAT4 ambientLight
+		DirectX::XMMATRIX projectionMatrix
 	) override;
 
 private:
@@ -33,6 +30,7 @@ private:
 
 protected:
 	bool InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer) override;
+	bool InitializeDepthStencilDesc(ID3D11Device* device) override;
 	bool InitializeConstants(ID3D11Device* device) override;
 
 	void ReleaseBuffers() override;

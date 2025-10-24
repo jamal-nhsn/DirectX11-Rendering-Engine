@@ -79,6 +79,12 @@
     <Filter Include="Source Files\Resources\Loaders">
       <UniqueIdentifier>{81d19f92-8916-44b8-8027-a4f57afc3f51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\2D">
+      <UniqueIdentifier>{738e146c-da9c-4d76-a1d5-96504f08a7eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\2D\Default Sprite Shader">
+      <UniqueIdentifier>{b613be4b-4a8b-4431-9ad5-f623db896628}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -126,10 +132,10 @@
     <ClInclude Include="transformsystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="rendersystem.h">
+    <ClInclude Include="render3dsystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="camera3d.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="camerasystem.h">
@@ -164,6 +170,24 @@
     </ClInclude>
     <ClInclude Include="targaloader.h">
       <Filter>Header Files\Resources\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="render2dsystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="camera2d.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="texturemetaloader.h">
+      <Filter>Header Files\Resources\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="defaultspriteshader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="rendersystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -212,10 +236,10 @@
     <ClCompile Include="transformsystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="rendersystem.cpp">
+    <ClCompile Include="render3dsystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="camera3d.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="camerasystem.cpp">
@@ -248,6 +272,24 @@
     <ClCompile Include="targaloader.cpp">
       <Filter>Source Files\Resources\Loaders</Filter>
     </ClCompile>
+    <ClCompile Include="render2dsystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="camera2d.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="texturemetaloader.cpp">
+      <Filter>Source Files\Resources\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="defaultspriteshader.cpp">
+      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="rendersystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="colorvertex.hlsl">
@@ -273,6 +315,15 @@
     </None>
     <None Include="defaultbasevertex.hlsl">
       <Filter>Source Files\Shaders\Base Pass\Default Base Shader</Filter>
+    </None>
+    <None Include="Textures\stoneWall.texturemeta">
+      <Filter>Resource Files\Textures</Filter>
+    </None>
+    <None Include="defaultspritepixel.hlsl">
+      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
+    </None>
+    <None Include="defaultspritevertex.hlsl">
+      <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -9,26 +9,26 @@ INCLUDES
 #include "components.h"
 #include "renderer.h"
 
-class Camera
+class Camera2D
 {
 public:
-	Camera(int entityId);
-	Camera(const Camera&);
-	~Camera();
+	Camera2D(int entityId);
+	Camera2D(const Camera2D&);
+	~Camera2D();
 
 	int GetEntityId();
 
-	void Update(DirectX::XMMATRIX modelMatrix);
+	void Update(DirectX::XMMATRIX modelMatrix, float viewWidth, float viewHeight);
 
 	int GetRenderMask();
-	float GetFovY();
-	float GetAspectRatio();
+	float GetViewWidth();
+	float GetViewHeight();
 	float GetNearPlane();
 	float GetFarPlane();
 
 	void SetRenderMask(int renderMask);
-	void SetFovY(float fovy);
-	void SetAspectRatio(float aspectRatio);
+	void SetViewWidth(float viewWidth);
+	void SetViewHeight(float viewHeight);
 	void SetNearPlane(float nearPlane);
 	void SetFarPlane(float farPlane);
 
@@ -44,10 +44,8 @@ private:
 
 	int m_renderMask;
 
-	bool m_dirtyFlag;
-
-	float m_fovy;
-	float m_aspectRatio;
+	float m_viewWidth;
+	float m_viewHeight;
 	float m_nearPlane;
 	float m_farPlane;
 

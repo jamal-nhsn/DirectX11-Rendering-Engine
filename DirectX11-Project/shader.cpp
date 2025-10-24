@@ -81,12 +81,6 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 	pixelShaderBuffer->Release();
 	pixelShaderBuffer = 0;
 
-	// Setup sampler description.
-	bool samplerDescInitialized = InitializeSamplerDesc(device);
-	if (!samplerDescInitialized) {
-		return false;
-	}
-
 	// Setup blend description.
 	bool blendDescInitialized = InitializeBlendDesc(device);
 	if (!blendDescInitialized) {
@@ -103,12 +97,38 @@ bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 	return InitializeConstants(device);
 }
 
-// If either of these are called, the renderer called the wrong Bind for the shader.
-bool Shader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Transform& cameraTransform, Model& model, Transform& modelTransform, Light& light, Transform& lightTransform) {
+// If any of these are called, the renderer called the wrong Bind for the shader.
+bool Shader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX modelMatrix,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix,
+	DirectX::XMFLOAT4 ambientLight
+)
+{
 	return false;
 }
 
-bool Shader::Bind(ID3D11DeviceContext* deviceContext, Camera& camera, Model& model, Transform& modelTransform, DirectX::XMFLOAT4 ambientLight) {
+bool Shader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX modelMatrix,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix,
+	DirectX::XMFLOAT3 cameraPosition,
+	DirectX::XMFLOAT4 specularTint,
+	float shininess,
+	LightData lightData
+)
+{
+	return false;
+}
+
+bool Shader::Bind(
+	ID3D11DeviceContext* deviceContext,
+	DirectX::XMMATRIX viewMatrix,
+	DirectX::XMMATRIX projectionMatrix
+)
+{
 	return false;
 }
 
@@ -128,12 +148,6 @@ void Shader::Shutdown()
 	if (m_layout) {
 		m_layout->Release();
 		m_layout = 0;
-	}
-
-	// Release the sample state.
-	if (m_sampleState) {
-		m_sampleState->Release();
-		m_sampleState = 0;
 	}
 
 	// Release the blend state.
@@ -241,11 +255,68 @@ D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout(bool usePosition, bool useNormal,
 	return polygonLayout;
 }
 
+D3D11_INPUT_ELEMENT_DESC* Shader::CreateLayout2D(bool usePosition, bool useTexCoord, bool useColor, unsigned int& numElements)
+{
+	numElements =
+		(usePosition ? 1 : 0) +
+		(useTexCoord ? 1 : 0) +
+		(useColor ? 1 : 0);
+
+	// Create the vertex input layout description.
+	// This setup needs to match the Vertex stucture.
+	D3D11_INPUT_ELEMENT_DESC* polygonLayout = new D3D11_INPUT_ELEMENT_DESC[numElements];
+
+	if (!polygonLayout) {
+		return polygonLayout;
+	}
+
+	int index = 0;
+	UINT offset = 0;
+
+	if (usePosition) {
+		polygonLayout[index].SemanticName = "POSITION";
+		polygonLayout[index].SemanticIndex = 0;
+		polygonLayout[index].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		polygonLayout[index].InputSlot = 0;
+		polygonLayout[index].AlignedByteOffset = offset;
+		polygonLayout[index].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		polygonLayout[index].InstanceDataStepRate = 0;
+
+		index++;
+	}
+
+	offset += sizeof(DirectX::XMFLOAT3); // Position size.
+
+
+	if (useTexCoord) {
+		polygonLayout[index].SemanticName = "TEXCOORD";
+		polygonLayout[index].SemanticIndex = 0;
+		polygonLayout[index].Format = DXGI_FORMAT_R32G32_FLOAT;
+		polygonLayout[index].InputSlot = 0;
+		polygonLayout[index].AlignedByteOffset = offset;
+		polygonLayout[index].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		polygonLayout[index].InstanceDataStepRate = 0;
+
+		index++;
+	}
+
+	offset += sizeof(DirectX::XMFLOAT2); // TexCoord size.
+
+	if (useColor) {
+		polygonLayout[index].SemanticName = "COLOR";
+		polygonLayout[index].SemanticIndex = 0;
+		polygonLayout[index].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		polygonLayout[index].InputSlot = 0;
+		polygonLayout[index].AlignedByteOffset = offset;
+		polygonLayout[index].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		polygonLayout[index].InstanceDataStepRate = 0;
+	}
+
+	return polygonLayout;
+}
+
 void Shader::SetShaderStates(ID3D11DeviceContext* deviceContext)
 {
-	// Set the sampler state in the pixel shader.
-	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
-
 	// Set the blend state in the output merger.
 	deviceContext->OMSetBlendState(m_blendState, 0, 0xffffffff);
 
@@ -277,12 +348,6 @@ void Shader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR
 
 	// Pop a message up on the screen to notify the user to check the text file for compile errors.
 	MessageBox(hwnd, L"Error compiling shader.  Check shader-error.txt for message.", shaderSource, MB_OK);
-}
-
-bool Shader::InitializeSamplerDesc(ID3D11Device* device)
-{
-	// Default to no sampler.
-	return true;
 }
 
 bool Shader::InitializeBlendDesc(ID3D11Device* device)

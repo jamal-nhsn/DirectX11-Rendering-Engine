@@ -42,7 +42,7 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device, float uSca
 	std::vector<DirectX::XMFLOAT2> vertexTexCoord;
 	std::vector<DirectX::XMFLOAT3> vertexNormal;
 
-	std::vector<Vertex> vertices;
+	std::vector<Vertex3D> vertices;
 	std::vector<unsigned long>   indices;
 	
 	std::unordered_map<uint64_t, int> vertexKeyToIndex;

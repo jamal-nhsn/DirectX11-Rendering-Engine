@@ -1,10 +1,10 @@
-#include "textureshader.h"
+#include "defaultspriteshader.h"
 #include "scene.h"
 
-TextureShader::TextureShader()
+DefaultSpriteShader::DefaultSpriteShader()
 {
-	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/texturevertex.hlsl");
-	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/texturepixel.hlsl");
+	wcscpy_s(m_vertexShaderSource, 128, L"../DirectX11-Project/defaultspritevertex.hlsl");
+	wcscpy_s(m_pixelShaderSource, 128, L"../DirectX11-Project/defaultspritepixel.hlsl");
 
 	m_vertexShader = 0;
 	m_pixelShader = 0;
@@ -13,7 +13,7 @@ TextureShader::TextureShader()
 	m_matrixBuffer = 0;
 }
 
-TextureShader::TextureShader(const TextureShader& other)
+DefaultSpriteShader::DefaultSpriteShader(const DefaultSpriteShader& other)
 {
 	m_vertexShader = other.m_vertexShader;
 	m_pixelShader = other.m_pixelShader;
@@ -22,16 +22,14 @@ TextureShader::TextureShader(const TextureShader& other)
 	m_matrixBuffer = other.m_matrixBuffer;
 }
 
-TextureShader::~TextureShader()
+DefaultSpriteShader::~DefaultSpriteShader()
 {
 }
 
-bool TextureShader::Bind(
+bool DefaultSpriteShader::Bind(
 	ID3D11DeviceContext* deviceContext,
-	DirectX::XMMATRIX modelMatrix,
 	DirectX::XMMATRIX viewMatrix,
-	DirectX::XMMATRIX projectionMatrix,
-	DirectX::XMFLOAT4 ambientLight
+	DirectX::XMMATRIX projectionMatrix
 )
 {
 	bool success;
@@ -42,7 +40,6 @@ bool TextureShader::Bind(
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
 	// Transpose the matrices to prepare them for the shader.
-	matrixBuffer.model = DirectX::XMMatrixTranspose(modelMatrix);
 	matrixBuffer.view = DirectX::XMMatrixTranspose(viewMatrix);
 	matrixBuffer.projection = DirectX::XMMatrixTranspose(projectionMatrix);
 
@@ -57,31 +54,29 @@ bool TextureShader::Bind(
 	return success;
 }
 
-bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer)
+bool DefaultSpriteShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, MatrixBuffer matrixBuffer)
 {
 	bool success;
 
 	// Set the matrix buffer in the vertex shader with the updated values.
 	success = LoadBuffer<MatrixBuffer>(deviceContext, m_matrixBuffer, matrixBuffer);
 	if (!success) {
-		return success;
+		return false;
 	}
 	deviceContext->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
 
-	return success;
+	return true;
 }
 
-bool TextureShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer)
+bool DefaultSpriteShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexShaderBuffer, ID3D10Blob* pixelShaderBuffer)
 {
 	HRESULT result;
 	unsigned int numElements;
 
-	D3D11_INPUT_ELEMENT_DESC* polygonLayout = CreateLayout(
-		true,  // Use position.
-		false, // Use normal.
-		true,  // Use texcoord.
-		false, // Use tangent.
-		false, // Use color.
+	D3D11_INPUT_ELEMENT_DESC* polygonLayout = CreateLayout2D(
+		true, // Use position.
+		true, // Use texcoord.
+		true, // Use color.
 		numElements
 	);
 
@@ -103,12 +98,27 @@ bool TextureShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* vertexSha
 	return !FAILED(result);
 }
 
-bool TextureShader::InitializeConstants(ID3D11Device* device)
+bool DefaultSpriteShader::InitializeDepthStencilDesc(ID3D11Device* device)
+{
+	HRESULT result;
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+
+	// Create a depth stencil description, which will determine how depth writes work.
+	depthStencilDesc.DepthEnable = FALSE;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+	depthStencilDesc.StencilEnable = FALSE;
+
+	result = device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
+	return !FAILED(result);
+}
+
+bool DefaultSpriteShader::InitializeConstants(ID3D11Device* device)
 {
 	HRESULT result;
 	D3D11_BUFFER_DESC constantBufferDesc;
 
-	// Setup the description of the dynamic matrix buffer that is in the vertex shader.
+	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
 	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	constantBufferDesc.ByteWidth = sizeof(MatrixBuffer);
 	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -121,11 +131,12 @@ bool TextureShader::InitializeConstants(ID3D11Device* device)
 	return !FAILED(result);
 }
 
-void TextureShader::ReleaseBuffers()
+void DefaultSpriteShader::ReleaseBuffers()
 {
 	// Release matrix buffer.
 	if (m_matrixBuffer) {
 		m_matrixBuffer->Release();
 		m_matrixBuffer = 0;
 	}
+
 }
