@@ -325,11 +325,14 @@
     <None Include="defaultspritevertex.hlsl">
       <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
     </None>
+    <None Include="Textures\timer.texturemeta" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\stoneWall.tga">
       <Filter>Resource Files\Textures</Filter>
     </Image>
+    <Image Include="..\..\Timer.tga" />
+    <Image Include="Textures\timer.tga" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Meshes\skull.obj">

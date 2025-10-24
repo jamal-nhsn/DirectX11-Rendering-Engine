@@ -98,10 +98,13 @@
     <None Include="defaultlightvertex.hlsl" />
     <None Include="texturepixel.hlsl" />
     <None Include="Textures\stoneWall.texturemeta" />
+    <None Include="Textures\timer.texturemeta" />
     <None Include="texturevertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\Timer.tga" />
     <Image Include="Textures\stoneWall.tga" />
+    <Image Include="Textures\timer.tga" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Meshes\skull.obj">

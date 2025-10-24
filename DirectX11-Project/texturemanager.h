@@ -20,6 +20,15 @@ public:
 	void Shutdown();
 
 private:
+    bool LoadTexture(
+        ID3D11Device* device,
+        ID3D11DeviceContext* deviceContext,
+        const char* texturePath,
+        const char* textureMetaPath,
+        const char* textureName
+    );
+
+private:
     struct SamplerDescEqual
     {
         bool operator()(const D3D11_SAMPLER_DESC& a, const D3D11_SAMPLER_DESC& b) const noexcept

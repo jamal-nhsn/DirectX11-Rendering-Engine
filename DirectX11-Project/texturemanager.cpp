@@ -14,15 +14,52 @@ TextureManager::~TextureManager()
 
 bool TextureManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
-	// Create stoneWall texture from targa image.
+	bool success;
+
+	success = LoadTexture(
+		device,
+		deviceContext,
+		"../DirectX11-Project/Textures/stoneWall.tga",
+		"../DirectX11-Project/Textures/stoneWall.texturemeta",
+		"stoneWall"
+	);
+
+	if (!success) {
+		return success;
+	}
+
+	success = LoadTexture(
+		device,
+		deviceContext,
+		"../DirectX11-Project/Textures/timer.tga",
+		"../DirectX11-Project/Textures/timer.texturemeta",
+		"timer"
+	);
+
+	if (!success) {
+		return success;
+	}
+
+	return success;
+}
+
+bool TextureManager::LoadTexture(
+	ID3D11Device* device,
+	ID3D11DeviceContext* deviceContext,
+	const char* texturePath,
+	const char* textureMetaPath,
+	const char* textureName
+)
+{
+	// Create texture from targa image.
 	TargaLoader targaLoader;
-	Texture* texture = targaLoader.LoadTexture("../DirectX11-Project/Textures/stoneWall.tga", device, deviceContext);
+	Texture* texture = targaLoader.LoadTexture(texturePath, device, deviceContext);
 	if (!texture) {
 		return false;
 	}
 	// Load the sampler description from the texture meta data.
 	TextureMetaLoader textureMetaLoader;
-	D3D11_SAMPLER_DESC samplerDesc = textureMetaLoader.LoadSamplerSettings("../DirectX11-Project/Textures/stoneWall.texturemeta", device, deviceContext);
+	D3D11_SAMPLER_DESC samplerDesc = textureMetaLoader.LoadSamplerSettings(textureMetaPath, device, deviceContext);
 	// Create the texture sampler state if it doesn't exist.
 	if (m_samplerBank.find(samplerDesc) == m_samplerBank.end()) {
 		ID3D11SamplerState* samplerState;
@@ -31,10 +68,11 @@ bool TextureManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* devic
 	}
 	// Set the sampler and register the texture.
 	texture->SetSamplerState(m_samplerBank[samplerDesc]);
-	m_textureBank["stoneWall"] = texture;
-	
+	m_textureBank[textureName] = texture;
+
 	return true;
 }
+
 
 Texture* TextureManager::GetTexture(const char* textureName)
 {
