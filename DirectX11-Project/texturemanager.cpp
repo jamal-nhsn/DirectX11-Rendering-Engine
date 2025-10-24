@@ -14,31 +14,19 @@ TextureManager::~TextureManager()
 
 bool TextureManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
-	bool success;
-
-	success = LoadTexture(
+	bool success = LoadTexture(
 		device,
 		deviceContext,
 		"../DirectX11-Project/Textures/stoneWall.tga",
 		"../DirectX11-Project/Textures/stoneWall.texturemeta",
 		"stoneWall"
-	);
-
-	if (!success) {
-		return success;
-	}
-
-	success = LoadTexture(
+	) && LoadTexture(
 		device,
 		deviceContext,
 		"../DirectX11-Project/Textures/timer.tga",
 		"../DirectX11-Project/Textures/timer.texturemeta",
 		"timer"
 	);
-
-	if (!success) {
-		return success;
-	}
 
 	return success;
 }
