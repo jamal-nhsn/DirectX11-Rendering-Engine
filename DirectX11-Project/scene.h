@@ -66,7 +66,6 @@ bool Scene::AddComponent(int entityId)
 {
 	bool successful = !HasComponent<ComponentType>(entityId);
 	if (successful) {
-		m_entities[entityId].AddComponent(1 << static_cast<int>(ComponentType::ID));
 		std::vector<ComponentType>* componentList = static_cast<std::vector<ComponentType>*>(m_componentLists[static_cast<int>(ComponentType::ID)]);
 		componentList->emplace_back(entityId);
 		m_components[entityId * static_cast<int>(ComponentId::COMPONENT_COUNT) + static_cast<int>(ComponentType::ID)] = static_cast<int>(componentList->size()) - 1;
@@ -94,8 +93,6 @@ bool Scene::RemoveComponent(int entityId)
 
 		m_components[entityId * static_cast<int>(ComponentId::COMPONENT_COUNT) + static_cast<int>(ComponentType::ID)] = -1;
 		componentList->pop_back();
-
-		m_entities[entityId].RemoveComponent(1 << static_cast<int>(ComponentType::ID));
 	}
 	return successful;
 }
@@ -119,5 +116,6 @@ std::vector<ComponentType>* Scene::GetComponents()
 template<typename ComponentType>
 bool Scene::HasComponent(int entityId)
 {
-	return (m_entities[entityId].GetComponentMask() & (1 << static_cast<int>(ComponentType::ID))) != 0;
+	int index = m_components[entityId * static_cast<int>(ComponentId::COMPONENT_COUNT) + static_cast<int>(ComponentType::ID)];
+	return index != -1;
 }
