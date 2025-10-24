@@ -3,6 +3,7 @@
 An in progress custom rendering engine written in C++ utilizing the DirectX11 graphics framework.
 ## **Sample Images:**
 <img width="1288" height="1289" alt="SampleImage1" src="https://github.com/user-attachments/assets/6ad9863a-7de6-447a-a90b-f44f43d38d31" />
+<img width="1196" height="1194" alt="3Dand2D" src="https://github.com/user-attachments/assets/1752d5d6-834d-4da0-aa5c-1548e7daae68" />
 
 ## **Details:**
 * Utilizes the * *Entity Component System* * architecture for all scene objects.
