@@ -177,7 +177,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 			sprite.SetTexture(spriteTexture);
 			sprite.SetWidth(16);
 			sprite.SetHeight(16);
-			sprite.SetSourceX(64);
+			sprite.SetSourceX(0);
 			sprite.SetSourceY(0);
 
 			Transform& spriteTransform = m_scene->GetComponent<Transform>(spriteEntity);
@@ -261,7 +261,7 @@ bool Application::Tick(float dt)
 		)
 	);
 
-	/*
+	
 	for (int i = 13; i < 113; i++) {
 		Transform& transform = m_scene->GetComponent<Transform>(i);
 		transform.SetLocalRotation(
@@ -271,7 +271,7 @@ bool Application::Tick(float dt)
 			)
 		);
 	}
-	*/
+	
 	
 	return success;
 }
