@@ -1,4 +1,4 @@
-#SAMPLER_SETTINGS
+#SAMPLER SETTINGS
 	Filter: POINT
 	Texture_Address_Mode: WRAP
 	Mip_LOD_Bias: 0

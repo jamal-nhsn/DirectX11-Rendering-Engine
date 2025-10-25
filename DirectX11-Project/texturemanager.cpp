@@ -14,19 +14,27 @@ TextureManager::~TextureManager()
 
 bool TextureManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
-	bool success = LoadTexture(
-		device,
-		deviceContext,
-		"../DirectX11-Project/Textures/stoneWall.tga",
-		"../DirectX11-Project/Textures/stoneWall.texturemeta",
-		"stoneWall"
-	) && LoadTexture(
-		device,
-		deviceContext,
-		"../DirectX11-Project/Textures/timer.tga",
-		"../DirectX11-Project/Textures/timer.texturemeta",
-		"timer"
-	);
+	bool success = false;
+	for (const auto& file : std::filesystem::directory_iterator("../DirectX11-Project/Textures/")) {
+		// Get the path to the texture itself.
+		const auto& texturePath = file.path();
+
+		// Ignore all texturemeta files.
+		if (texturePath.extension().compare(".texturemeta") == 0) {
+			continue;
+		}
+		
+		// Create the path to the texturemeta file.
+		std::filesystem::path textureMetaPath(texturePath);
+		textureMetaPath.replace_extension(".texturemeta");
+	
+		// Load the texture.
+		success = LoadTexture(device, deviceContext, texturePath, textureMetaPath);
+
+		if (!success) {
+			return success;
+		}
+	}
 
 	return success;
 }
@@ -34,20 +42,23 @@ bool TextureManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* devic
 bool TextureManager::LoadTexture(
 	ID3D11Device* device,
 	ID3D11DeviceContext* deviceContext,
-	const char* texturePath,
-	const char* textureMetaPath,
-	const char* textureName
+	const std::filesystem::path& texturePath,
+	const std::filesystem::path& textureMetaPath
 )
 {
-	// Create texture from targa image.
-	TargaLoader targaLoader;
-	Texture* texture = targaLoader.LoadTexture(texturePath, device, deviceContext);
+	Texture* texture = 0;
+	if (texturePath.extension().compare(".tga") == 0) {
+		// Create texture from targa image.
+		TargaLoader targaLoader;
+		texture = targaLoader.LoadTexture(texturePath.string().c_str(), device, deviceContext);
+	}
 	if (!texture) {
 		return false;
 	}
+
 	// Load the sampler description from the texture meta data.
 	TextureMetaLoader textureMetaLoader;
-	D3D11_SAMPLER_DESC samplerDesc = textureMetaLoader.LoadSamplerSettings(textureMetaPath, device, deviceContext);
+	D3D11_SAMPLER_DESC samplerDesc = textureMetaLoader.LoadSamplerSettings(textureMetaPath.string().c_str(), device, deviceContext);
 	// Create the texture sampler state if it doesn't exist.
 	if (m_samplerBank.find(samplerDesc) == m_samplerBank.end()) {
 		ID3D11SamplerState* samplerState;
@@ -56,13 +67,13 @@ bool TextureManager::LoadTexture(
 	}
 	// Set the sampler and register the texture.
 	texture->SetSamplerState(m_samplerBank[samplerDesc]);
-	m_textureBank[textureName] = texture;
+	m_textureBank[texturePath.stem().string()] = texture;
 
 	return true;
 }
 
 
-Texture* TextureManager::GetTexture(const char* textureName)
+Texture* TextureManager::GetTexture(std::string textureName)
 {
 	return m_textureBank[textureName];
 }

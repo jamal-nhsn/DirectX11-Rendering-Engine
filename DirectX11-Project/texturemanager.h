@@ -4,6 +4,8 @@
 INCLUDES
 ======*/
 #include <unordered_map>
+#include <filesystem>
+#include <string>
 
 #include "targaloader.h"
 #include "texturemetaloader.h"
@@ -16,16 +18,15 @@ public:
 	~TextureManager();
 
 	bool Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
-	Texture* GetTexture(const char* textureName);
+	Texture* GetTexture(std::string textureName);
 	void Shutdown();
 
 private:
     bool LoadTexture(
         ID3D11Device* device,
         ID3D11DeviceContext* deviceContext,
-        const char* texturePath,
-        const char* textureMetaPath,
-        const char* textureName
+        const std::filesystem::path& texturePath,
+        const std::filesystem::path& textureMetaPath
     );
 
 private:
@@ -78,6 +79,6 @@ private:
     };
 
 private:
-    std::unordered_map<const char*, Texture*> m_textureBank;
+    std::unordered_map<std::string, Texture*> m_textureBank;
     std::unordered_map<D3D11_SAMPLER_DESC, ID3D11SamplerState*, SamplerDescHash, SamplerDescEqual> m_samplerBank;
 };

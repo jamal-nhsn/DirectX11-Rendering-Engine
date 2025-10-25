@@ -160,7 +160,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	int spriteHeight = 125;
 
 	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
-	Texture* spriteTexture = m_textureManager->GetTexture("stoneWall");
+	Texture* spriteTexture = m_textureManager->GetTexture("timer");
 
 	int columns = 10;
 	int rows = 10;
@@ -175,9 +175,9 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 			Sprite& sprite = m_scene->GetComponent<Sprite>(spriteEntity);
 			sprite.SetShader(spriteShader);
 			sprite.SetTexture(spriteTexture);
-			sprite.SetWidth(spriteTexture->GetWidth());
-			sprite.SetHeight(spriteTexture->GetHeight());
-			sprite.SetSourceX(0);
+			sprite.SetWidth(16);
+			sprite.SetHeight(16);
+			sprite.SetSourceX(64);
 			sprite.SetSourceY(0);
 
 			Transform& spriteTransform = m_scene->GetComponent<Transform>(spriteEntity);
@@ -261,6 +261,7 @@ bool Application::Tick(float dt)
 		)
 	);
 
+	/*
 	for (int i = 13; i < 113; i++) {
 		Transform& transform = m_scene->GetComponent<Transform>(i);
 		transform.SetLocalRotation(
@@ -270,6 +271,7 @@ bool Application::Tick(float dt)
 			)
 		);
 	}
+	*/
 	
 	return success;
 }
