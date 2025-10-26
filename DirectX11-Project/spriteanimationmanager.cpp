@@ -38,6 +38,10 @@ bool SpriteAnimationManager::LoadSpriteAnimation(TextureManager* textureManager,
 		SpriteAnimationLoader spriteAnimationLoader;
 		spriteAnimation = spriteAnimationLoader.LoadSpriteAnimation(spriteAnimationPath.string().c_str(), textureManager);
 	}
+	else {
+		// Not a spriteanimation file, ignore it.
+		return true;
+	}
 	if (!spriteAnimation) {
 		return false;
 	}

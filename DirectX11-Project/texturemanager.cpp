@@ -52,6 +52,11 @@ bool TextureManager::LoadTexture(
 		TargaLoader targaLoader;
 		texture = targaLoader.LoadTexture(texturePath.string().c_str(), device, deviceContext);
 	}
+	else
+	{
+		// not a tga file, ignore it.
+		return true;
+	}
 	if (!texture) {
 		return false;
 	}

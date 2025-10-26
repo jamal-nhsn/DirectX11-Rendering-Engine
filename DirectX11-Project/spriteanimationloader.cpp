@@ -59,7 +59,7 @@ void SpriteAnimationLoader::LoadFrame(std::vector<SpriteAnimationFrame>* spriteA
 	size_t count = 1;
 	std::tuple<int, int> slide = std::make_tuple(0, 0);
 	Texture* texture = 0;
-	std::tuple<int, int> dimensions = std::make_tuple(1, 1);
+	std::tuple<int, int> dimensions = std::make_tuple(0, 0);
 	std::tuple<int, int> sourceOrigin = std::make_tuple(0, 0);
 	float duration = 1.0f;
 
@@ -109,11 +109,37 @@ void SpriteAnimationLoader::LoadFrame(std::vector<SpriteAnimationFrame>* spriteA
 	frame.sourceY = std::get<1>(sourceOrigin);
 	frame.duration = duration / static_cast<float>(count);
 
-	for (size_t i = 0; i < count; i++) {
-		frame.sourceX += i * std::get<0>(slide);
-		frame.sourceY += i * std::get<1>(slide);
+	// If no width was specified, infer from the slide or the texture.
+	if (!frame.width) {
+		if (frame.texture && !std::get<0>(slide)) {
+			frame.width = frame.texture->GetWidth();
+		}
+		else if (std::get<0>(slide)) {
+			frame.width = std::get<0>(slide);
+		}
+		else {
+			frame.width = 1;
+		}
+	}
 
+	// If no height was specified, infer from the slide or the texture.
+	if (!frame.height) {
+		if (frame.texture && !std::get<1>(slide)) {
+			frame.height = frame.texture->GetHeight();
+		}
+		else if (std::get<1>(slide)) {
+			frame.height = std::get<1>(slide);
+		}
+		else {
+			frame.height = 1;
+		}
+	}
+
+	for (size_t i = 0; i < count; i++) {
 		spriteAnimation->push_back(frame);
+
+		frame.sourceX += std::get<0>(slide);
+		frame.sourceY += std::get<1>(slide);
 	}
 }
 

@@ -9,5 +9,6 @@ enum class ComponentId
 	Light,
 	Renderer,
 	Sprite,
+	SpriteAnimator,
 	COMPONENT_COUNT
 };

@@ -13,6 +13,7 @@ INCLUDES
 #include "light.h"
 #include "renderer.h"
 #include "sprite.h"
+#include "spriteanimator.h"
 
 class Scene
 {
@@ -50,13 +51,14 @@ private:
 	DirectX::XMFLOAT4 m_ambientLight;
 
 	// All component lists.
-	std::vector<Transform> m_transforms;
-	std::vector<Model>     m_models;
-	std::vector<Camera3D>  m_camera3Ds;
-	std::vector<Camera2D>  m_camera2Ds;
-	std::vector<Light>     m_lights;
-	std::vector<Renderer>  m_renderers;
-	std::vector<Sprite>    m_sprites;
+	std::vector<Transform>      m_transforms;
+	std::vector<Model>          m_models;
+	std::vector<Camera3D>       m_camera3Ds;
+	std::vector<Camera2D>       m_camera2Ds;
+	std::vector<Light>          m_lights;
+	std::vector<Renderer>       m_renderers;
+	std::vector<Sprite>         m_sprites;
+	std::vector<SpriteAnimator> m_spriteAnimators;
 
 	void* m_componentLists[static_cast<int>(ComponentId::COMPONENT_COUNT)]; // Table of component lists for generalized access.
 };

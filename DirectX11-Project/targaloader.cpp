@@ -64,13 +64,16 @@ Texture* TargaLoader::LoadTexture(const char* filePath, ID3D11Device* device, ID
 	// Allocate memory for the image destination data.
 	unsigned char* destData = new unsigned char[imageSize];
 
+	// Check to see if the image needs to be flipped.
+	bool flipImage = !(fileHeader.imageDescriptor & (0b00100000));
+
 	// Initialize the index into the image data array.
-	int dataIndex = (width * height * 4) - (width * 4);
+	int dataIndex = flipImage * ((width * height * 4) - (width * 4));
 
 	// Initialize the index into the image destination data array.
 	int destIndex = 0;
-	
-	// Now, copy the image data into the destination array in the correct order, since the targa format is stored uspide down and alos is not in RGBA order.
+
+	// Now, copy the image data into the destination array in the correct order, since the targa format is not in RGBA order and may be upside down.
 	for (int j = 0; j < height; j++) {
 		for (int i = 0; i < width; i++) {
 
@@ -84,7 +87,8 @@ Texture* TargaLoader::LoadTexture(const char* filePath, ID3D11Device* device, ID
 			destIndex += 4;
 		}
 		// Set the image data index back to the preceding row at the beginning of the column since its reading it in upside down
-		dataIndex -= (width * 8);
+		
+		dataIndex += -(flipImage * width * 8);
 	}
 
 	// Release the image data now that it was copied into the destination array.

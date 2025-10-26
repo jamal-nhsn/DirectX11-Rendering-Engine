@@ -11,6 +11,7 @@ INCLUDES
 #include "transformsystem.h"
 #include "camerasystem.h"
 #include "rendersystem.h"
+#include "spriteanimatorsystem.h"
 #include "scene.h"
 
 class Application
@@ -36,6 +37,7 @@ private:
 	TransformSystem* m_transformSystem;
 	CameraSystem* m_cameraSystem;
 	RenderSystem* m_renderSystem;
+	SpriteAnimatorSystem* m_spriteAnimatorSystem;
 
 	Scene* m_scene;
 };

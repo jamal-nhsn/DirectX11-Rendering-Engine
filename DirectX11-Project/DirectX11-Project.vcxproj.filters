@@ -198,6 +198,12 @@
     <ClInclude Include="spriteanimationloader.h">
       <Filter>Header Files\Resources\Loaders</Filter>
     </ClInclude>
+    <ClInclude Include="spriteanimator.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="spriteanimatorsystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -304,6 +310,12 @@
     </ClCompile>
     <ClCompile Include="spriteanimationmanager.cpp">
       <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="spriteanimator.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="spriteanimatorsystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
