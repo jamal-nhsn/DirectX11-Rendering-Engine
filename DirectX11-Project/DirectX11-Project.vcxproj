@@ -30,6 +30,7 @@
     <ClInclude Include="direct3d.h" />
     <ClInclude Include="defaultlightshader.h" />
     <ClInclude Include="entity.h" />
+    <ClInclude Include="spriteanimationframe.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="mesh.h" />
@@ -44,6 +45,8 @@
     <ClInclude Include="shader.h" />
     <ClInclude Include="shadermanager.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="spriteanimationloader.h" />
+    <ClInclude Include="spriteanimationmanager.h" />
     <ClInclude Include="targaloader.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="texturemanager.h" />
@@ -80,6 +83,8 @@
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shadermanager.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="spriteanimationloader.cpp" />
+    <ClCompile Include="spriteanimationmanager.cpp" />
     <ClCompile Include="targaloader.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="texturemanager.cpp" />
@@ -96,6 +101,7 @@
     <None Include="defaultbasevertex.hlsl" />
     <None Include="defaultlightpixel.hlsl" />
     <None Include="defaultlightvertex.hlsl" />
+    <None Include="SpriteAnimations\timer.spriteanimation" />
     <None Include="texturepixel.hlsl" />
     <None Include="Textures\stoneWall.texturemeta" />
     <None Include="Textures\timer.texturemeta" />

@@ -7,6 +7,7 @@ INCLUDES
 #include "shadermanager.h"
 #include "meshmanager.h"
 #include "texturemanager.h"
+#include "spriteanimationmanager.h"
 #include "transformsystem.h"
 #include "camerasystem.h"
 #include "rendersystem.h"
@@ -30,6 +31,7 @@ private:
 	ShaderManager* m_shaderManager;
 	MeshManager* m_meshManager;
 	TextureManager* m_textureManager;
+	SpriteAnimationManager* m_spriteAnimationManager;
 
 	TransformSystem* m_transformSystem;
 	CameraSystem* m_cameraSystem;

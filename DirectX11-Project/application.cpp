@@ -59,6 +59,14 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return success;
 	}
 
+	// Create and initialize the SpriteManager object.
+	m_spriteAnimationManager = new SpriteAnimationManager;
+	success = m_spriteAnimationManager->Initialize(m_textureManager);
+	if (!success) {
+		MessageBox(hwnd, L"Could not initialize sprite animations", L"Error", MB_OK);
+		return success;
+	}
+
 	// Create the System objects.
 	m_transformSystem = new TransformSystem;
 	m_cameraSystem = new CameraSystem;
@@ -222,6 +230,13 @@ void Application::Shutdown()
 		m_textureManager->Shutdown();
 		delete m_textureManager;
 		m_textureManager = 0;
+	}
+
+	// Release the SpriteAnimationManager object.
+	if (m_spriteAnimationManager) {
+		m_spriteAnimationManager->Shutdown();
+		delete m_spriteAnimationManager;
+		m_spriteAnimationManager = 0;
 	}
 
 	// Release the System objects.

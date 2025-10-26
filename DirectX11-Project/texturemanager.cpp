@@ -87,4 +87,5 @@ void TextureManager::Shutdown()
 	for (auto& entry : m_samplerBank) {
 		entry.second->Release();
 	}
+	m_textureBank.clear();
 }
