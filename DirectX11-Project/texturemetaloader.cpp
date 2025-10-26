@@ -53,18 +53,15 @@ D3D11_SAMPLER_DESC TextureMetaLoader::LoadSamplerSettings(const char* filePath, 
 		return samplerDesc;
 	}
 
-	// Read until the "#SAMPLING SETTINGS" or until end of file.
+	// Read until the "#SAMPLER SETTINGS" or until end of file.
 	char line[128];
-	while (fgets(line, sizeof(line), filePtr) != 0 && strcmp(line, "#SAMPLING SETTINGS") == 0) {
+	while (fgets(line, sizeof(line), filePtr) != 0 && strcmp(line, "#SAMPLER SETTINGS\n") != 0) {
 	}
-	// If no "#SAMPLING SETTINGS" give default description.
-	if (strcmp(line, "#SAMPLING SETTINGS") != 0) {
+	// If no "#SAMPLER SETTINGS" give default description.
+	if (strcmp(line, "#SAMPLER SETTINGS\n") != 0) {
 		fclose(filePtr);
 		return samplerDesc;
 	}
-
-	// Close the file
-	fclose(filePtr);
 
 	// Tokenize input and read in data.
 	while (fgets(line, sizeof(line), filePtr) != 0) {
@@ -99,6 +96,9 @@ D3D11_SAMPLER_DESC TextureMetaLoader::LoadSamplerSettings(const char* filePath, 
 			LoadSamplerMaximumLOD(samplerDesc, data);
 		}
 	}
+
+	// Close the file
+	fclose(filePtr);
 
 	return samplerDesc;
 }

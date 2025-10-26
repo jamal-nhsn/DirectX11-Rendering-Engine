@@ -17,7 +17,7 @@ private:
 		unsigned short width;
 		unsigned short height;
 		unsigned char  bpp;
-		unsigned char  data2;
+		unsigned char  imageDescriptor;
 	};
 
 public:

@@ -59,11 +59,20 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return success;
 	}
 
+	// Create and initialize the SpriteManager object.
+	m_spriteAnimationManager = new SpriteAnimationManager;
+	success = m_spriteAnimationManager->Initialize(m_textureManager);
+	if (!success) {
+		MessageBox(hwnd, L"Could not initialize sprite animations", L"Error", MB_OK);
+		return success;
+	}
+
 	// Create the System objects.
 	m_transformSystem = new TransformSystem;
 	m_cameraSystem = new CameraSystem;
 	m_renderSystem = new RenderSystem();
 	m_renderSystem->Initialize(m_direct3d->GetDevice());
+	m_spriteAnimatorSystem = new SpriteAnimatorSystem();
 
 	// Create and initialize the Scene object.
 	m_scene = new Scene;
@@ -160,7 +169,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	int spriteHeight = 125;
 
 	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
-	Texture* spriteTexture = m_textureManager->GetTexture("stoneWall");
+	Texture* spriteTexture = m_textureManager->GetTexture("timer");
+	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("timer");
 
 	int columns = 10;
 	int rows = 10;
@@ -175,10 +185,14 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 			Sprite& sprite = m_scene->GetComponent<Sprite>(spriteEntity);
 			sprite.SetShader(spriteShader);
 			sprite.SetTexture(spriteTexture);
-			sprite.SetWidth(spriteTexture->GetWidth());
-			sprite.SetHeight(spriteTexture->GetHeight());
+			//sprite.SetWidth(spriteTexture->GetWidth());
+			//sprite.SetHeight(spriteTexture->GetHeight());
 			sprite.SetSourceX(0);
 			sprite.SetSourceY(0);
+
+			SpriteAnimator& spriteAnimator = m_scene->GetComponent<SpriteAnimator>(spriteEntity);
+			spriteAnimator.SetSpriteAnimation(spriteAnimation);
+			spriteAnimator.SetFrameNumber(j * rows + i);
 
 			Transform& spriteTransform = m_scene->GetComponent<Transform>(spriteEntity);
 			spriteTransform.SetGlobalPosition(static_cast<float>(i * columnSpacing), static_cast<float>(j * rowSpacing), 0.0f);
@@ -224,6 +238,13 @@ void Application::Shutdown()
 		m_textureManager = 0;
 	}
 
+	// Release the SpriteAnimationManager object.
+	if (m_spriteAnimationManager) {
+		m_spriteAnimationManager->Shutdown();
+		delete m_spriteAnimationManager;
+		m_spriteAnimationManager = 0;
+	}
+
 	// Release the System objects.
 	if (m_transformSystem) {
 		delete m_transformSystem;
@@ -236,6 +257,10 @@ void Application::Shutdown()
 	if (m_renderSystem) {
 		delete m_renderSystem;
 		m_renderSystem = 0;
+	}
+	if (m_spriteAnimatorSystem) {
+		delete m_spriteAnimatorSystem;
+		m_spriteAnimatorSystem = 0;
 	}
 
 	// Release the Scene object.
@@ -251,6 +276,7 @@ bool Application::Tick(float dt)
 	
 	m_transformSystem->Update(m_scene);
 	m_cameraSystem->Update(m_direct3d, m_scene);
+	m_spriteAnimatorSystem->Update(m_scene, dt);
 	m_renderSystem->Update(m_direct3d, m_scene);
 
 	Transform& transform1 = m_scene->GetComponent<Transform>(1);
@@ -261,6 +287,7 @@ bool Application::Tick(float dt)
 		)
 	);
 
+	/*
 	for (int i = 13; i < 113; i++) {
 		Transform& transform = m_scene->GetComponent<Transform>(i);
 		transform.SetLocalRotation(
@@ -270,6 +297,8 @@ bool Application::Tick(float dt)
 			)
 		);
 	}
+	*/
+	
 	
 	return success;
 }

@@ -189,6 +189,21 @@
     <ClInclude Include="rendersystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="spriteanimationmanager.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="spriteanimationframe.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="spriteanimationloader.h">
+      <Filter>Header Files\Resources\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="spriteanimator.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="spriteanimatorsystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -290,6 +305,18 @@
     <ClCompile Include="rendersystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="spriteanimationloader.cpp">
+      <Filter>Source Files\Resources\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="spriteanimationmanager.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="spriteanimator.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="spriteanimatorsystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="colorvertex.hlsl">
@@ -325,11 +352,15 @@
     <None Include="defaultspritevertex.hlsl">
       <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
     </None>
+    <None Include="Textures\timer.texturemeta" />
+    <None Include="SpriteAnimations\timer.spriteanimation" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\stoneWall.tga">
       <Filter>Resource Files\Textures</Filter>
     </Image>
+    <Image Include="..\..\Timer.tga" />
+    <Image Include="Textures\timer.tga" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Meshes\skull.obj">

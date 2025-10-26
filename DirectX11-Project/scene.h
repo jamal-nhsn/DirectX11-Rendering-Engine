@@ -13,6 +13,7 @@ INCLUDES
 #include "light.h"
 #include "renderer.h"
 #include "sprite.h"
+#include "spriteanimator.h"
 
 class Scene
 {
@@ -50,13 +51,14 @@ private:
 	DirectX::XMFLOAT4 m_ambientLight;
 
 	// All component lists.
-	std::vector<Transform> m_transforms;
-	std::vector<Model>     m_models;
-	std::vector<Camera3D>  m_camera3Ds;
-	std::vector<Camera2D>  m_camera2Ds;
-	std::vector<Light>     m_lights;
-	std::vector<Renderer>  m_renderers;
-	std::vector<Sprite>    m_sprites;
+	std::vector<Transform>      m_transforms;
+	std::vector<Model>          m_models;
+	std::vector<Camera3D>       m_camera3Ds;
+	std::vector<Camera2D>       m_camera2Ds;
+	std::vector<Light>          m_lights;
+	std::vector<Renderer>       m_renderers;
+	std::vector<Sprite>         m_sprites;
+	std::vector<SpriteAnimator> m_spriteAnimators;
 
 	void* m_componentLists[static_cast<int>(ComponentId::COMPONENT_COUNT)]; // Table of component lists for generalized access.
 };
@@ -66,7 +68,6 @@ bool Scene::AddComponent(int entityId)
 {
 	bool successful = !HasComponent<ComponentType>(entityId);
 	if (successful) {
-		m_entities[entityId].AddComponent(1 << static_cast<int>(ComponentType::ID));
 		std::vector<ComponentType>* componentList = static_cast<std::vector<ComponentType>*>(m_componentLists[static_cast<int>(ComponentType::ID)]);
 		componentList->emplace_back(entityId);
 		m_components[entityId * static_cast<int>(ComponentId::COMPONENT_COUNT) + static_cast<int>(ComponentType::ID)] = static_cast<int>(componentList->size()) - 1;
@@ -94,8 +95,6 @@ bool Scene::RemoveComponent(int entityId)
 
 		m_components[entityId * static_cast<int>(ComponentId::COMPONENT_COUNT) + static_cast<int>(ComponentType::ID)] = -1;
 		componentList->pop_back();
-
-		m_entities[entityId].RemoveComponent(1 << static_cast<int>(ComponentType::ID));
 	}
 	return successful;
 }
@@ -119,5 +118,6 @@ std::vector<ComponentType>* Scene::GetComponents()
 template<typename ComponentType>
 bool Scene::HasComponent(int entityId)
 {
-	return (m_entities[entityId].GetComponentMask() & (1 << static_cast<int>(ComponentType::ID))) != 0;
+	int index = m_components[entityId * static_cast<int>(ComponentId::COMPONENT_COUNT) + static_cast<int>(ComponentType::ID)];
+	return index != -1;
 }

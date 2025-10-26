@@ -122,6 +122,10 @@ void Render2DSystem::RenderBatches(ID3D11DeviceContext* deviceContext, Camera2D&
 
 	for (Batch& batch : m_batches) {
 
+		if (!batch.shader) {
+			continue;
+		}
+
 		// Copy the batched vertices to the dynamic vertex buffer.
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		result = deviceContext->Map(m_vbo, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

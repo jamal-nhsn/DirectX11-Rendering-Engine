@@ -98,6 +98,31 @@ bool DefaultSpriteShader::InitializeLayout(ID3D11Device* device, ID3D10Blob* ver
 	return !FAILED(result);
 }
 
+bool DefaultSpriteShader::InitializeBlendDesc(ID3D11Device* device)
+{
+	HRESULT result;
+	D3D11_BLEND_DESC blendDesc;
+	D3D11_RENDER_TARGET_BLEND_DESC rtBlendDesc;
+
+	// Create a blend description which will determine how multi-pass rendering will work.
+	blendDesc.AlphaToCoverageEnable = FALSE;
+	blendDesc.IndependentBlendEnable = FALSE;
+	rtBlendDesc.BlendEnable = TRUE;
+	rtBlendDesc.SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	rtBlendDesc.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	rtBlendDesc.BlendOp = D3D11_BLEND_OP_ADD;
+	rtBlendDesc.SrcBlendAlpha = D3D11_BLEND_ONE;
+	rtBlendDesc.DestBlendAlpha = D3D11_BLEND_ZERO;
+	rtBlendDesc.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	rtBlendDesc.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	blendDesc.RenderTarget[0] = rtBlendDesc;
+
+	// Create the blend state.
+	result = device->CreateBlendState(&blendDesc, &m_blendState);
+	return !FAILED(result);
+}
+
 bool DefaultSpriteShader::InitializeDepthStencilDesc(ID3D11Device* device)
 {
 	HRESULT result;

@@ -1,0 +1,11 @@
+#FRAME
+	Count: 16
+	Slide: (16, 0)
+	Texture: timer
+	Dimensions: (16, 16)
+	Source_Origin: (0, 0)
+	Duration: 1
+#FRAME
+	Count: 1
+	Texture: stoneWall
+	Duration: 1
