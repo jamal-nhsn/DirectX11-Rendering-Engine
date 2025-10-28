@@ -3,24 +3,22 @@
 /*======
 INCLUDES
 ======*/
-#include <vector>
-
 #include "scene.h"
 #include "direct3d.h"
-#include "render2dsystem.h"
 #include "render3dsystem.h"
+#include "renderer2d.h"
 
 class RenderSystem
 {
 public:
-	RenderSystem();
-	RenderSystem(const RenderSystem&);
-	~RenderSystem();
+	RenderSystem() = default;
+	RenderSystem(const RenderSystem&) = default;
+	~RenderSystem() = default;
 
-	void Initialize(ID3D11Device* device);
+	bool Initialize(ID3D11Device* device);
 	void Update(Direct3D* direct3d, Scene* scene);
 
 private:
-	Render2DSystem m_render2DSystem;
+	Renderer2D m_renderer2D;
 	Render3DSystem m_render3DSystem;
 };

@@ -71,7 +71,11 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_transformSystem = new TransformSystem;
 	m_cameraSystem = new CameraSystem;
 	m_renderSystem = new RenderSystem();
-	m_renderSystem->Initialize(m_direct3d->GetDevice());
+	success = m_renderSystem->Initialize(m_direct3d->GetDevice());
+	if (!success) {
+		MessageBox(hwnd, L"Could not initialize render system", L"Error", MB_OK);
+		return success;
+	}
 	m_spriteAnimatorSystem = new SpriteAnimatorSystem();
 
 	// Create and initialize the Scene object.
