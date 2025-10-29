@@ -49,6 +49,7 @@
     <ClInclude Include="spriteanimationmanager.h" />
     <ClInclude Include="spriteanimator.h" />
     <ClInclude Include="spriteanimatorsystem.h" />
+    <ClInclude Include="spritedata.h" />
     <ClInclude Include="targaloader.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="texturemanager.h" />
@@ -89,6 +90,7 @@
     <ClCompile Include="spriteanimationmanager.cpp" />
     <ClCompile Include="spriteanimator.cpp" />
     <ClCompile Include="spriteanimatorsystem.cpp" />
+    <ClCompile Include="spritedata.cpp" />
     <ClCompile Include="targaloader.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="texturemanager.cpp" />
