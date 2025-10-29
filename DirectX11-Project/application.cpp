@@ -173,8 +173,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	int spriteHeight = 125;
 
 	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
-	Texture* spriteTexture = m_textureManager->GetTexture("timer");
-	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("timer");
+	Texture* spriteTexture = m_textureManager->GetTexture("nyancat");
+	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("nyancat");
 
 	int columns = 10;
 	int rows = 10;
@@ -189,8 +189,6 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 			Sprite& sprite = m_scene->GetComponent<Sprite>(spriteEntity);
 			sprite.SetShader(spriteShader);
 			sprite.SetTexture(spriteTexture);
-			//sprite.SetWidth(spriteTexture->GetWidth());
-			//sprite.SetHeight(spriteTexture->GetHeight());
 			sprite.SetSourceX(0);
 			sprite.SetSourceY(0);
 
@@ -200,7 +198,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 			Transform& spriteTransform = m_scene->GetComponent<Transform>(spriteEntity);
 			spriteTransform.SetGlobalPosition(static_cast<float>(i * columnSpacing), static_cast<float>(j * rowSpacing), 0.0f);
-			spriteTransform.SetGlobalScale(static_cast<float>(spriteWidth), static_cast<float>(spriteHeight), 1.0f);
+			spriteTransform.SetGlobalScale(200.0f, 104.0f, 1.0f);
 		}
 	}
 

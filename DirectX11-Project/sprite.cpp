@@ -93,7 +93,7 @@ DirectX::XMFLOAT4 Sprite::GetUVBounds()
 
 	return DirectX::XMFLOAT4(x1, y1, x2, y2);
 }
-DirectX::XMFLOAT4 Sprite::GetTint()
+const DirectX::XMFLOAT4& Sprite::GetTint()
 {
 	return m_tint;
 }

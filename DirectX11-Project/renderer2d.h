@@ -34,10 +34,10 @@ public:
 
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
-		DirectX::XMMATRIX& modelMatrix,
+		const DirectX::XMMATRIX& modelMatrix,
 		int sourceX, int sourceY,
 		int sourceWidth, int sourceHeight,
-		DirectX::XMFLOAT4& tint
+		const DirectX::XMFLOAT4& tint
 	);
 
 	void EndScene(ID3D11DeviceContext* deviceContext);
@@ -61,7 +61,7 @@ public:
 	);
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
-		DirectX::XMMATRIX& modelMatrix
+		const DirectX::XMMATRIX& modelMatrix
 	);
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
@@ -88,7 +88,7 @@ public:
 	);
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
-		DirectX::XMMATRIX& modelMatrix,
+		const DirectX::XMMATRIX& modelMatrix,
 		int sourceX, int sourceY,
 		int sourceWidth, int sourceHeight
 	);
@@ -96,26 +96,26 @@ public:
 		Shader* shader, Texture* texture,
 		float destX, float destY,
 		float destWidth, float destHeight,
-		DirectX::XMFLOAT4& tint
+		const DirectX::XMFLOAT4& tint
 	);
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
 		float destX, float destY,
 		float destWidth, float destHeight,
 		float rotation,
-		DirectX::XMFLOAT4& tint
+		const DirectX::XMFLOAT4& tint
 	);
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
 		float destX, float destY,
 		float destWidth, float destHeight,
 		DirectX::XMVECTOR rotation,
-		DirectX::XMFLOAT4& tint
+		const DirectX::XMFLOAT4& tint
 	);
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
-		DirectX::XMMATRIX& modelMatrix,
-		DirectX::XMFLOAT4& tint
+		const DirectX::XMMATRIX& modelMatrix,
+		const DirectX::XMFLOAT4& tint
 	);
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
@@ -123,7 +123,7 @@ public:
 		float destWidth, float destHeight,
 		int sourceX, int sourceY,
 		int sourceWidth, int sourceHeight,
-		DirectX::XMFLOAT4& tint
+		const DirectX::XMFLOAT4& tint
 	);
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
@@ -132,7 +132,7 @@ public:
 		float rotation,
 		int sourceX, int sourceY,
 		int sourceWidth, int sourceHeight,
-		DirectX::XMFLOAT4& tint
+		const DirectX::XMFLOAT4& tint
 	);
 	void const SubmitSprite(
 		Shader* shader, Texture* texture,
@@ -141,7 +141,7 @@ public:
 		DirectX::XMVECTOR rotation,
 		int sourceX, int sourceY,
 		int sourceWidth, int sourceHeight,
-		DirectX::XMFLOAT4& tint
+		const DirectX::XMFLOAT4& tint
 	);
 
 private:

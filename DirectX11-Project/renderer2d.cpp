@@ -45,10 +45,10 @@ void Renderer2D::BeginScene(Camera2D& camera)
 
 void const Renderer2D::SubmitSprite(
 	Shader* shader, Texture* texture,
-	DirectX::XMMATRIX& modelMatrix,
+	const DirectX::XMMATRIX& modelMatrix,
 	int sourceX, int sourceY,
 	int sourceWidth, int sourceHeight,
-	DirectX::XMFLOAT4& tint
+	const DirectX::XMFLOAT4& tint
 )
 {
 	// Try to find a batch.
@@ -178,7 +178,7 @@ void const Renderer2D::SubmitSprite(
 		DirectX::XMMatrixScaling(destWidth, destHeight, 1.0f) *
 		DirectX::XMMatrixTranslation(destX, destY, 0.0f);
 	
-	DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
+	const DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
 	
 	SubmitSprite(
 		shader, texture,
@@ -200,7 +200,7 @@ void const Renderer2D::SubmitSprite(
 		DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), DirectX::XMConvertToRadians(rotation))) *
 		DirectX::XMMatrixTranslation(destX, destY, 0.0f);
 
-	DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
+	const DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
 
 	SubmitSprite(
 		shader, texture,
@@ -222,7 +222,7 @@ void const Renderer2D::SubmitSprite(
 		DirectX::XMMatrixRotationQuaternion(rotation) *
 		DirectX::XMMatrixTranslation(destX, destY, 0.0f);
 
-	DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
+	const DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
 
 	SubmitSprite(
 		shader, texture,
@@ -234,10 +234,10 @@ void const Renderer2D::SubmitSprite(
 }
 void const Renderer2D::SubmitSprite(
 	Shader* shader, Texture* texture,
-	DirectX::XMMATRIX& modelMatrix
+	const DirectX::XMMATRIX& modelMatrix
 )
 {
-	DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
+	const DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
 
 	SubmitSprite(
 		shader, texture,
@@ -259,7 +259,7 @@ void const Renderer2D::SubmitSprite(
 		DirectX::XMMatrixScaling(destWidth, destHeight, 1.0f) *
 		DirectX::XMMatrixTranslation(destX, destY, 0.0f);
 
-	DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
+	const DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
 
 	SubmitSprite(
 		shader, texture,
@@ -283,7 +283,7 @@ void const Renderer2D::SubmitSprite(
 		DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), DirectX::XMConvertToRadians(rotation))) *
 		DirectX::XMMatrixTranslation(destX, destY, 0.0f);
 
-	DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
+	const DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
 
 	SubmitSprite(
 		shader, texture,
@@ -307,7 +307,7 @@ void const Renderer2D::SubmitSprite(
 		DirectX::XMMatrixRotationQuaternion(rotation) *
 		DirectX::XMMatrixTranslation(destX, destY, 0.0f);
 
-	DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
+	const DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
 
 	SubmitSprite(
 		shader, texture,
@@ -319,12 +319,12 @@ void const Renderer2D::SubmitSprite(
 }
 void const Renderer2D::SubmitSprite(
 	Shader* shader, Texture* texture,
-	DirectX::XMMATRIX& modelMatrix,
+	const DirectX::XMMATRIX& modelMatrix,
 	int sourceX, int sourceY,
 	int sourceWidth, int sourceHeight
 )
 {
-	DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
+	const DirectX::XMFLOAT4 tint(1.0f, 1.0f, 1.0f, 1.0f);
 
 	SubmitSprite(
 		shader, texture,
@@ -338,7 +338,7 @@ void const Renderer2D::SubmitSprite(
 	Shader* shader, Texture* texture,
 	float destX, float destY,
 	float destWidth, float destHeight,
-	DirectX::XMFLOAT4& tint
+	const DirectX::XMFLOAT4& tint
 )
 {
 	DirectX::XMMATRIX modelMatrix =
@@ -358,7 +358,7 @@ void const Renderer2D::SubmitSprite(
 	float destX, float destY,
 	float destWidth, float destHeight,
 	float rotation,
-	DirectX::XMFLOAT4& tint
+	const DirectX::XMFLOAT4& tint
 )
 {
 	DirectX::XMMATRIX modelMatrix =
@@ -379,7 +379,7 @@ void const Renderer2D::SubmitSprite(
 	float destX, float destY,
 	float destWidth, float destHeight,
 	DirectX::XMVECTOR rotation,
-	DirectX::XMFLOAT4& tint
+	const DirectX::XMFLOAT4& tint
 )
 {
 	DirectX::XMMATRIX modelMatrix =
@@ -397,8 +397,8 @@ void const Renderer2D::SubmitSprite(
 }
 void const Renderer2D::SubmitSprite(
 	Shader* shader, Texture* texture,
-	DirectX::XMMATRIX& modelMatrix,
-	DirectX::XMFLOAT4& tint
+	const DirectX::XMMATRIX& modelMatrix,
+	const DirectX::XMFLOAT4& tint
 )
 {
 	SubmitSprite(
@@ -415,7 +415,7 @@ void const Renderer2D::SubmitSprite(
 	float destWidth, float destHeight,
 	int sourceX, int sourceY,
 	int sourceWidth, int sourceHeight,
-	DirectX::XMFLOAT4& tint
+	const DirectX::XMFLOAT4& tint
 )
 {
 	DirectX::XMMATRIX modelMatrix =
@@ -437,7 +437,7 @@ void const Renderer2D::SubmitSprite(
 	float rotation,
 	int sourceX, int sourceY,
 	int sourceWidth, int sourceHeight,
-	DirectX::XMFLOAT4& tint
+	const DirectX::XMFLOAT4& tint
 )
 {
 	DirectX::XMMATRIX modelMatrix =
@@ -460,7 +460,7 @@ void const Renderer2D::SubmitSprite(
 	DirectX::XMVECTOR rotation,
 	int sourceX, int sourceY,
 	int sourceWidth, int sourceHeight,
-	DirectX::XMFLOAT4& tint
+	const DirectX::XMFLOAT4& tint
 )
 {
 	DirectX::XMMATRIX modelMatrix =

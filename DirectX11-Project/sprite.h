@@ -29,7 +29,7 @@ public:
 	void SetSourceY(int sourceY);
 
 	DirectX::XMFLOAT4 GetUVBounds();
-	DirectX::XMFLOAT4 GetTint();
+	const DirectX::XMFLOAT4& GetTint();
 	int GetWidth();
 	int GetHeight();
 	int GetSourceX();

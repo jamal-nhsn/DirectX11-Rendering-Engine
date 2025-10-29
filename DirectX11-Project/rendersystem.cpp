@@ -21,17 +21,15 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 	{
 		m_renderer2D.BeginScene(camera2D);
 		for (Sprite& sprite : *sprites) {
-			DirectX::XMMATRIX spriteModelMatrix = scene->GetComponent<Transform>(sprite.GetEntityId()).GetModelMatrix();
-			DirectX::XMFLOAT4 spriteTint = sprite.GetTint();
 			m_renderer2D.SubmitSprite(
 				sprite.GetShader(),
 				sprite.GetTexture(),
-				spriteModelMatrix,
+				scene->GetComponent<Transform>(sprite.GetEntityId()).GetModelMatrix(),
 				sprite.GetSourceX(),
 				sprite.GetSourceY(),
 				sprite.GetWidth(),
 				sprite.GetHeight(),
-				spriteTint
+				sprite.GetTint()
 			);
 		}
 		m_renderer2D.EndScene(deviceContext);
