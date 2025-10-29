@@ -17,21 +17,14 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 	std::vector<Camera2D>* camera2Ds = scene->GetComponents<Camera2D>();
 	std::vector<Sprite>* sprites = scene->GetComponents<Sprite>();
 
-	SpriteData spriteData = m_renderer2D.BuildSprite();
-
 	for (Camera2D& camera2D : *camera2Ds)
 	{
 		m_renderer2D.BeginScene(camera2D);
 		for (Sprite& sprite : *sprites) {
-
-			const DirectX::XMMATRIX* modelMatrix = &scene->GetComponent<Transform>(sprite.GetEntityId()).GetModelMatrix();
-
-			spriteData // Build the sprite.
-				.WithModelMatrix(modelMatrix)
-				.WithSourceOrigin(sprite.GetSourceX(), sprite.GetSourceY())
-				.WithSourceDimensions(sprite.GetWidth(), sprite.GetHeight())
-				.WithTint(sprite.GetTint())
-				.Submit(sprite.GetShader(), sprite.GetTexture());
+			m_renderer2D.SubmitSprite(
+				sprite.GetSpriteData(),
+				scene->GetComponent<Transform>(sprite.GetEntityId()).GetModelMatrix()
+			);
 		}
 		m_renderer2D.EndScene(deviceContext);
 	}

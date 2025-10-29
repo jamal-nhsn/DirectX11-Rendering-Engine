@@ -5,29 +5,6 @@ const ComponentId Sprite::ID = ComponentId::Sprite;
 Sprite::Sprite(int entityId)
 	: m_entityId(entityId)
 {
-	m_shader = 0;
-	m_texture = 0;
-	m_tint = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_width = 1;
-	m_height = 1;
-	m_sourceX = 0;
-	m_sourceY = 0;
-}
-
-Sprite::Sprite(const Sprite& other)
-{
-	m_entityId = other.m_entityId;
-	m_shader = other.m_shader;
-	m_texture = other.m_texture;
-	m_tint = other.m_tint;
-	m_width = other.m_width;
-	m_height = other.m_height;
-	m_sourceX = other.m_sourceX;
-	m_sourceY = other.m_sourceY;
-}
-
-Sprite::~Sprite()
-{
 }
 
 int Sprite::GetEntityId()
@@ -37,79 +14,40 @@ int Sprite::GetEntityId()
 
 void Sprite::SetShader(Shader* shader)
 {
-	m_shader = shader;
-}
-void Sprite::SetTexture(Texture* texture)
-{
-	m_texture = texture;
+	m_spriteData.shader = shader;
 }
 
-Shader* Sprite::GetShader()
+void Sprite::SetTexture(Texture* texture)
 {
-	return m_shader;
+	m_spriteData.texture = texture;
 }
-Texture* Sprite::GetTexture()
+
+void Sprite::SetSourceX(int sourceX)
 {
-	return m_texture;
+	m_spriteData.sourceRect.x = static_cast<float>(sourceX);
+}
+
+void Sprite::SetSourceY(int sourceY)
+{
+	m_spriteData.sourceRect.y = static_cast<float>(sourceY);
+}
+
+void Sprite::SetWidth(int width)
+{
+	m_spriteData.sourceRect.z = static_cast<float>(width);
+}
+
+void Sprite::SetHeight(int height)
+{
+	m_spriteData.sourceRect.w = static_cast<float>(height);
 }
 
 void Sprite::SetTint(float red, float green, float blue, float alpha)
 {
-	m_tint.x = red;
-	m_tint.y = green;
-	m_tint.z = blue;
-	m_tint.w = alpha;
-}
-void Sprite::SetWidth(int width)
-{
-	if (width == 0) {
-		m_width = 1;
-	}
-	m_width = width;
-}
-void Sprite::SetHeight(int height)
-{
-	if (height == 0) {
-		m_height = 1;
-	}
-	m_height = height;
-}
-void Sprite::SetSourceX(int sourceX)
-{
-	m_sourceX = sourceX;
-}
-void Sprite::SetSourceY(int sourceY)
-{
-	m_sourceY = sourceY;
+	m_spriteData.tint = { red, green, blue, alpha };
 }
 
-DirectX::XMFLOAT4 Sprite::GetUVBounds()
+const SpriteData& Sprite::GetSpriteData()
 {
-	float x1 = static_cast<float>(m_sourceX) / static_cast<float>(m_texture->GetWidth());
-	float y1 = 1.0f - static_cast<float>(m_sourceY) / static_cast<float>(m_texture->GetHeight());
-
-	float x2 = static_cast<float>(m_sourceX + m_width ) / static_cast<float>(m_texture->GetWidth());
-	float y2 = 1.0f - static_cast<float>(m_sourceY + m_height) / static_cast<float>(m_texture->GetHeight());
-
-	return DirectX::XMFLOAT4(x1, y1, x2, y2);
-}
-const DirectX::XMFLOAT4& Sprite::GetTint()
-{
-	return m_tint;
-}
-int Sprite::GetWidth()
-{
-	return m_width;
-}
-int Sprite::GetHeight()
-{
-	return m_height;
-}
-int Sprite::GetSourceX()
-{
-	return m_sourceX;
-}
-int Sprite::GetSourceY()
-{
-	return m_sourceY;
+	return m_spriteData;
 }

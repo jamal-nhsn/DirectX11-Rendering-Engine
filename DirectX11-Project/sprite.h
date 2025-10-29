@@ -6,47 +6,31 @@ INCLUDES
 #include "components.h"
 #include "texture.h"
 #include "shader.h"
+#include "spritedata.h"
 
 class Sprite
 {
 public:
 	Sprite(int entityId);
-	Sprite(const Sprite&);
-	~Sprite();
+	Sprite(const Sprite&) = default;
+	~Sprite() = default;
 
 	int GetEntityId();
 
 	void SetShader(Shader* shader);
 	void SetTexture(Texture* texture);
-
-	Shader* GetShader();
-	Texture* GetTexture();
-
-	void SetTint(float red, float green, float blue, float alpha);
-	void SetWidth(int width);
-	void SetHeight(int height);
 	void SetSourceX(int sourceX);
 	void SetSourceY(int sourceY);
+	void SetWidth(int width);
+	void SetHeight(int height);
+	void SetTint(float red, float green, float blue, float alpha);
 
-	DirectX::XMFLOAT4 GetUVBounds();
-	const DirectX::XMFLOAT4& GetTint();
-	int GetWidth();
-	int GetHeight();
-	int GetSourceX();
-	int GetSourceY();
+	const SpriteData& GetSpriteData();
 
 public:
 	static const ComponentId ID;
 
 private:
 	int m_entityId;
-
-	Shader* m_shader;
-	Texture* m_texture;
-
-	DirectX::XMFLOAT4 m_tint;
-	int m_width;
-	int m_height;
-	int m_sourceX;
-	int m_sourceY;
+	SpriteData m_spriteData;
 };

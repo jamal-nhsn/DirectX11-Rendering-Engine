@@ -43,18 +43,18 @@ void Renderer2D::BeginScene(Camera2D& camera)
 	}
 }
 
-SpriteData Renderer2D::BuildSprite()
+void const Renderer2D::SubmitSprite(const SpriteData& spriteData, const DirectX::XMMATRIX& modelMatrix)
 {
-	return SpriteData(this);
-}
+	// Try to validate spriteData
+	if (!spriteData.shader || !spriteData.texture) {
+		return;
+	}
 
-void const Renderer2D::SubmitSprite(Shader* shader, Texture* texture, const SpriteData& spriteData)
-{
 	// Try to find a batch.
 	size_t batchIndex;
 	for (batchIndex = 0; batchIndex < m_batches.size(); batchIndex++) {
-		if ((shader == m_batches[batchIndex].shader || m_batches[batchIndex].shader == 0) &&
-			(texture == m_batches[batchIndex].texture || m_batches[batchIndex].texture == 0) &&
+		if ((spriteData.shader == m_batches[batchIndex].shader || m_batches[batchIndex].shader == 0) &&
+			(spriteData.texture == m_batches[batchIndex].texture || m_batches[batchIndex].texture == 0) &&
 			m_batches[batchIndex].vertices.size() < 6 * MAX_SPRITE_BATCH_SIZE) {
 			break;
 		}
@@ -66,8 +66,8 @@ void const Renderer2D::SubmitSprite(Shader* shader, Texture* texture, const Spri
 	}
 
 	// Always overwrite batch parameters.
-	m_batches[batchIndex].shader = shader;
-	m_batches[batchIndex].texture = texture;
+	m_batches[batchIndex].shader = spriteData.shader;
+	m_batches[batchIndex].texture = spriteData.texture;
 
 	// Positions of the vertices of the unit quad centered at the origin.
 	DirectX::XMVECTOR positions[4] = {
@@ -79,41 +79,44 @@ void const Renderer2D::SubmitSprite(Shader* shader, Texture* texture, const Spri
 
 	// Transform the vertices by the sprite's model matrix.
 	for (int i = 0; i < 4; ++i)
-		positions[i] = DirectX::XMVector4Transform(positions[i], *spriteData.m_modelMatrix);
+		positions[i] = DirectX::XMVector4Transform(positions[i], modelMatrix);
 
-	float textureWidth = static_cast<float>(texture->GetWidth());
-	float textureHeight = static_cast<float>(texture->GetHeight());
+	float textureWidth = static_cast<float>(spriteData.texture->GetWidth());
+	float textureHeight = static_cast<float>(spriteData.texture->GetHeight());
 
 	// Caclulate UV bounds.
 	// Offset by half a texel to sample from pixel center.
 	float halfTexelU = 0.5f / textureWidth;
 	float halfTexelV = 0.5f / textureHeight;
 
-	float u1 = (spriteData.m_sourceRect.x + halfTexelU) / textureWidth;
-	float v1 = (spriteData.m_sourceRect.y + halfTexelV) / textureHeight;
+	float sourceWidth = spriteData.sourceRect.z == 0 ? spriteData.texture->GetWidth() : spriteData.sourceRect.z;
+	float sourceHeight = spriteData.sourceRect.w == 0 ? spriteData.texture->GetHeight() : spriteData.sourceRect.w;
 
-	float u2 = (spriteData.m_sourceRect.x + spriteData.m_sourceRect.z + halfTexelU) / textureWidth;
-	float v2 = (spriteData.m_sourceRect.y + spriteData.m_sourceRect.w + halfTexelV) / textureHeight;
+	float u1 = (spriteData.sourceRect.x + halfTexelU) / textureWidth;
+	float v1 = (spriteData.sourceRect.y + halfTexelV) / textureHeight;
+
+	float u2 = (spriteData.sourceRect.x + sourceWidth + halfTexelU) / textureWidth;
+	float v2 = (spriteData.sourceRect.y + sourceHeight + halfTexelV) / textureHeight;
 
 	// Generate the vertices for the sprite.
 	Vertex2D bottomLeft;
 	DirectX::XMStoreFloat3(&bottomLeft.position, positions[0]);
-	bottomLeft.color = spriteData.m_tint;
+	bottomLeft.color = spriteData.tint;
 	bottomLeft.texCoord = DirectX::XMFLOAT2(u1, v1);
 
 	Vertex2D topLeft;
 	DirectX::XMStoreFloat3(&topLeft.position, positions[1]);
-	topLeft.color = spriteData.m_tint;
+	topLeft.color = spriteData.tint;
 	topLeft.texCoord = DirectX::XMFLOAT2(u1, v2);
 
 	Vertex2D topRight;
 	DirectX::XMStoreFloat3(&topRight.position, positions[2]);
-	topRight.color = spriteData.m_tint;
+	topRight.color = spriteData.tint;
 	topRight.texCoord = DirectX::XMFLOAT2(u2, v2);
 
 	Vertex2D bottomRight;
 	DirectX::XMStoreFloat3(&bottomRight.position, positions[3]);
-	bottomRight.color = spriteData.m_tint;
+	bottomRight.color = spriteData.tint;
 	bottomRight.texCoord = DirectX::XMFLOAT2(u2, v1);
 
 	// Add the vertices to the batch.
@@ -123,6 +126,48 @@ void const Renderer2D::SubmitSprite(Shader* shader, Texture* texture, const Spri
 	m_batches[batchIndex].vertices.emplace_back(bottomLeft);
 	m_batches[batchIndex].vertices.emplace_back(topRight);
 	m_batches[batchIndex].vertices.emplace_back(bottomRight);
+}
+
+void const Renderer2D::SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height)
+{
+	if (!spriteData.shader || !spriteData.texture) {
+		return;
+	}
+
+	DirectX::XMMATRIX modelMatrix =
+		DirectX::XMMatrixScaling(width, height, 1.0f) *
+		DirectX::XMMatrixRotationZ(0.0f) *
+		DirectX::XMMatrixTranslation(centerX, centerX, 0.0f);
+
+	SubmitSprite(spriteData, modelMatrix);
+}
+
+void const Renderer2D::SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height, float rotationDeg)
+{
+	if (!spriteData.shader || !spriteData.texture) {
+		return;
+	}
+
+	DirectX::XMMATRIX modelMatrix =
+		DirectX::XMMatrixScaling(width, height, 1.0f) *
+		DirectX::XMMatrixRotationZ(rotationDeg) *
+		DirectX::XMMatrixTranslation(centerX, centerX, 0.0f);
+
+	SubmitSprite(spriteData, modelMatrix);
+}
+
+void const Renderer2D::SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height, DirectX::XMVECTOR rotationQuaternion)
+{
+	if (!spriteData.shader || !spriteData.texture) {
+		return;
+	}
+
+	DirectX::XMMATRIX modelMatrix =
+		DirectX::XMMatrixScaling(width, height, 1.0f) *
+		DirectX::XMMatrixRotationQuaternion(rotationQuaternion) *
+		DirectX::XMMatrixTranslation(centerX, centerX, 0.0f);
+
+	SubmitSprite(spriteData, modelMatrix);
 }
 
 void Renderer2D::EndScene(ID3D11DeviceContext* deviceContext)

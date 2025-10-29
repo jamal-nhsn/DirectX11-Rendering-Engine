@@ -8,9 +8,9 @@ INCLUDES
 struct SpriteAnimationFrame
 {
 	Texture* texture;
-	int width;
-	int height;
 	int sourceX;
 	int sourceY;
+	int width;
+	int height;
 	float duration;
 };

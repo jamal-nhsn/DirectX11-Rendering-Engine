@@ -326,9 +326,6 @@
     <ClCompile Include="renderer2d.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="spritedata.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="colorvertex.hlsl">

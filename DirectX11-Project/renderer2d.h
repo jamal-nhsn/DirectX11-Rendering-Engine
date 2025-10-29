@@ -30,17 +30,17 @@ public:
 	bool Initialize(ID3D11Device* device);
 
 	void BeginScene(Camera2D& camera);
-	SpriteData BuildSprite();
-	void EndScene(ID3D11DeviceContext* deviceContext);
 
-private:
-	void const SubmitSprite(Shader* shader, Texture* texture, const SpriteData& spriteData);
+	void const SubmitSprite(const SpriteData& spriteData, const DirectX::XMMATRIX& modelMatrix);
+	void const SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height);
+	void const SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height, float rotationDeg);
+	void const SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height, DirectX::XMVECTOR rotationQuaternion);
+
+	void EndScene(ID3D11DeviceContext* deviceContext);
 
 private:
 	ID3D11Buffer* m_vbo;
 	DirectX::XMMATRIX m_cameraView;
 	DirectX::XMMATRIX m_cameraProjection;
 	std::vector<SpriteBatch> m_batches;
-
-	friend SpriteData;
 };
