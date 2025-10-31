@@ -176,8 +176,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
 	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("texttest");
 
-	int columns = 100;
-	int rows = 100;
+	int columns = 0;
+	int rows = 0;
 
 	int columnSpacing = 50;
 	int rowSpacing = 50;
@@ -277,10 +277,25 @@ bool Application::Tick(float dt)
 {
 	bool success = true;
 	
+	/* TEXT TEST DELETE SOON*/
+	DirectX::XMMATRIX modelMatrix = 
+		DirectX::XMMatrixScaling(100.0f, 100.0f, 1.0f) * 
+		DirectX::XMMatrixRotationZ(DirectX::XMConvertToRadians(45)) * 
+		DirectX::XMMatrixTranslation(50.0f, 50.0f, 0.0f);
+
+	TextData textData;
+	textData.shader = m_shaderManager->GetShader<DefaultSpriteShader>();
+	textData.texture = m_textureManager->GetTexture("defaultfont");
+	textData.text = "FPS:" + std::to_string(static_cast<int>(1.0f/dt));
+	/* TEXT TEST DELETE SOON*/
+
 	m_transformSystem->Update(m_scene);
 	m_cameraSystem->Update(m_direct3d, m_scene);
 	m_spriteAnimatorSystem->Update(m_scene, dt);
-	m_renderSystem->Update(m_direct3d, m_scene);
+
+	/* TEXT TEST DELETE TEXTDATA + MODEL MATRIX SOON*/
+	m_renderSystem->Update(m_direct3d, m_scene, textData, modelMatrix);
+	/* TEXT TEST DELETE TEXTDATA + MODEL MATRIX SOON*/
 
 	Transform& transform1 = m_scene->GetComponent<Transform>(1);
 	transform1.SetLocalRotation(

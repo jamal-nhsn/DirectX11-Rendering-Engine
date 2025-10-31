@@ -51,6 +51,7 @@
     <ClInclude Include="spriteanimatorsystem.h" />
     <ClInclude Include="spritedata.h" />
     <ClInclude Include="targaloader.h" />
+    <ClInclude Include="textdata.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="texturemanager.h" />
     <ClInclude Include="texturemetaloader.h" />

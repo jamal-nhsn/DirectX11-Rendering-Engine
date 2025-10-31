@@ -1,6 +1,6 @@
 #SAMPLER SETTINGS
 	Filter: POINT
-	Texture_Address_Mode: CLAMP
+	Texture_Address_Mode: BORDER
 	Mip_LOD_Bias: 0
 	Max_Anisotropy: 1
 	Comparison_Function: ALWAYS

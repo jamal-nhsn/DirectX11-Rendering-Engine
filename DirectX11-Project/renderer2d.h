@@ -7,8 +7,9 @@ INCLUDES
 
 #include "d3d11.h"
 #include "camera2d.h"
-#include "spritedata.h"
 #include "vertex.h"
+#include "spritedata.h"
+#include "textdata.h"
 
 #define MAX_SPRITE_BATCH_SIZE (1024)
 
@@ -35,6 +36,8 @@ public:
 	void const SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height);
 	void const SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height, float rotationDeg);
 	void const SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height, DirectX::XMVECTOR rotationQuaternion);
+
+	void const SubmitText(const TextData& textData, const DirectX::XMMATRIX& modelMatrix);
 
 	void EndScene(ID3D11DeviceContext* deviceContext);
 

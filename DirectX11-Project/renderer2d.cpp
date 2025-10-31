@@ -170,6 +170,35 @@ void const Renderer2D::SubmitSprite(const SpriteData& spriteData, float centerX,
 	SubmitSprite(spriteData, modelMatrix);
 }
 
+void const Renderer2D::SubmitText(const TextData& textData, const DirectX::XMMATRIX& modelMatrix)
+{
+	if (!textData.shader || !textData.texture) {
+		return;
+	}
+
+	SpriteData spriteData;
+	spriteData.shader = textData.shader;
+	spriteData.texture = textData.texture;
+
+	DirectX::XMMATRIX characterModelMatrix;
+
+	size_t textLength = textData.text.length();
+	for (size_t i = 0; i < textLength; i++) {
+
+		characterModelMatrix = DirectX::XMMatrixTranslation(static_cast<float>(i), 0.0f, 0.0f) * modelMatrix;
+
+		/* TEXT TEST USE PROPER DIMENSIONS SOON*/
+		spriteData.sourceRect.x = static_cast<float>((textData.text[i] - ' ') * textData.texture->GetHeight());
+
+		spriteData.sourceRect.z = static_cast<float>(textData.texture->GetHeight());
+		spriteData.sourceRect.w = static_cast<float>(textData.texture->GetHeight());
+
+		SubmitSprite(spriteData, characterModelMatrix);
+
+		
+	}
+}
+
 void Renderer2D::EndScene(ID3D11DeviceContext* deviceContext)
 {
 	HRESULT result;

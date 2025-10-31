@@ -6,7 +6,8 @@ bool RenderSystem::Initialize(ID3D11Device* device)
 	return m_renderer2D.Initialize(device);
 }
 
-void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
+/* TEXT TEST DELETE TEXTDATA + MODEL MATRIX SOON*/
+void RenderSystem::Update(Direct3D* direct3d, Scene* scene, const TextData& textData, const DirectX::XMMATRIX& modelMatrix)
 {
 	direct3d->Clear(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -26,6 +27,7 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 				scene->GetComponent<Transform>(sprite.GetEntityId()).GetModelMatrix()
 			);
 		}
+		m_renderer2D.SubmitText(textData, modelMatrix);
 		m_renderer2D.EndScene(deviceContext);
 	}
 

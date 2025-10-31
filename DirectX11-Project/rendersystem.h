@@ -16,7 +16,8 @@ public:
 	~RenderSystem() = default;
 
 	bool Initialize(ID3D11Device* device);
-	void Update(Direct3D* direct3d, Scene* scene);
+	/* TEXT TEST DELETE TEXTDATA + MODEL MATRIX SOON*/
+	void Update(Direct3D* direct3d, Scene* scene, const TextData& textData, const DirectX::XMMATRIX& modelMatrix);
 
 private:
 	Renderer2D m_renderer2D;
