@@ -86,11 +86,15 @@ Texture* TextureManager::GetTexture(std::string textureName)
 void TextureManager::Shutdown()
 {
 	for (auto& entry : m_textureBank) {
-		entry.second->Shutdown();
+		if (entry.second) {
+			entry.second->Shutdown();
+		}
 		delete entry.second;
 	}
 	for (auto& entry : m_samplerBank) {
-		entry.second->Release();
+		if (entry.second) {
+			entry.second->Release();
+		}
 	}
 	m_textureBank.clear();
 }
