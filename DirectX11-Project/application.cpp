@@ -279,14 +279,16 @@ bool Application::Tick(float dt)
 	
 	/* TEXT TEST DELETE SOON*/
 	DirectX::XMMATRIX modelMatrix = 
-		DirectX::XMMatrixScaling(100.0f, 100.0f, 1.0f) * 
-		DirectX::XMMatrixRotationZ(DirectX::XMConvertToRadians(45)) * 
-		DirectX::XMMatrixTranslation(50.0f, 50.0f, 0.0f);
+		DirectX::XMMatrixScaling(50.0f, 50.0f, 1.0f) * 
+		//DirectX::XMMatrixRotationZ(DirectX::XMConvertToRadians(45)) * 
+		DirectX::XMMatrixTranslation(50.0f, 100.0f, 0.0f);
 
 	TextData textData;
 	textData.shader = m_shaderManager->GetShader<DefaultSpriteShader>();
 	textData.texture = m_textureManager->GetTexture("defaultfont");
-	textData.text = "FPS:" + std::to_string(static_cast<int>(1.0f/dt));
+	textData.characterDimensions.x = 12.0f;
+	textData.characterDimensions.y = 16.0f;
+	textData.text = "FPS:\n" + std::to_string(static_cast<int>(1.0f/dt));
 	/* TEXT TEST DELETE SOON*/
 
 	m_transformSystem->Update(m_scene);

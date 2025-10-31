@@ -179,23 +179,30 @@ void const Renderer2D::SubmitText(const TextData& textData, const DirectX::XMMAT
 	SpriteData spriteData;
 	spriteData.shader = textData.shader;
 	spriteData.texture = textData.texture;
+	spriteData.sourceRect.z = static_cast<float>(textData.characterDimensions.x);
+	spriteData.sourceRect.w = static_cast<float>(textData.characterDimensions.y);
 
 	DirectX::XMMATRIX characterModelMatrix;
+	
 
 	size_t textLength = textData.text.length();
+
+	float column = 0.0f;
+	float row = 0.0f;
+	
+
 	for (size_t i = 0; i < textLength; i++) {
+		if (textData.text[i] == '\n') {
+			column = 0.0f;
+			row -= 1.0f;
+		}
+		else {
+			column += 1.0f;
+		}
 
-		characterModelMatrix = DirectX::XMMatrixTranslation(static_cast<float>(i), 0.0f, 0.0f) * modelMatrix;
-
-		/* TEXT TEST USE PROPER DIMENSIONS SOON*/
-		spriteData.sourceRect.x = static_cast<float>((textData.text[i] - ' ') * textData.texture->GetHeight());
-
-		spriteData.sourceRect.z = static_cast<float>(textData.texture->GetHeight());
-		spriteData.sourceRect.w = static_cast<float>(textData.texture->GetHeight());
-
+		characterModelMatrix = DirectX::XMMatrixTranslation(column, row, 0.0f) * modelMatrix;
+		spriteData.sourceRect.x = static_cast<float>((textData.text[i] - ' ') * textData.characterDimensions.x);
 		SubmitSprite(spriteData, characterModelMatrix);
-
-		
 	}
 }
 
