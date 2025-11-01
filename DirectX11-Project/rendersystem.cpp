@@ -6,8 +6,7 @@ bool RenderSystem::Initialize(ID3D11Device* device)
 	return m_renderer2D.Initialize(device);
 }
 
-/* TEXT TEST DELETE TEXTDATA + MODEL MATRIX SOON*/
-void RenderSystem::Update(Direct3D* direct3d, Scene* scene, const TextData& textData, const DirectX::XMMATRIX& modelMatrix)
+void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 {
 	direct3d->Clear(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -17,6 +16,7 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene, const TextData& text
 
 	std::vector<Camera2D>* camera2Ds = scene->GetComponents<Camera2D>();
 	std::vector<Sprite>* sprites = scene->GetComponents<Sprite>();
+	std::vector<Text>* texts = scene->GetComponents<Text>();
 
 	for (Camera2D& camera2D : *camera2Ds)
 	{
@@ -27,7 +27,12 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene, const TextData& text
 				scene->GetComponent<Transform>(sprite.GetEntityId()).GetModelMatrix()
 			);
 		}
-		m_renderer2D.SubmitText(textData, modelMatrix);
+		for (Text& text : *texts) {
+			m_renderer2D.SubmitText(
+				text.GetTextData(),
+				scene->GetComponent<Transform>(text.GetEntityId()).GetModelMatrix()
+			);
+		}
 		m_renderer2D.EndScene(deviceContext);
 	}
 

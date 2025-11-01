@@ -14,6 +14,7 @@ INCLUDES
 #include "renderer.h"
 #include "sprite.h"
 #include "spriteanimator.h"
+#include "text.h"
 
 class Scene
 {
@@ -59,6 +60,7 @@ private:
 	std::vector<Renderer>       m_renderers;
 	std::vector<Sprite>         m_sprites;
 	std::vector<SpriteAnimator> m_spriteAnimators;
+	std::vector<Text>           m_texts;
 
 	void* m_componentLists[static_cast<int>(ComponentId::COMPONENT_COUNT)]; // Table of component lists for generalized access.
 };

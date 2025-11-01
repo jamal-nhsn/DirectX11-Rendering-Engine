@@ -10,5 +10,6 @@ enum class ComponentId
 	Renderer,
 	Sprite,
 	SpriteAnimator,
+	Text,
 	COMPONENT_COUNT
 };

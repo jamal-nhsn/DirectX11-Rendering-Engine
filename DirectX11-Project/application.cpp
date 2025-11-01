@@ -170,17 +170,33 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	float roomSize = 10.0f;
 	m_scene->GetComponent<Transform>(roomParent).SetGlobalScale(roomSize, roomSize, roomSize);
 
+	int camera2DEntity = m_scene->CreateEntity();
+	Transform& camera2DTransform = m_scene->GetComponent<Transform>(camera2DEntity);
+	camera2DTransform.SetGlobalPosition(0.0f, 0.0f, -5.0f);
+	Camera2D& camera2D = m_scene->GetComponent<Camera2D>(camera2DEntity);
+
+	int fpsText = m_scene->CreateEntity();
+	Transform& fpsTextTransform = m_scene->GetComponent<Transform>(fpsText);
+	fpsTextTransform.SetLocalScale(50.0f, 50.0f, 1.0f);
+	fpsTextTransform.SetLocalPosition(50.0f, 100.0f, 0.0f);
+	Text& fpsTextComponent = m_scene->GetComponent<Text>(fpsText);
+	fpsTextComponent.SetShader(m_shaderManager->GetShader<DefaultSpriteShader>());
+	fpsTextComponent.SetTexture(m_textureManager->GetTexture("defaultfont"));
+	fpsTextComponent.SetCharacterWidth(12);
+	fpsTextComponent.SetCharacterHeight(16);
+	fpsTextComponent.SetTint(1.0f, 0.0f, 0.0f, 1.0f);
+
 	int spriteWidth = 125;
 	int spriteHeight = 125;
 
 	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
-	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("texttest");
+	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("nyancat");
 
-	int columns = 0;
-	int rows = 0;
+	int columns = 9;
+	int rows = 16;
 
-	int columnSpacing = 50;
-	int rowSpacing = 50;
+	int columnSpacing = 400;
+	int rowSpacing = 100;
 
 	for (int i = 0; i < columns; i++) {
 		for (int j = 0; j < rows; j++) {
@@ -193,20 +209,13 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 			SpriteAnimator& spriteAnimator = m_scene->GetComponent<SpriteAnimator>(spriteEntity);
 			spriteAnimator.SetSpriteAnimation(spriteAnimation);
-			//spriteAnimator.SetFrameNumber(j * rows + i);
 			spriteAnimator.SetFrameNumber(std::rand());
 
 			Transform& spriteTransform = m_scene->GetComponent<Transform>(spriteEntity);
 			spriteTransform.SetGlobalPosition(static_cast<float>(i * columnSpacing), static_cast<float>(j * rowSpacing), 0.0f);
-			//spriteTransform.SetGlobalScale(200.0f, 104.0f, 1.0f);
-			spriteTransform.SetGlobalScale(50.0f, 50.0f, 1.0f);
+			spriteTransform.SetGlobalScale(200.0f, 104.0f, 1.0f);
 		}
 	}
-
-	int camera2DEntity = m_scene->CreateEntity();
-	Transform& camera2DTransform = m_scene->GetComponent<Transform>(camera2DEntity);
-	camera2DTransform.SetGlobalPosition(0.0f, 0.0f, -5.0f);
-	Camera2D& camera2D = m_scene->GetComponent<Camera2D>(camera2DEntity);
 
 	return success;
 }
@@ -277,27 +286,20 @@ bool Application::Tick(float dt)
 {
 	bool success = true;
 	
-	/* TEXT TEST DELETE SOON*/
-	DirectX::XMMATRIX modelMatrix = 
-		DirectX::XMMatrixScaling(50.0f, 50.0f, 1.0f) * 
-		//DirectX::XMMatrixRotationZ(DirectX::XMConvertToRadians(45)) * 
-		DirectX::XMMatrixTranslation(50.0f, 100.0f, 0.0f);
+	float fps = 1.0f / dt;
 
-	TextData textData;
-	textData.shader = m_shaderManager->GetShader<DefaultSpriteShader>();
-	textData.texture = m_textureManager->GetTexture("defaultfont");
-	textData.characterDimensions.x = 12.0f;
-	textData.characterDimensions.y = 16.0f;
-	textData.text = "FPS:\n" + std::to_string(static_cast<int>(1.0f/dt));
-	/* TEXT TEST DELETE SOON*/
+	Text& text = m_scene->GetComponent<Text>(14);
+	text.SetText("FPS:" + std::to_string(static_cast<int>(fps)));
 
-	m_transformSystem->Update(m_scene);
-	m_cameraSystem->Update(m_direct3d, m_scene);
-	m_spriteAnimatorSystem->Update(m_scene, dt);
+	float red = (fps - 144.0f) / 144.0f;
+	red = red > 1.0f ? 1.0f : red;
+	red = red < 0.0f ? 0.0f : red;
 
-	/* TEXT TEST DELETE TEXTDATA + MODEL MATRIX SOON*/
-	m_renderSystem->Update(m_direct3d, m_scene, textData, modelMatrix);
-	/* TEXT TEST DELETE TEXTDATA + MODEL MATRIX SOON*/
+	float green = fps / 144.0f;
+	green = green > 1.0f ? 1.0f : green;
+
+	text.SetTint(red, green, 0.0f, 1.0f);
+
 
 	Transform& transform1 = m_scene->GetComponent<Transform>(1);
 	transform1.SetLocalRotation(
@@ -307,18 +309,10 @@ bool Application::Tick(float dt)
 		)
 	);
 
-	/*
-	for (int i = 13; i < 113; i++) {
-		Transform& transform = m_scene->GetComponent<Transform>(i);
-		transform.SetLocalRotation(
-			DirectX::XMQuaternionMultiply(
-				transform.GetLocalRotation(),
-				DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), DirectX::XMConvertToRadians(180.0f) * dt)
-			)
-		);
-	}
-	*/
-	
+	m_transformSystem->Update(m_scene);
+	m_cameraSystem->Update(m_direct3d, m_scene);
+	m_spriteAnimatorSystem->Update(m_scene, dt);
+	m_renderSystem->Update(m_direct3d, m_scene);
 	
 	return success;
 }

@@ -119,6 +119,7 @@ void const Renderer2D::SubmitSprite(const SpriteData& spriteData, const DirectX:
 	bottomRight.color = spriteData.tint;
 	bottomRight.texCoord = DirectX::XMFLOAT2(u2, v1);
 
+
 	// Add the vertices to the batch.
 	m_batches[batchIndex].vertices.emplace_back(bottomLeft);
 	m_batches[batchIndex].vertices.emplace_back(topLeft);
@@ -181,6 +182,7 @@ void const Renderer2D::SubmitText(const TextData& textData, const DirectX::XMMAT
 	spriteData.texture = textData.texture;
 	spriteData.sourceRect.z = static_cast<float>(textData.characterDimensions.x);
 	spriteData.sourceRect.w = static_cast<float>(textData.characterDimensions.y);
+	spriteData.tint = textData.tint;
 
 	DirectX::XMMATRIX characterModelMatrix;
 	
