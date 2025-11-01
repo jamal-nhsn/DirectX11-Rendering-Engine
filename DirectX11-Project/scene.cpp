@@ -10,6 +10,7 @@ Scene::Scene()
 	m_componentLists[static_cast<size_t>(ComponentId::Renderer)]       = &m_renderers;
 	m_componentLists[static_cast<size_t>(ComponentId::Sprite)]         = &m_sprites;
 	m_componentLists[static_cast<size_t>(ComponentId::SpriteAnimator)] = &m_spriteAnimators;
+	m_componentLists[static_cast<size_t>(ComponentId::Text)]           = &m_texts;
 
 	m_ambientLight = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 }

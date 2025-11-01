@@ -1,0 +1,7 @@
+#FRAME
+	Count: 5
+	Slide: (50, 0)
+	Texture: nyancat
+	Dimensions: (50, 23)
+	Source_Origin: (0, 0)
+	Duration: 0.5

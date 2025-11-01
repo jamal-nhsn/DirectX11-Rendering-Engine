@@ -331,7 +331,7 @@ DirectX::XMVECTOR Transform::GetGlobalRotation()
 	return DirectX::XMQuaternionMultiply(m_localRotation, m_parentRotation);
 }
 
-DirectX::XMMATRIX Transform::GetModelMatrix()
+const DirectX::XMMATRIX& Transform::GetModelMatrix()
 {
 	return m_modelMatrix;
 }

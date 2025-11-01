@@ -48,7 +48,7 @@ public:
 	DirectX::XMFLOAT3 GetGlobalScale();
 	DirectX::XMVECTOR GetGlobalRotation();
 
-	DirectX::XMMATRIX GetModelMatrix();
+	const DirectX::XMMATRIX& GetModelMatrix();
 
 	DirectX::XMFLOAT3 GetForward();
 

@@ -29,9 +29,9 @@ void SpriteAnimatorSystem::Update(Scene* scene, float dt)
 		Sprite& sprite = scene->GetComponent<Sprite>(spriteAnimator.GetEntityId());
 
 		sprite.SetTexture(frame->texture);
-		sprite.SetWidth(frame->width);
-		sprite.SetHeight(frame->height);
 		sprite.SetSourceX(frame->sourceX);
-		sprite.SetSourceY(frame->sourceY);		
+		sprite.SetSourceY(frame->sourceY);
+		sprite.SetWidth(frame->width);
+		sprite.SetHeight(frame->height);	
 	}
 }

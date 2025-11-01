@@ -1,0 +1,7 @@
+#FRAME
+	Count: 90
+	Slide: (16, 0)
+	Texture: defaultfont
+	Dimensions: (16, 16)
+	Source_Origin: (528, 0)
+	Duration: 2

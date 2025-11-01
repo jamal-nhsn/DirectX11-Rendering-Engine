@@ -65,7 +65,7 @@ Texture* TargaLoader::LoadTexture(const char* filePath, ID3D11Device* device, ID
 	unsigned char* destData = new unsigned char[imageSize];
 
 	// Check to see if the image needs to be flipped.
-	bool flipImage = !(fileHeader.imageDescriptor & (0b00100000));
+	bool flipImage = fileHeader.imageDescriptor & (0b00100000);
 
 	// Initialize the index into the image data array.
 	int dataIndex = flipImage * ((width * height * 4) - (width * 4));

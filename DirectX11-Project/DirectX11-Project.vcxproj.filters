@@ -85,6 +85,12 @@
     <Filter Include="Source Files\Shaders\2D\Default Sprite Shader">
       <UniqueIdentifier>{b613be4b-4a8b-4431-9ad5-f623db896628}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Renderer">
+      <UniqueIdentifier>{1c3d9040-4d6b-40df-bf51-4c6dd6981280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Renderer">
+      <UniqueIdentifier>{8dccf6dd-9fdb-4f04-9d04-a0471f776085}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -174,9 +180,6 @@
     <ClInclude Include="sprite.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="render2dsystem.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
     <ClInclude Include="camera2d.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -203,6 +206,18 @@
     </ClInclude>
     <ClInclude Include="spriteanimatorsystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer2d.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="spritedata.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="textdata.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="text.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,9 +302,6 @@
     <ClCompile Include="targaloader.cpp">
       <Filter>Source Files\Resources\Loaders</Filter>
     </ClCompile>
-    <ClCompile Include="render2dsystem.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="sprite.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -316,6 +328,12 @@
     </ClCompile>
     <ClCompile Include="spriteanimatorsystem.cpp">
       <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer2d.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="text.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
