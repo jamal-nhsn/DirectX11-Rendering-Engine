@@ -195,8 +195,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	int columns = 100;
 	int rows = 100;
 
-	int columnSpacing = 200;
-	int rowSpacing = 100;
+	int columnSpacing = 50;
+	int rowSpacing = 25;
 
 	for (int i = 0; i < columns; i++) {
 		for (int j = 0; j < rows; j++) {
@@ -213,7 +213,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 			Transform& spriteTransform = m_scene->GetComponent<Transform>(spriteEntity);
 			spriteTransform.SetGlobalPosition(static_cast<float>(i * columnSpacing), static_cast<float>(j * rowSpacing), 0.0f);
-			spriteTransform.SetGlobalScale(200.0f, 104.0f, 1.0f);
+			spriteTransform.SetGlobalScale(50.0f, 26.0f, 1.0f);
 		}
 	}
 
