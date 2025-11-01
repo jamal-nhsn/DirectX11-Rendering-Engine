@@ -43,7 +43,11 @@ public:
 
 private:
 	ID3D11Buffer* m_vbo;
+	ID3D11Buffer* m_ibo;
+
 	DirectX::XMMATRIX m_cameraView;
 	DirectX::XMMATRIX m_cameraProjection;
 	std::vector<SpriteBatch> m_batches;
+
+	size_t m_lastBatchIndex;
 };

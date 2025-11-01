@@ -1,16 +1,50 @@
 #include "renderer2d.h"
+#include <array>
 
 bool Renderer2D::Initialize(ID3D11Device* device)
 {
 	m_cameraView = DirectX::XMMatrixIdentity();
 	m_cameraProjection = DirectX::XMMatrixIdentity();
 
+	// Initialize indices.
+	unsigned long* indices = new unsigned long[6 * MAX_SPRITE_BATCH_SIZE];
+	for (unsigned long i = 0, v = 0; i < 6 * MAX_SPRITE_BATCH_SIZE; i+= 6, v+=4) {
+		indices[i]     = v;
+		indices[i + 1] = v + 1;
+		indices[i + 2] = v + 2;
+		indices[i + 3] = v;
+		indices[i + 4] = v + 2;
+		indices[i + 5] = v + 3;
+	}
+
 	HRESULT result;
+
+	// Create the static index buffer desc allocating the max amount of vertices.
+	D3D11_BUFFER_DESC indexBufferDesc;
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * 4 * MAX_SPRITE_BATCH_SIZE;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
+	indexBufferDesc.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA indexData;
+	indexData.pSysMem = indices;
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_ibo);
+
+	delete[] indices;
+
+	if (FAILED(result)) {
+		return false;
+	}
 
 	// Create the dynamic vertex buffer desc allocating the max amount of vertices.
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex2D) * 6 * MAX_SPRITE_BATCH_SIZE;
+	vertexBufferDesc.ByteWidth = sizeof(Vertex2D) * 4 * MAX_SPRITE_BATCH_SIZE;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	vertexBufferDesc.MiscFlags = 0;
@@ -28,12 +62,18 @@ Renderer2D::~Renderer2D()
 		m_vbo->Release();
 		m_vbo = 0;
 	}
+	if (m_ibo) {
+		m_ibo->Release();
+		m_ibo = 0;
+	}
 }
 
 void Renderer2D::BeginScene(Camera2D& camera)
 {
 	m_cameraView = camera.GetViewMatrix();
 	m_cameraProjection = camera.GetProjectionMatrix();
+
+	m_lastBatchIndex = 0;
 
 	// Clear the batches.
 	for (SpriteBatch& batch : m_batches) {
@@ -52,11 +92,20 @@ void const Renderer2D::SubmitSprite(const SpriteData& spriteData, const DirectX:
 
 	// Try to find a batch.
 	size_t batchIndex;
-	for (batchIndex = 0; batchIndex < m_batches.size(); batchIndex++) {
-		if ((spriteData.shader == m_batches[batchIndex].shader || m_batches[batchIndex].shader == 0) &&
-			(spriteData.texture == m_batches[batchIndex].texture || m_batches[batchIndex].texture == 0) &&
-			m_batches[batchIndex].vertices.size() < 6 * MAX_SPRITE_BATCH_SIZE) {
-			break;
+
+	if ((m_lastBatchIndex < m_batches.size()) &&
+		(m_batches[m_lastBatchIndex].vertices.size() < 4 * MAX_SPRITE_BATCH_SIZE) &&
+		(spriteData.shader == m_batches[m_lastBatchIndex].shader || m_batches[m_lastBatchIndex].shader == 0) &&
+		(spriteData.texture == m_batches[m_lastBatchIndex].texture || m_batches[m_lastBatchIndex].texture == 0)) {
+		batchIndex = m_lastBatchIndex;
+	}
+	else {
+		for (batchIndex = 0; batchIndex < m_batches.size(); batchIndex++) {
+			if ((m_batches[batchIndex].vertices.size() < 4 * MAX_SPRITE_BATCH_SIZE) &&
+				(spriteData.shader == m_batches[batchIndex].shader || m_batches[batchIndex].shader == 0) &&
+				(spriteData.texture == m_batches[batchIndex].texture || m_batches[batchIndex].texture == 0)) {
+				break;
+			}
 		}
 	}
 
@@ -64,6 +113,8 @@ void const Renderer2D::SubmitSprite(const SpriteData& spriteData, const DirectX:
 	if (batchIndex == m_batches.size()) {
 		m_batches.emplace_back();
 	}
+
+	m_lastBatchIndex = batchIndex;
 
 	// Always overwrite batch parameters.
 	m_batches[batchIndex].shader = spriteData.shader;
@@ -98,35 +149,17 @@ void const Renderer2D::SubmitSprite(const SpriteData& spriteData, const DirectX:
 	float u2 = (spriteData.sourceRect.x + sourceWidth + halfTexelU) / textureWidth;
 	float v2 = (spriteData.sourceRect.y + sourceHeight + halfTexelV) / textureHeight;
 
-	// Generate the vertices for the sprite.
-	Vertex2D bottomLeft;
-	DirectX::XMStoreFloat3(&bottomLeft.position, positions[0]);
-	bottomLeft.color = spriteData.tint;
-	bottomLeft.texCoord = DirectX::XMFLOAT2(u1, v1);
+	size_t firstVertex = m_batches[batchIndex].vertices.size();
 
-	Vertex2D topLeft;
-	DirectX::XMStoreFloat3(&topLeft.position, positions[1]);
-	topLeft.color = spriteData.tint;
-	topLeft.texCoord = DirectX::XMFLOAT2(u1, v2);
+	m_batches[batchIndex].vertices.emplace_back(Vertex2D{ {0.0f, 0.0f, 0.0f}, {u1, v1}, {spriteData.tint } });
+	m_batches[batchIndex].vertices.emplace_back(Vertex2D{ {0.0f, 0.0f, 0.0f}, {u1, v2}, {spriteData.tint } });
+	m_batches[batchIndex].vertices.emplace_back(Vertex2D{ {0.0f, 0.0f, 0.0f}, {u2, v2}, {spriteData.tint } });
+	m_batches[batchIndex].vertices.emplace_back(Vertex2D{ {0.0f, 0.0f, 0.0f}, {u2, v1}, {spriteData.tint } });
 
-	Vertex2D topRight;
-	DirectX::XMStoreFloat3(&topRight.position, positions[2]);
-	topRight.color = spriteData.tint;
-	topRight.texCoord = DirectX::XMFLOAT2(u2, v2);
-
-	Vertex2D bottomRight;
-	DirectX::XMStoreFloat3(&bottomRight.position, positions[3]);
-	bottomRight.color = spriteData.tint;
-	bottomRight.texCoord = DirectX::XMFLOAT2(u2, v1);
-
-
-	// Add the vertices to the batch.
-	m_batches[batchIndex].vertices.emplace_back(bottomLeft);
-	m_batches[batchIndex].vertices.emplace_back(topLeft);
-	m_batches[batchIndex].vertices.emplace_back(topRight);
-	m_batches[batchIndex].vertices.emplace_back(bottomLeft);
-	m_batches[batchIndex].vertices.emplace_back(topRight);
-	m_batches[batchIndex].vertices.emplace_back(bottomRight);
+	for (size_t i = 0; i < 4; i++)
+	{
+		DirectX::XMStoreFloat3(&m_batches[batchIndex].vertices[firstVertex + i].position, positions[i]);
+	}
 }
 
 void const Renderer2D::SubmitSprite(const SpriteData& spriteData, float centerX, float centerY, float width, float height)
@@ -231,7 +264,8 @@ void Renderer2D::EndScene(ID3D11DeviceContext* deviceContext)
 		memcpy(dataPtr, (void*)batch.vertices.data(), (sizeof(Vertex2D) * batch.vertices.size()));
 		deviceContext->Unmap(m_vbo, 0);
 
-		// Set the vertex buffer in the input assembler.
+		// Set the index and vertex buffer in the input assembler.
+		deviceContext->IASetIndexBuffer(m_ibo, DXGI_FORMAT_R32_UINT, 0);
 		deviceContext->IASetVertexBuffers(0, 1, &m_vbo, &stride, &offset);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -245,7 +279,10 @@ void Renderer2D::EndScene(ID3D11DeviceContext* deviceContext)
 		deviceContext->PSSetSamplers(0, 1, &sampler);
 		deviceContext->PSSetShaderResources(0, 1, &texture);
 
+		// Calculate the index count.
+		size_t indexCount = static_cast<unsigned int>(static_cast<float>(batch.vertices.size()) * 1.5f);
+
 		// Draw the batch.
-		deviceContext->Draw(static_cast<unsigned int>(batch.vertices.size()), 0);
+		deviceContext->DrawIndexed(indexCount, 0, 0);
 	}
 }

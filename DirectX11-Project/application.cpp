@@ -192,10 +192,10 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
 	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("nyancat");
 
-	int columns = 9;
-	int rows = 16;
+	int columns = 100;
+	int rows = 100;
 
-	int columnSpacing = 400;
+	int columnSpacing = 200;
 	int rowSpacing = 100;
 
 	for (int i = 0; i < columns; i++) {
@@ -291,7 +291,7 @@ bool Application::Tick(float dt)
 	Text& text = m_scene->GetComponent<Text>(14);
 	text.SetText("FPS:" + std::to_string(static_cast<int>(fps)));
 
-	float red = (fps - 144.0f) / 144.0f;
+	float red = (144.0f - fps) / 144.0f;
 	red = red > 1.0f ? 1.0f : red;
 	red = red < 0.0f ? 0.0f : red;
 
