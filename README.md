@@ -2,11 +2,11 @@
 ## **Description:**
 An in progress custom rendering engine written in C++ utilizing the DirectX11 graphics framework.
 ## **Sample Images:**
-<img width="1288" height="1289" alt="SampleImage1" src="https://github.com/user-attachments/assets/6ad9863a-7de6-447a-a90b-f44f43d38d31" />
-<img width="1196" height="1194" alt="3Dand2D" src="https://github.com/user-attachments/assets/1752d5d6-834d-4da0-aa5c-1548e7daae68" />
+<img width="1265" height="680" alt="DemoImage" src="https://github.com/user-attachments/assets/dd2029ad-2c27-4a89-83f5-80a633268415" />
+<img width="1288" height="1289" alt="Just3D" src="https://github.com/user-attachments/assets/6ad9863a-7de6-447a-a90b-f44f43d38d31" />
 
 ## **Details:**
-* Utilizes the * *Entity Component System* * architecture for all scene objects.
+* Utilizes the *Entity Component System* architecture for all scene objects.
 * Utilizes basic forward rendering with multi-pass shading for multiple lights.
 * Supports a reliable transformation hierarchy for scene objects.
 * Supports an arbitary number of directional, point, and spot lights.
