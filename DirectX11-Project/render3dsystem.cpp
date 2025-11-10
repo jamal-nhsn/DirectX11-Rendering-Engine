@@ -44,7 +44,7 @@ void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 				continue;
 			}
 
-			Mesh* mesh = model.GetMesh();
+			std::shared_ptr<Engine::Mesh> mesh = model.GetMesh();
 			Texture* texture = model.GetTexture();
 			Shader* shader = model.GetBaseShader();
 
@@ -69,7 +69,7 @@ void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 				ambientLight
 			);
 
-			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+			deviceContext->DrawIndexed(mesh->GetIBO().GetIndexCount(), 0, 0);
 		}
 
 		/*----------LIGHT-PASS----------*/
@@ -86,7 +86,7 @@ void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 				continue;
 			}
 
-			Mesh* mesh = model.GetMesh();
+			std::shared_ptr<Engine::Mesh> mesh = model.GetMesh();
 			Texture* texture = model.GetTexture();
 			Shader* shader = model.GetLightShader();
 
@@ -123,7 +123,7 @@ void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 					lightData
 				);
 
-				deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+				deviceContext->DrawIndexed(mesh->GetIBO().GetIndexCount(), 0, 0);
 			}
 		}
 	}

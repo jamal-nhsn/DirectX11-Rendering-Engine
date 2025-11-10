@@ -3,18 +3,21 @@
 /*======
 INCLUDES
 ======*/
+#include "src/Renderer/mesh.h"
+
 #include <stdio.h>
 #include <vector>
 #include <unordered_map>
-
-#include "mesh.h"
+#include <memory>
+#include <string>
 
 class ObjLoader
 {
 public:
-	ObjLoader();
-	ObjLoader(ObjLoader& other);
-	~ObjLoader();
+	ObjLoader() = default;
+	// Shouldn't need to be copied.
+	ObjLoader(ObjLoader& other) = delete;
+	~ObjLoader() = default;
 
-	Mesh* LoadMesh(const char* filePath, ID3D11Device* device, float uScale, float vScale);
+	std::shared_ptr<Engine::Mesh> LoadMesh(std::string filePath, ID3D11Device* device, float uScale, float vScale);
 };

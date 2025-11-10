@@ -1,20 +1,8 @@
 #include "objloader.h"
 
-ObjLoader::ObjLoader()
+std::shared_ptr<Engine::Mesh> ObjLoader::LoadMesh(std::string filePath, ID3D11Device* device, float uScale, float vScale)
 {
-}
-
-ObjLoader::ObjLoader(ObjLoader& other)
-{
-}
-
-ObjLoader::~ObjLoader()
-{
-}
-
-Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device, float uScale, float vScale)
-{
-	int filePathLength = static_cast<int>(strlen(filePath));
+	int filePathLength = static_cast<int>(filePath.length());
 
 	// Ensure the file path is long enough to contain ".obj" at the end.
 	if (filePathLength <= 4) {
@@ -33,7 +21,7 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device, float uSca
 	int error = 0;
 
 	// Open the file for reading.
-	error = fopen_s(&filePtr, filePath, "r");
+	error = fopen_s(&filePtr, filePath.c_str(), "r");
 	if (error != 0) {
 		return 0;
 	}
@@ -42,8 +30,8 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device, float uSca
 	std::vector<DirectX::XMFLOAT2> vertexTexCoord;
 	std::vector<DirectX::XMFLOAT3> vertexNormal;
 
-	std::vector<Vertex3D> vertices;
-	std::vector<unsigned long>   indices;
+	std::vector<Engine::Vertex3D> vertices;
+	std::vector<unsigned int> indices;
 	
 	std::unordered_map<uint64_t, int> vertexKeyToIndex;
 
@@ -136,14 +124,21 @@ Mesh* ObjLoader::LoadMesh(const char* filePath, ID3D11Device* device, float uSca
 		}
 	}
 
-	// Create the mesh.
-	Mesh* mesh = new Mesh;
-	bool success = mesh->Initialize(device, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// Create the Buffers.
+	Engine::VertexBuffer vbo(
+		device,
+		vertices.data(),
+		static_cast<unsigned int>(sizeof(Engine::Vertex3D)),
+		static_cast<unsigned int>(vertices.size())
+	);
 
-	if (!success) {
-		delete mesh;
-		mesh = 0;
-	}
+	Engine::IndexBuffer ibo(
+		device,
+		indices.data(),
+		static_cast<unsigned int>(indices.size())
+	);
+
+	std::shared_ptr<Engine::Mesh> mesh = std::make_shared<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// Close the file
 	fclose(filePtr);

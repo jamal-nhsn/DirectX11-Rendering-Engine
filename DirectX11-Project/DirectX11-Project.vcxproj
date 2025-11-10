@@ -50,6 +50,17 @@
     <ClInclude Include="spriteanimator.h" />
     <ClInclude Include="spriteanimatorsystem.h" />
     <ClInclude Include="spritedata.h" />
+    <ClInclude Include="src\ECS\componentgroup.h" />
+    <ClInclude Include="src\ECS\components.h" />
+    <ClInclude Include="src\ECS\componentview.h" />
+    <ClInclude Include="src\ECS\ecs.h" />
+    <ClInclude Include="src\ECS\freelist.h" />
+    <ClInclude Include="src\ECS\scene.h" />
+    <ClInclude Include="src\ECS\sparseset.h" />
+    <ClInclude Include="src\Renderer\indexbuffer.h" />
+    <ClInclude Include="src\Renderer\mesh.h" />
+    <ClInclude Include="src\Renderer\vertex.h" />
+    <ClInclude Include="src\Renderer\vertexbuffer.h" />
     <ClInclude Include="targaloader.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="textdata.h" />
@@ -76,7 +87,7 @@
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="meshOld.cpp" />
     <ClCompile Include="meshmanager.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="objloader.cpp" />
@@ -92,6 +103,9 @@
     <ClCompile Include="spriteanimationmanager.cpp" />
     <ClCompile Include="spriteanimator.cpp" />
     <ClCompile Include="spriteanimatorsystem.cpp" />
+    <ClCompile Include="src\Renderer\indexbuffer.cpp" />
+    <ClCompile Include="src\Renderer\mesh.cpp" />
+    <ClCompile Include="src\Renderer\vertexbuffer.cpp" />
     <ClCompile Include="targaloader.cpp" />
     <ClCompile Include="text.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -123,9 +137,11 @@
   <ItemGroup>
     <Object Include="Meshes\skull.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Meshes\sphere.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +253,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

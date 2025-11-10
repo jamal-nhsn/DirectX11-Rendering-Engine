@@ -1,30 +1,28 @@
 #pragma once
 
-/*======
-INCLUDES
-======*/
-#include <unordered_map>
-
-#include "mesh.h"
 #include "objloader.h"
+
+#include <unordered_map>
+#include <memory>
+#include <string>
 
 class MeshManager
 {
 public:
-	MeshManager();
-	MeshManager(const MeshManager&);
-	~MeshManager();
+	MeshManager(ID3D11Device* device);
 
-	bool Initialize(ID3D11Device* device);
-	Mesh* GetMesh(const char* meshName);
-	void Shutdown();
+	// Shouldn't need to be copied.
+	MeshManager(const MeshManager& other) = delete;
+	~MeshManager() = default;
 
-private:
-	bool InitializeTriangle(ID3D11Device* device);
-	bool InitializeQuad(ID3D11Device* device);
-	bool InitializeCube(ID3D11Device* device);
-	bool InitializeObjFiles(ID3D11Device* device);
+	std::shared_ptr<Engine::Mesh> GetMesh(std::string meshName);
 
 private:
-	std::unordered_map<const char*, Mesh*> m_meshBank;
+	void InitializeTriangle(ID3D11Device* device);
+	void InitializeQuad(ID3D11Device* device);
+	void InitializeCube(ID3D11Device* device);
+	void InitializeObjFiles(ID3D11Device* device);
+
+private:
+	std::unordered_map<std::string, std::shared_ptr<Engine::Mesh>> m_meshBank;
 };

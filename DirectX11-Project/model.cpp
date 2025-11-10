@@ -14,28 +14,12 @@ Model::Model(int entityId)
 	m_shininess    = 32.0f;
 }
 
-Model::Model(const Model& other)
-{
-	m_entityId    = other.m_entityId;
-	m_mesh        = other.m_mesh;
-	m_baseShader  = other.m_baseShader;
-	m_lightShader = other.m_lightShader;
-	m_texture     = other.m_texture;
-
-	m_specularTint = other.m_specularTint;
-	m_shininess    = other.m_shininess;
-}
-
-Model::~Model()
-{
-}
-
 int Model::GetEntityId()
 {
 	return m_entityId;
 }
 
-void Model::SetMesh(Mesh* mesh)
+void Model::SetMesh(std::shared_ptr<Engine::Mesh> mesh)
 {
 	m_mesh = mesh;
 }
@@ -65,7 +49,7 @@ void Model::SetShininess(float shininess)
 	m_shininess = shininess;
 }
 
-Mesh* Model::GetMesh()
+std::shared_ptr<Engine::Mesh> Model::GetMesh()
 {
 	return m_mesh;
 }

@@ -1,92 +1,36 @@
 #include "meshmanager.h"
 
-MeshManager::MeshManager()
+#include <array>
+
+MeshManager::MeshManager(ID3D11Device* device)
 {
+	InitializeTriangle(device);
+	InitializeQuad(device);
+	InitializeCube(device);
+	InitializeObjFiles(device);
 }
 
-MeshManager::MeshManager(const MeshManager& other)
-{
-}
-
-MeshManager::~MeshManager()
-{
-}
-
-bool MeshManager::Initialize(ID3D11Device* device)
-{
-	bool success = true;
-
-	success = InitializeTriangle(device);
-	if (!success) {
-		return success;
-	}
-
-	success = InitializeQuad(device);
-	if (!success) {
-		return success;
-	}
-
-	success = InitializeCube(device);
-	if (!success) {
-		return success;
-	}
-
-	success = InitializeObjFiles(device);
-	if (!success) {
-		return success;
-	}
-
-	return success;
-}
-
-Mesh* MeshManager::GetMesh(const char* meshName)
+std::shared_ptr<Engine::Mesh> MeshManager::GetMesh(std::string meshName)
 {
 	return m_meshBank[meshName];
 }
 
-void MeshManager::Shutdown()
-{
-	for (auto& entry : m_meshBank) {
-		entry.second->Shutdown();
-		delete entry.second;
-	}
-}
-
-bool MeshManager::InitializeObjFiles(ID3D11Device* device)
+void MeshManager::InitializeObjFiles(ID3D11Device* device)
 {
 	ObjLoader objLoader;
-	Mesh* mesh;
-	
-	mesh = objLoader.LoadMesh("Meshes/sphere.obj", device, 5.0f, -2.0f);
-	if (mesh == 0) {
-		return false;
-	}
-	m_meshBank["sphere"] = mesh;
-
-	return true;
+	m_meshBank["sphere"] = objLoader.LoadMesh("Meshes/sphere.obj", device, 5.0f, -2.0f);
 }
 
-bool MeshManager::InitializeTriangle(ID3D11Device* device)
+void MeshManager::InitializeTriangle(ID3D11Device* device)
 {
-	int vertexCount = 3;
-	int indexCount = 3;
-
-	Vertex3D* vertices = new Vertex3D[vertexCount];
-	if (!vertices) {
-		return false;
-	}
-
-	unsigned long* indices = new unsigned long[vertexCount];
-	if (!indices) {
-		delete[] vertices;
-		return false;
-	}
+	std::array<Engine::Vertex3D, 3> vertices;
+	std::array<unsigned int, 3> indices;
 
 	float halfRoot3 = 0.866025388;
 
 	vertices[0].position = DirectX::XMFLOAT3(-halfRoot3, -0.5f, 0.0f);
-	vertices[1].position = DirectX::XMFLOAT3(         0.0f,  0.5f, 0.0f);
-	vertices[2].position = DirectX::XMFLOAT3(halfRoot3, -0.5f, 0.0f);
+	vertices[1].position = DirectX::XMFLOAT3(      0.0f,  0.5f, 0.0f);
+	vertices[2].position = DirectX::XMFLOAT3( halfRoot3, -0.5f, 0.0f);
 
 	vertices[0].texCoord = DirectX::XMFLOAT2(0.0f, 1.0f);
 	vertices[1].texCoord = DirectX::XMFLOAT2(0.5f, 0.0f);
@@ -102,37 +46,26 @@ bool MeshManager::InitializeTriangle(ID3D11Device* device)
 
 	indices[0] = 0; indices[1] = 1; indices[2] = 2;
 
-	Mesh* triangle = new Mesh;
-	bool success = triangle->Initialize(device, vertices, vertexCount, indices, indexCount, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Engine::VertexBuffer vbo(
+		device,
+		vertices.data(),
+		static_cast<unsigned int>(sizeof(Engine::Vertex3D)),
+		static_cast<unsigned int>(vertices.size())
+	);
 
-	if (success) {
-		m_meshBank["triangle"] = triangle;
-	}
-	else {
-		delete triangle;
-	}
+	Engine::IndexBuffer ibo(
+		device,
+		indices.data(),
+		static_cast<unsigned int>(indices.size())
+	);
 
-	delete[] vertices;
-	delete[] indices;
-
-	return success;
+	m_meshBank["triangle"] = std::make_shared<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool MeshManager::InitializeQuad(ID3D11Device* device)
+void MeshManager::InitializeQuad(ID3D11Device* device)
 {
-	int vertexCount = 4;
-	int indexCount = 6;
-
-	Vertex3D* vertices = new Vertex3D[vertexCount];
-	if (!vertices) {
-		return false;
-	}
-
-	unsigned long* indices = new unsigned long[indexCount];
-	if (!indices) {
-		delete[] vertices;
-		return false;
-	}
+	std::array<Engine::Vertex3D, 4> vertices;
+	std::array<unsigned int, 6> indices;
 
 	vertices[0].position = DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f);
 	vertices[1].position = DirectX::XMFLOAT3(-0.5f,  0.5f, 0.0f);
@@ -157,37 +90,26 @@ bool MeshManager::InitializeQuad(ID3D11Device* device)
 	indices[0] = 0; indices[1] = 1; indices[2] = 2;
 	indices[3] = 0; indices[4] = 2; indices[5] = 3;
 
-	Mesh* quad = new Mesh;
-	bool success = quad->Initialize(device, vertices, vertexCount, indices, indexCount, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Engine::VertexBuffer vbo(
+		device,
+		vertices.data(),
+		static_cast<unsigned int>(sizeof(Engine::Vertex3D)),
+		static_cast<unsigned int>(vertices.size())
+	);
 
-	if (success) {
-		m_meshBank["quad"] = quad;
-	}
-	else {
-		delete quad;
-	}
+	Engine::IndexBuffer ibo(
+		device,
+		indices.data(),
+		static_cast<unsigned int>(indices.size())
+	);
 
-	delete[] vertices;
-	delete[] indices;
-
-	return success;
+	m_meshBank["quad"] = std::make_shared<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool MeshManager::InitializeCube(ID3D11Device* device)
+void MeshManager::InitializeCube(ID3D11Device* device)
 {
-	int vertexCount = 24;
-	int indexCount = 36;
-
-	Vertex3D* vertices = new Vertex3D[vertexCount];
-	if (!vertices) {
-		return false;
-	}
-
-	unsigned long* indices = new unsigned long[indexCount];
-	if (!indices) {
-		delete[] vertices;
-		return false;
-	}
+	std::array<Engine::Vertex3D, 24> vertices;
+	std::array<unsigned int, 36> indices;
 	
 	// Front
 	vertices[0].position = DirectX::XMFLOAT3(-0.5f, -0.5f, -0.5f);
@@ -333,18 +255,18 @@ bool MeshManager::InitializeCube(ID3D11Device* device)
 	indices[30] = 20; indices[31] = 21; indices[32] = 22;
 	indices[33] = 20; indices[34] = 22; indices[35] = 23;
 
-	Mesh* cube = new Mesh;
-	bool success = cube->Initialize(device, vertices, vertexCount, indices, indexCount, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Engine::VertexBuffer vbo(
+		device,
+		vertices.data(),
+		static_cast<unsigned int>(sizeof(Engine::Vertex3D)),
+		static_cast<unsigned int>(vertices.size())
+	);
 
-	if (success) {
-		m_meshBank["cube"] = cube;
-	}
-	else {
-		delete cube;
-	}
+	Engine::IndexBuffer ibo(
+		device,
+		indices.data(),
+		static_cast<unsigned int>(indices.size())
+	);
 
-	delete[] vertices;
-	delete[] indices;
-
-	return success;
+	m_meshBank["cube"] = std::make_shared<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }

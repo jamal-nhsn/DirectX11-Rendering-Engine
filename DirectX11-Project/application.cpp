@@ -44,13 +44,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return success;
 	}
 
-	// Create and initialize the MeshManager object.
-	m_meshManager = new MeshManager;
-	success = m_meshManager->Initialize(m_direct3d->GetDevice());
-	if (!success) {
-		MessageBox(hwnd, L"Could not initialize meshes", L"Error", MB_OK);
-		return success;
-	}
+	// Create the MeshManager object.
+	m_meshManager = new MeshManager(m_direct3d->GetDevice());
 
 	// Create and initialize the TextureManager object.
 	m_textureManager = new TextureManager;
@@ -237,11 +232,8 @@ void Application::Shutdown()
 	}
 
 	// Release the MeshManager object.
-	if (m_meshManager) {
-		m_meshManager->Shutdown();
-		delete m_meshManager;
-		m_meshManager = 0;
-	}
+	delete m_meshManager;
+	m_meshManager = 0;
 
 	// Release the TextureManager object.
 	if (m_textureManager) {

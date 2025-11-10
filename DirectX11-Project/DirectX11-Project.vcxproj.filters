@@ -219,6 +219,39 @@
     <ClInclude Include="text.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ECS\componentgroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\componentview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ecs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\freelist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\sparseset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\vertexbuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\indexbuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -251,7 +284,7 @@
     <ClCompile Include="meshmanager.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="mesh.cpp">
+    <ClCompile Include="meshOld.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="model.cpp">
@@ -334,6 +367,15 @@
     </ClCompile>
     <ClCompile Include="text.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\indexbuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\vertexbuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\mesh.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
