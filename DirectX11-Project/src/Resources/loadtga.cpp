@@ -6,7 +6,7 @@
 
 namespace Engine
 {
-	std::shared_ptr<Texture2D> LoadTGA(const std::filesystem::path& filepath, ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11SamplerState* samplerState)
+	std::unique_ptr<Texture2D> LoadTGA(const std::filesystem::path& filepath, ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11SamplerState* samplerState)
 	{
 		// Invalid filepath.
 		assert(("Error: Image passed to LoadTGA is not a .tga file!", filepath.extension() == ".tga"));
@@ -79,6 +79,6 @@ namespace Engine
 
 		// Create the texture.
 		int rowPitch = width * 4;
-		return std::make_shared<Texture2D>(device, deviceContext, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, destData.data(), rowPitch, samplerState);
+		return std::make_unique<Texture2D>(device, deviceContext, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, destData.data(), rowPitch, samplerState);
 	}
 }

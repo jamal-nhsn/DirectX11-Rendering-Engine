@@ -17,7 +17,7 @@ void Sprite::SetShader(Shader* shader)
 	m_spriteData.shader = shader;
 }
 
-void Sprite::SetTexture(std::shared_ptr<Engine::Texture2D> texture)
+void Sprite::SetTexture(Engine::Texture2D* texture)
 {
 	m_spriteData.texture = texture;
 }

@@ -9,7 +9,7 @@ INCLUDES
 
 struct SpriteAnimationFrame
 {
-	std::shared_ptr<Engine::Texture2D>  texture;
+	Engine::Texture2D* texture;
 	int sourceX;
 	int sourceY;
 	int width;

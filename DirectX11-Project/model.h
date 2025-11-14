@@ -17,18 +17,18 @@ public:
 
 	int GetEntityId();
 
-	void SetMesh(std::shared_ptr<Engine::Mesh> mesh);
+	void SetMesh(Engine::Mesh* mesh);
 	void SetBaseShader(Shader* shader);
 	void SetLightShader(Shader* shader);
-	void SetTexture(std::shared_ptr<Engine::Texture2D> texture);
+	void SetTexture(Engine::Texture2D* texture);
 
 	void SetSpecularTint(DirectX::XMFLOAT4 specularTint);
 	void SetShininess(float shininess);
 
-	std::shared_ptr<Engine::Mesh> GetMesh();
+	Engine::Mesh* GetMesh();
 	Shader*  GetBaseShader();
 	Shader*  GetLightShader();
-	std::shared_ptr<Engine::Texture2D> GetTexture();
+	Engine::Texture2D* GetTexture();
 
 	DirectX::XMFLOAT4 GetSpecularTint();
 	float             GetShininess();
@@ -39,10 +39,10 @@ public:
 private:
 	int m_entityId;
 
-	std::shared_ptr<Engine::Mesh> m_mesh;
+	Engine::Mesh* m_mesh;
 	Shader*  m_baseShader;
 	Shader*  m_lightShader;
-	std::shared_ptr<Engine::Texture2D> m_texture;
+	Engine::Texture2D* m_texture;
 
 	DirectX::XMFLOAT4 m_specularTint;
 	float			  m_shininess;

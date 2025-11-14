@@ -18,7 +18,7 @@ public:
 	~TextureManager();
 
 	bool Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
-	std::shared_ptr<Engine::Texture2D> GetTexture(std::string textureName);
+    Engine::Texture2D* GetTexture(std::string textureName);
 	void Shutdown();
 
 private:
@@ -79,6 +79,6 @@ private:
     };
 
 private:
-    std::unordered_map<std::string, std::shared_ptr<Engine::Texture2D>> m_textureBank;
+    std::unordered_map<std::string, std::unique_ptr<Engine::Texture2D>> m_textureBank;
     std::unordered_map<D3D11_SAMPLER_DESC, ID3D11SamplerState*, SamplerDescHash, SamplerDescEqual> m_samplerBank;
 };

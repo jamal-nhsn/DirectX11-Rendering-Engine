@@ -25,7 +25,7 @@ public:
 
 public:
 	Shader* shader;
-	std::shared_ptr<Engine::Texture2D> texture;
+	Engine::Texture2D* texture;
 	std::string text;
 	DirectX::XMFLOAT2 characterDimensions;
 	DirectX::XMFLOAT4 tint;

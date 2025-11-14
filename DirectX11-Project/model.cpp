@@ -19,7 +19,7 @@ int Model::GetEntityId()
 	return m_entityId;
 }
 
-void Model::SetMesh(std::shared_ptr<Engine::Mesh> mesh)
+void Model::SetMesh(Engine::Mesh* mesh)
 {
 	m_mesh = mesh;
 }
@@ -34,7 +34,7 @@ void Model::SetLightShader(Shader* shader)
 	m_lightShader = shader;
 }
 
-void Model::SetTexture(std::shared_ptr<Engine::Texture2D> texture)
+void Model::SetTexture(Engine::Texture2D* texture)
 {
 	m_texture = texture;
 }
@@ -49,7 +49,7 @@ void Model::SetShininess(float shininess)
 	m_shininess = shininess;
 }
 
-std::shared_ptr<Engine::Mesh> Model::GetMesh()
+Engine::Mesh* Model::GetMesh()
 {
 	return m_mesh;
 }
@@ -64,7 +64,7 @@ Shader* Model::GetLightShader()
 	return m_lightShader;
 }
 
-std::shared_ptr<Engine::Texture2D>  Model::GetTexture()
+Engine::Texture2D* Model::GetTexture()
 {
 	return m_texture;
 }

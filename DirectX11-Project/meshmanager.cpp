@@ -10,9 +10,9 @@ MeshManager::MeshManager(ID3D11Device* device)
 	InitializeObjFiles(device);
 }
 
-std::shared_ptr<Engine::Mesh> MeshManager::GetMesh(std::string meshName)
+Engine::Mesh* MeshManager::GetMesh(std::string meshName)
 {
-	return m_meshBank[meshName];
+	return m_meshBank[meshName].get();
 }
 
 void MeshManager::InitializeObjFiles(ID3D11Device* device)
@@ -59,7 +59,7 @@ void MeshManager::InitializeTriangle(ID3D11Device* device)
 		static_cast<unsigned int>(indices.size())
 	);
 
-	m_meshBank["triangle"] = std::make_shared<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_meshBank["triangle"] = std::make_unique<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 void MeshManager::InitializeQuad(ID3D11Device* device)
@@ -103,7 +103,7 @@ void MeshManager::InitializeQuad(ID3D11Device* device)
 		static_cast<unsigned int>(indices.size())
 	);
 
-	m_meshBank["quad"] = std::make_shared<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_meshBank["quad"] = std::make_unique<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 void MeshManager::InitializeCube(ID3D11Device* device)
@@ -268,5 +268,5 @@ void MeshManager::InitializeCube(ID3D11Device* device)
 		static_cast<unsigned int>(indices.size())
 	);
 
-	m_meshBank["cube"] = std::make_shared<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_meshBank["cube"] = std::make_unique<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }

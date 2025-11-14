@@ -1,6 +1,6 @@
 #include "objloader.h"
 
-std::shared_ptr<Engine::Mesh> ObjLoader::LoadMesh(std::string filePath, ID3D11Device* device, float uScale, float vScale)
+std::unique_ptr<Engine::Mesh> ObjLoader::LoadMesh(std::string filePath, ID3D11Device* device, float uScale, float vScale)
 {
 	int filePathLength = static_cast<int>(filePath.length());
 
@@ -138,7 +138,7 @@ std::shared_ptr<Engine::Mesh> ObjLoader::LoadMesh(std::string filePath, ID3D11De
 		static_cast<unsigned int>(indices.size())
 	);
 
-	std::shared_ptr<Engine::Mesh> mesh = std::make_shared<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	std::unique_ptr<Engine::Mesh> mesh = std::make_unique<Engine::Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// Close the file
 	fclose(filePtr);

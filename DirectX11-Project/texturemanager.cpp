@@ -58,21 +58,21 @@ bool TextureManager::LoadTexture(
 	}
 
 	// Load the texture.
-	std::shared_ptr<Engine::Texture2D> texture = Engine::LoadTGA(texturePath, device, deviceContext, m_samplerBank[samplerDesc]);
+	std::unique_ptr<Engine::Texture2D> texture = Engine::LoadTGA(texturePath, device, deviceContext, m_samplerBank[samplerDesc]);
 
 	if (!texture) {
 		return false;
 	}
 
-	m_textureBank[texturePath.stem().string()] = texture;
+	m_textureBank[texturePath.stem().string()] = std::move(texture);
 
 	return true;
 }
 
 
-std::shared_ptr<Engine::Texture2D> TextureManager::GetTexture(std::string textureName)
+Engine::Texture2D* TextureManager::GetTexture(std::string textureName)
 {
-	return m_textureBank[textureName];
+	return m_textureBank[textureName].get();
 }
 
 void TextureManager::Shutdown()

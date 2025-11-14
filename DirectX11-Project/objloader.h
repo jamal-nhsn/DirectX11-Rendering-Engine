@@ -19,5 +19,5 @@ public:
 	ObjLoader(ObjLoader& other) = delete;
 	~ObjLoader() = default;
 
-	std::shared_ptr<Engine::Mesh> LoadMesh(std::string filePath, ID3D11Device* device, float uScale, float vScale);
+	std::unique_ptr<Engine::Mesh> LoadMesh(std::string filePath, ID3D11Device* device, float uScale, float vScale);
 };

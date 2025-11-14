@@ -8,7 +8,7 @@
 
 namespace Engine
 {
-	std::shared_ptr<Mesh> LoadOBJ(const std::filesystem::path& filepath, ID3D11Device* device, float uScale = 1.0f, float vScale = 1.0f);
+	std::unique_ptr<Mesh> LoadOBJ(const std::filesystem::path& filepath, ID3D11Device* device, float uScale = 1.0f, float vScale = 1.0f);
 	D3D11_SAMPLER_DESC LoadTextureMeta(const std::filesystem::path& filepath);
-	std::shared_ptr<Texture2D> LoadTGA(const std::filesystem::path& filepath, ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11SamplerState* samplerState);
+	std::unique_ptr<Texture2D> LoadTGA(const std::filesystem::path& filepath, ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11SamplerState* samplerState);
 }

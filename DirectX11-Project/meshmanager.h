@@ -15,7 +15,7 @@ public:
 	MeshManager(const MeshManager& other) = delete;
 	~MeshManager() = default;
 
-	std::shared_ptr<Engine::Mesh> GetMesh(std::string meshName);
+	Engine::Mesh* GetMesh(std::string meshName);
 
 private:
 	void InitializeTriangle(ID3D11Device* device);
@@ -24,5 +24,5 @@ private:
 	void InitializeObjFiles(ID3D11Device* device);
 
 private:
-	std::unordered_map<std::string, std::shared_ptr<Engine::Mesh>> m_meshBank;
+	std::unordered_map<std::string, std::unique_ptr<Engine::Mesh>> m_meshBank;
 };

@@ -23,7 +23,7 @@ public:
 
 public:
 	Shader* shader;
-	std::shared_ptr<Engine::Texture2D> texture;
+	Engine::Texture2D* texture;
 	DirectX::XMFLOAT4 sourceRect;
 	DirectX::XMFLOAT4 tint;
 };

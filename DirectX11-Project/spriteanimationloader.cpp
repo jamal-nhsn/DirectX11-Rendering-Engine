@@ -58,7 +58,7 @@ void SpriteAnimationLoader::LoadFrame(std::vector<SpriteAnimationFrame>* spriteA
 	// Get default values in case some fields are left out.
 	size_t count = 1;
 	std::tuple<int, int> slide = std::make_tuple(0, 0);
-	std::shared_ptr<Engine::Texture2D> texture = 0;
+	Engine::Texture2D* texture = 0;
 	std::tuple<int, int> dimensions = std::make_tuple(0, 0);
 	std::tuple<int, int> sourceOrigin = std::make_tuple(0, 0);
 	float duration = 1.0f;
@@ -167,7 +167,7 @@ void SpriteAnimationLoader::LoadSlide(char* data, std::tuple<int, int>& slide)
 	}
 }
 
-void SpriteAnimationLoader::LoadTexture(char* data, TextureManager* textureManager, std::shared_ptr<Engine::Texture2D>& texture)
+void SpriteAnimationLoader::LoadTexture(char* data, TextureManager* textureManager, Engine::Texture2D*& texture)
 {
 	// Try to read value.
 	char* token = strtok_s(data, s_delimiters, &data);

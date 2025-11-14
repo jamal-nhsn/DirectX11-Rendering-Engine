@@ -45,8 +45,8 @@ void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 				continue;
 			}
 
-			std::shared_ptr<Engine::Mesh> mesh = model.GetMesh();
-			std::shared_ptr<Engine::Texture2D>  texture = model.GetTexture();
+			Engine::Mesh* mesh = model.GetMesh();
+			Engine::Texture2D* texture = model.GetTexture();
 			Shader* shader = model.GetBaseShader();
 
 			if (shader == 0) {
@@ -83,8 +83,8 @@ void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 				continue;
 			}
 
-			std::shared_ptr<Engine::Mesh> mesh = model.GetMesh();
-			std::shared_ptr<Engine::Texture2D> texture = model.GetTexture();
+			Engine::Mesh* mesh = model.GetMesh();
+			Engine::Texture2D* texture = model.GetTexture();
 			Shader* shader = model.GetLightShader();
 
 			if (shader == 0) {

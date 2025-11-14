@@ -26,7 +26,7 @@ private:
 
 	void LoadCount(char* data, size_t& count);
 	void LoadSlide(char* data, std::tuple<int, int>& slide);
-	void LoadTexture(char* data, TextureManager* textureManager, std::shared_ptr<Engine::Texture2D>& texture);
+	void LoadTexture(char* data, TextureManager* textureManager, Engine::Texture2D*& texture);
 	void LoadDimensions(char* data, std::tuple<int, int>& dimensions);
 	void LoadSourceOrigin(char* data, std::tuple<int, int>& sourceOrigin);
 	void LoadDuration(char* data, float& duration);
