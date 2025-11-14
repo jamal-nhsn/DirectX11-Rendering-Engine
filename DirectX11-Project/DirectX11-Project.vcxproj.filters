@@ -117,9 +117,6 @@
     <ClInclude Include="meshmanager.h">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="mesh.h">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="vertex.h">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
@@ -252,6 +249,12 @@
     <ClInclude Include="src\Renderer\indexbuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Resources\resourceloaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\texture2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -282,9 +285,6 @@
       <Filter>Source Files\Shaders\Base Pass\Color Shader</Filter>
     </ClCompile>
     <ClCompile Include="meshmanager.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="meshOld.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="model.cpp">
@@ -377,6 +377,15 @@
     <ClCompile Include="src\Renderer\mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\texture2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\loadtga.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\loadtexturemeta.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="colorvertex.hlsl">
@@ -403,7 +412,7 @@
     <None Include="defaultbasevertex.hlsl">
       <Filter>Source Files\Shaders\Base Pass\Default Base Shader</Filter>
     </None>
-    <None Include="Textures\stoneWall.texturemeta">
+    <None Include="Resources\Textures\Meta\stoneWall.texturemeta">
       <Filter>Resource Files\Textures</Filter>
     </None>
     <None Include="defaultspritepixel.hlsl">
@@ -412,21 +421,21 @@
     <None Include="defaultspritevertex.hlsl">
       <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
     </None>
-    <None Include="Textures\timer.texturemeta" />
-    <None Include="SpriteAnimations\timer.spriteanimation" />
+    <None Include="Resources\Textures\Meta\timer.texturemeta" />
+    <None Include="Resources\SpriteAnimations\timer.spriteanimation" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Textures\stoneWall.tga">
+    <Image Include="Resources\Textures\stoneWall.tga">
       <Filter>Resource Files\Textures</Filter>
     </Image>
     <Image Include="..\..\Timer.tga" />
-    <Image Include="Textures\timer.tga" />
+    <Image Include="Resources\Textures\timer.tga" />
   </ItemGroup>
   <ItemGroup>
-    <Object Include="Meshes\skull.obj">
+    <Object Include="Resources\Meshes\skull.obj">
       <Filter>Resource Files\Meshes</Filter>
     </Object>
-    <Object Include="Meshes\sphere.obj">
+    <Object Include="Resources\Meshes\sphere.obj">
       <Filter>Resource Files\Meshes</Filter>
     </Object>
   </ItemGroup>

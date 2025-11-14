@@ -15,7 +15,7 @@ SpriteAnimationManager::~SpriteAnimationManager()
 bool SpriteAnimationManager::Initialize(TextureManager* textureManager)
 {
 	bool success = false;
-	for (const auto& file : std::filesystem::directory_iterator("../DirectX11-Project/SpriteAnimations/")) {
+	for (const auto& file : std::filesystem::directory_iterator("Resources/SpriteAnimations")) {
 		// Get the path to the sprite animation itself.
 		const auto& spriteAnimationPath = file.path();
 

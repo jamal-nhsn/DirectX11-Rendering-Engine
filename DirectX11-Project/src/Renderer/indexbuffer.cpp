@@ -70,10 +70,7 @@ namespace Engine
 			return false;
 		}
 
-		unsigned int stride = sizeof(unsigned int);
-		unsigned int offset = 0;
-
-		deviceContext->IASetVertexBuffers(0, 1, &m_ibo, &stride, &offset);
+		deviceContext->IASetIndexBuffer(m_ibo, DXGI_FORMAT_R32_UINT, 0);
 		return true;
 	}
 

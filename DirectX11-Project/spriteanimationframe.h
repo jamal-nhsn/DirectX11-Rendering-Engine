@@ -3,11 +3,13 @@
 /*======
 INCLUDES
 ======*/
-#include "texture.h"
+#include "src/Renderer/texture2d.h"
+
+#include <memory>
 
 struct SpriteAnimationFrame
 {
-	Texture* texture;
+	std::shared_ptr<Engine::Texture2D>  texture;
 	int sourceX;
 	int sourceY;
 	int width;

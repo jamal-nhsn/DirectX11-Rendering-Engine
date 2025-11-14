@@ -19,7 +19,7 @@ public:
 	int GetEntityId();
 
 	void SetShader(Shader* shader);
-	void SetTexture(Texture* texture);
+	void SetTexture(std::shared_ptr<Engine::Texture2D> texture);
 	void SetText(std::string text);
 	void SetCharacterWidth(int width);
 	void SetCharacterHeight(int height);

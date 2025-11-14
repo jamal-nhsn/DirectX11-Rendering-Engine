@@ -34,7 +34,7 @@ void Model::SetLightShader(Shader* shader)
 	m_lightShader = shader;
 }
 
-void Model::SetTexture(Texture* texture)
+void Model::SetTexture(std::shared_ptr<Engine::Texture2D> texture)
 {
 	m_texture = texture;
 }
@@ -64,7 +64,7 @@ Shader* Model::GetLightShader()
 	return m_lightShader;
 }
 
-Texture* Model::GetTexture()
+std::shared_ptr<Engine::Texture2D>  Model::GetTexture()
 {
 	return m_texture;
 }

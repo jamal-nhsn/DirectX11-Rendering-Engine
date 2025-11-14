@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -34,7 +34,6 @@
     <ClInclude Include="spriteanimationframe.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
-    <ClInclude Include="mesh.h" />
     <ClInclude Include="meshmanager.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="objloader.h" />
@@ -59,8 +58,10 @@
     <ClInclude Include="src\ECS\sparseset.h" />
     <ClInclude Include="src\Renderer\indexbuffer.h" />
     <ClInclude Include="src\Renderer\mesh.h" />
+    <ClInclude Include="src\Renderer\texture2d.h" />
     <ClInclude Include="src\Renderer\vertex.h" />
     <ClInclude Include="src\Renderer\vertexbuffer.h" />
+    <ClInclude Include="src\Resources\resourceloaders.h" />
     <ClInclude Include="targaloader.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="textdata.h" />
@@ -87,7 +88,6 @@
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="meshOld.cpp" />
     <ClCompile Include="meshmanager.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="objloader.cpp" />
@@ -105,7 +105,10 @@
     <ClCompile Include="spriteanimatorsystem.cpp" />
     <ClCompile Include="src\Renderer\indexbuffer.cpp" />
     <ClCompile Include="src\Renderer\mesh.cpp" />
+    <ClCompile Include="src\Renderer\texture2d.cpp" />
     <ClCompile Include="src\Renderer\vertexbuffer.cpp" />
+    <ClCompile Include="src\Resources\loadtexturemeta.cpp" />
+    <ClCompile Include="src\Resources\loadtga.cpp" />
     <ClCompile Include="targaloader.cpp" />
     <ClCompile Include="text.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -123,23 +126,23 @@
     <None Include="defaultbasevertex.hlsl" />
     <None Include="defaultlightpixel.hlsl" />
     <None Include="defaultlightvertex.hlsl" />
-    <None Include="SpriteAnimations\timer.spriteanimation" />
+    <None Include="Resources\SpriteAnimations\timer.spriteanimation" />
     <None Include="texturepixel.hlsl" />
-    <None Include="Textures\stoneWall.texturemeta" />
-    <None Include="Textures\timer.texturemeta" />
+    <None Include="Resources\Textures\Meta\stoneWall.texturemeta" />
+    <None Include="Resources\Textures\Meta\timer.texturemeta" />
     <None Include="texturevertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Timer.tga" />
-    <Image Include="Textures\stoneWall.tga" />
-    <Image Include="Textures\timer.tga" />
+    <Image Include="Resources\Textures\stoneWall.tga" />
+    <Image Include="Resources\Textures\timer.tga" />
   </ItemGroup>
   <ItemGroup>
-    <Object Include="Meshes\skull.obj">
+    <Object Include="Resources\Meshes\skull.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>
-    <Object Include="Meshes\sphere.obj">
+    <Object Include="Resources\Meshes\sphere.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>

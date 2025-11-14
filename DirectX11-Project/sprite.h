@@ -16,7 +16,7 @@ public:
 	int GetEntityId();
 
 	void SetShader(Shader* shader);
-	void SetTexture(Texture* texture);
+	void SetTexture(std::shared_ptr<Engine::Texture2D> texture);
 	void SetSourceX(int sourceX);
 	void SetSourceY(int sourceY);
 	void SetWidth(int width);

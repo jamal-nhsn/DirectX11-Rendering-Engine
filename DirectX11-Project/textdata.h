@@ -7,7 +7,7 @@ INCLUDES
 #include <string.h>
 
 #include "shader.h"
-#include "texture.h"
+#include "src/Renderer/texture2d.h"
 
 struct TextData
 {
@@ -25,7 +25,7 @@ public:
 
 public:
 	Shader* shader;
-	Texture* texture;
+	std::shared_ptr<Engine::Texture2D> texture;
 	std::string text;
 	DirectX::XMFLOAT2 characterDimensions;
 	DirectX::XMFLOAT4 tint;

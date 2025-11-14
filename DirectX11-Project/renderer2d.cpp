@@ -272,12 +272,8 @@ void Renderer2D::EndScene(ID3D11DeviceContext* deviceContext)
 		// Bind the shader.
 		batch.shader->Bind(deviceContext, m_cameraView, m_cameraProjection);
 
-		// Set the textures and sampler states in the pixel shader.
-		ID3D11SamplerState* sampler = batch.texture->GetSamplerState();
-		ID3D11ShaderResourceView* texture = batch.texture->GetTexture2D();
-
-		deviceContext->PSSetSamplers(0, 1, &sampler);
-		deviceContext->PSSetShaderResources(0, 1, &texture);
+		// Bind the texture.
+		batch.texture->Bind(deviceContext);
 
 		// Calculate the index count.
 		size_t indexCount = static_cast<unsigned int>(static_cast<float>(batch.vertices.size()) * 1.5f);

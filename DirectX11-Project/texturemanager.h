@@ -7,8 +7,8 @@ INCLUDES
 #include <filesystem>
 #include <string>
 
-#include "targaloader.h"
 #include "texturemetaloader.h"
+#include "src/Renderer/texture2d.h"
 
 class TextureManager
 {
@@ -18,7 +18,7 @@ public:
 	~TextureManager();
 
 	bool Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
-	Texture* GetTexture(std::string textureName);
+	std::shared_ptr<Engine::Texture2D> GetTexture(std::string textureName);
 	void Shutdown();
 
 private:
@@ -79,6 +79,6 @@ private:
     };
 
 private:
-    std::unordered_map<std::string, Texture*> m_textureBank;
+    std::unordered_map<std::string, std::shared_ptr<Engine::Texture2D>> m_textureBank;
     std::unordered_map<D3D11_SAMPLER_DESC, ID3D11SamplerState*, SamplerDescHash, SamplerDescEqual> m_samplerBank;
 };

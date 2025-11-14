@@ -12,7 +12,7 @@ void Text::SetShader(Shader* shader)
 	m_textData.shader = shader;
 }
 
-void Text::SetTexture(Texture* texture)
+void Text::SetTexture(std::shared_ptr<Engine::Texture2D> texture)
 {
 	m_textData.texture = texture;
 }

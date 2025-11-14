@@ -19,7 +19,7 @@ private:
 	struct SpriteBatch
 	{
 		Shader* shader;
-		Texture* texture;
+		std::shared_ptr<Engine::Texture2D> texture;
 		std::vector<Vertex2D> vertices;
 	};
 

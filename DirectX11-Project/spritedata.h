@@ -6,7 +6,7 @@ INCLUDES
 #include <directxmath.h>
 
 #include "shader.h"
-#include "texture.h"
+#include "src/Renderer/texture2d.h"
 
 struct SpriteData
 {
@@ -23,7 +23,7 @@ public:
 
 public:
 	Shader* shader;
-	Texture* texture;
+	std::shared_ptr<Engine::Texture2D> texture;
 	DirectX::XMFLOAT4 sourceRect;
 	DirectX::XMFLOAT4 tint;
 };

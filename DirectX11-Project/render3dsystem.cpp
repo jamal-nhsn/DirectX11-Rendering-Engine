@@ -1,5 +1,6 @@
 #include "render3dSystem.h"
 #include "shader.h"
+#include "src/Renderer/texture2d.h"
 
 Render3DSystem::Render3DSystem()
 {
@@ -45,18 +46,14 @@ void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 			}
 
 			std::shared_ptr<Engine::Mesh> mesh = model.GetMesh();
-			Texture* texture = model.GetTexture();
+			std::shared_ptr<Engine::Texture2D>  texture = model.GetTexture();
 			Shader* shader = model.GetBaseShader();
 
 			if (shader == 0) {
 				continue;
 			}
 
-			ID3D11SamplerState* samplerState = texture->GetSamplerState();
-			ID3D11ShaderResourceView* shaderResourceView = texture->GetTexture2D();
-
-			deviceContext->PSSetSamplers(0, 1, &samplerState);
-			deviceContext->PSSetShaderResources(0, 1, &shaderResourceView);
+			texture->Bind(deviceContext);
 
 			mesh->Bind(deviceContext);
 			DirectX::XMMATRIX modelMatrix = scene->GetComponent<Transform>(entity).GetModelMatrix();
@@ -87,18 +84,14 @@ void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 			}
 
 			std::shared_ptr<Engine::Mesh> mesh = model.GetMesh();
-			Texture* texture = model.GetTexture();
+			std::shared_ptr<Engine::Texture2D> texture = model.GetTexture();
 			Shader* shader = model.GetLightShader();
 
 			if (shader == 0) {
 				continue;
 			}
 
-			ID3D11SamplerState* samplerState = texture->GetSamplerState();
-			ID3D11ShaderResourceView* shaderResourceView = texture->GetTexture2D();
-
-			deviceContext->PSSetSamplers(0, 1, &samplerState);
-			deviceContext->PSSetShaderResources(0, 1, &shaderResourceView);
+			texture->Bind(deviceContext);
 
 			mesh->Bind(deviceContext);
 			DirectX::XMMATRIX modelMatrix = scene->GetComponent<Transform>(entity).GetModelMatrix();

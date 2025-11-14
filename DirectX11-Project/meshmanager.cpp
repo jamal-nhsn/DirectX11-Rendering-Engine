@@ -18,7 +18,7 @@ std::shared_ptr<Engine::Mesh> MeshManager::GetMesh(std::string meshName)
 void MeshManager::InitializeObjFiles(ID3D11Device* device)
 {
 	ObjLoader objLoader;
-	m_meshBank["sphere"] = objLoader.LoadMesh("Meshes/sphere.obj", device, 5.0f, -2.0f);
+	m_meshBank["sphere"] = objLoader.LoadMesh("Resources/Meshes/sphere.obj", device, 5.0f, -2.0f);
 }
 
 void MeshManager::InitializeTriangle(ID3D11Device* device)

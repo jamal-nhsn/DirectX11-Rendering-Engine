@@ -187,8 +187,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
 	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("nyancat");
 
-	int columns = 100;
-	int rows = 100;
+	int columns = 0;// 100;
+	int rows = 0;// 100;
 
 	int columnSpacing = 50;
 	int rowSpacing = 25;
