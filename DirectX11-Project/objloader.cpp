@@ -12,11 +12,6 @@ std::unique_ptr<Engine::Mesh> ObjLoader::LoadMesh(std::string filePath, ID3D11De
 	char last4[4 + 1];
 	strcpy_s(last4, &filePath[filePathLength - 4]);
 
-	// Ensure the file extension is .obj
-	if (strcmp(last4, ".obj") != 0) {
-		return 0;
-	}
-
 	FILE* filePtr;
 	int error = 0;
 

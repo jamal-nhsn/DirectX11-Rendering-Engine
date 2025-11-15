@@ -423,6 +423,7 @@
     </None>
     <None Include="Resources\Textures\Meta\timer.texturemeta" />
     <None Include="Resources\SpriteAnimations\timer.spriteanimation" />
+    <None Include="Resources\Meshes\sphere.meshobj" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\stoneWall.tga">

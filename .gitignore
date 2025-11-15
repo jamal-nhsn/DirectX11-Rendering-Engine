@@ -98,10 +98,6 @@ StyleCopReport.xml
 *.svclog
 *.scc
 
-# Don't exclude meshes
-!Meshes/
-!Meshes/**/*.obj
-
 # Chutzpah Test files
 _Chutzpah*
 

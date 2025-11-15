@@ -126,6 +126,7 @@
     <None Include="defaultbasevertex.hlsl" />
     <None Include="defaultlightpixel.hlsl" />
     <None Include="defaultlightvertex.hlsl" />
+    <None Include="Resources\Meshes\sphere.meshobj" />
     <None Include="Resources\SpriteAnimations\timer.spriteanimation" />
     <None Include="texturepixel.hlsl" />
     <None Include="Resources\Textures\Meta\stoneWall.texturemeta" />
