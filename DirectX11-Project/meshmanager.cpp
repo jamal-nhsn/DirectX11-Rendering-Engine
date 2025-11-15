@@ -1,4 +1,5 @@
 #include "meshmanager.h"
+#include "src/Resources/resourceloaders.h"
 
 #include <array>
 
@@ -17,8 +18,33 @@ Engine::Mesh* MeshManager::GetMesh(std::string meshName)
 
 void MeshManager::InitializeObjFiles(ID3D11Device* device)
 {
-	ObjLoader objLoader;
-	m_meshBank["sphere"] = objLoader.LoadMesh("Resources/Meshes/sphere.meshobj", device, 5.0f, -2.0f);
+	// Create the mesh binaries folder to cache meshes.
+	std::filesystem::path binariesDirectory("Resources/Meshes/.meshbinaries");
+	if (!std::filesystem::exists(binariesDirectory)) {
+		std::filesystem::create_directories(binariesDirectory);
+	}
+
+	for (const std::filesystem::directory_entry& file : std::filesystem::directory_iterator("Resources/Meshes")) {
+		// Ignore folders.
+		if (!file.is_regular_file()) {
+			continue;
+		}
+
+		const std::filesystem::path& filepath = file.path();
+
+		std::filesystem::path binaryFilepath(filepath.parent_path() / ".meshbinaries" / filepath.stem());
+		binaryFilepath.replace_extension(".meshbinary");
+
+		// Only call LoadMeshOBJ if the binary file doesn't exist or the meshobj file is newer.
+		if (!std::filesystem::exists(binaryFilepath) || 
+			std::filesystem::last_write_time(filepath) > std::filesystem::last_write_time(binaryFilepath)) {
+			
+			m_meshBank[filepath.stem().string()] = Engine::LoadMeshOBJ(filepath, device);
+		}
+		else {
+			m_meshBank[filepath.stem().string()] = Engine::LoadMeshBinary(binaryFilepath, device);
+		}
+	}
 }
 
 void MeshManager::InitializeTriangle(ID3D11Device* device)

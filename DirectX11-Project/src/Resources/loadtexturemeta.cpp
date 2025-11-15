@@ -232,7 +232,7 @@ namespace Engine
 		samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 		// Invalid filepath.
-		assert(("Error: Image passed to LoadTextureMeta is not a .texturemeta file!", filepath.extension() == ".texturemeta"));
+		assert(("Error: File passed to LoadTextureMeta is not a .texturemeta file!", filepath.extension() == ".texturemeta"));
 
 		// Create the texture meta if it doesn't exist.
 		if (!std::filesystem::exists(filepath)) {

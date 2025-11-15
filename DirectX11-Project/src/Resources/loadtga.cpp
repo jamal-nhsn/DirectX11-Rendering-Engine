@@ -9,7 +9,7 @@ namespace Engine
 	std::unique_ptr<Texture2D> LoadTGA(const std::filesystem::path& filepath, ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11SamplerState* samplerState)
 	{
 		// Invalid filepath.
-		assert(("Error: Image passed to LoadTGA is not a .tga file!", filepath.extension() == ".tga"));
+		assert(("Error: File passed to LoadTGA is not a .tga file!", filepath.extension() == ".tga"));
 
 		// Open the file.
 		std::ifstream file(filepath, std::ios::binary);

@@ -107,6 +107,8 @@
     <ClCompile Include="src\Renderer\mesh.cpp" />
     <ClCompile Include="src\Renderer\texture2d.cpp" />
     <ClCompile Include="src\Renderer\vertexbuffer.cpp" />
+    <ClCompile Include="src\Resources\loadmeshbinary.cpp" />
+    <ClCompile Include="src\Resources\loadmeshobj.cpp" />
     <ClCompile Include="src\Resources\loadtexturemeta.cpp" />
     <ClCompile Include="src\Resources\loadtga.cpp" />
     <ClCompile Include="targaloader.cpp" />
