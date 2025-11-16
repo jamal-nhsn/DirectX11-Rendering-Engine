@@ -6,37 +6,37 @@
 #include <vector>
 #include <unordered_map>
 
-
-void CreateBinaryFile(const std::filesystem::path& filepath, const std::vector<Engine::Vertex3D>& vertices, const std::vector<unsigned int>& indices)
-{
-	std::filesystem::path binaryFilepath(filepath.parent_path() / ".meshbinaries" / filepath.stem());
-	binaryFilepath.replace_extension(".meshbinary");
-
-	std::ofstream file(binaryFilepath, std::ios::binary);
-	if (!file.is_open()) {
-		return;
-	}
-
-	struct Header
-	{
-		unsigned int vertexCount;
-		unsigned int indexCount;
-	};
-
-	Header header{ static_cast<unsigned int>(vertices.size()), static_cast<unsigned int>(indices.size()) };
-	file.write(reinterpret_cast<const char*>(&header), sizeof(Header));
-
-	const char* vertexData = reinterpret_cast<const char*>(vertices.data());
-	const char* indexData = reinterpret_cast<const char*>(indices.data());
-
-	file.write(vertexData, sizeof(Engine::Vertex3D) * vertices.size());
-	file.write(indexData, sizeof(unsigned int) * indices.size());
-}
-
-
-
 namespace Engine
 {
+	namespace
+	{
+		void CreateBinaryFile(const std::filesystem::path& filepath, const std::vector<Vertex3D>& vertices, const std::vector<unsigned int>& indices)
+		{
+			std::filesystem::path binaryFilepath("Resources/Meshes/.meshbinaries");
+			binaryFilepath /= filepath.stem().string() + ".meshbinary";
+
+			std::ofstream file(binaryFilepath, std::ios::binary);
+			if (!file.is_open()) {
+				return;
+			}
+
+			struct Header
+			{
+				unsigned int vertexCount;
+				unsigned int indexCount;
+			};
+
+			Header header{ static_cast<unsigned int>(vertices.size()), static_cast<unsigned int>(indices.size()) };
+			file.write(reinterpret_cast<const char*>(&header), sizeof(Header));
+
+			const char* vertexData = reinterpret_cast<const char*>(vertices.data());
+			const char* indexData = reinterpret_cast<const char*>(indices.data());
+
+			file.write(vertexData, sizeof(Vertex3D) * vertices.size());
+			file.write(indexData, sizeof(unsigned int) * indices.size());
+		}
+	}
+
 	std::unique_ptr<Mesh> LoadMeshOBJ(const std::filesystem::path& filepath, ID3D11Device* device)
 	{
 		// Invalid filepath.
@@ -51,7 +51,7 @@ namespace Engine
 		std::vector<DirectX::XMFLOAT2> vertexTexCoord;
 		std::vector<DirectX::XMFLOAT3> vertexNormal;
 
-		std::vector<Engine::Vertex3D> vertices;
+		std::vector<Vertex3D> vertices;
 		std::vector<unsigned int> indices;
 
 		std::unordered_map<uint64_t, int> vertexKeyToIndex;
@@ -143,14 +143,14 @@ namespace Engine
 		}
 
 		// Create the Buffers.
-		Engine::VertexBuffer vbo(
+		VertexBuffer vbo(
 			device,
 			vertices.data(),
 			static_cast<unsigned int>(sizeof(Vertex3D)),
 			static_cast<unsigned int>(vertices.size())
 		);
 
-		Engine::IndexBuffer ibo(
+		IndexBuffer ibo(
 			device,
 			indices.data(),
 			static_cast<unsigned int>(indices.size())

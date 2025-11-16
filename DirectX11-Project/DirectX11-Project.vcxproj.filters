@@ -114,9 +114,6 @@
     <ClInclude Include="shader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="meshmanager.h">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="vertex.h">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
@@ -255,6 +252,9 @@
     <ClInclude Include="src\Renderer\texture2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Resources\meshmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -283,9 +283,6 @@
     </ClCompile>
     <ClCompile Include="colorshader.cpp">
       <Filter>Source Files\Shaders\Base Pass\Color Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="meshmanager.cpp">
-      <Filter>Source Files\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>Source Files\Components</Filter>
@@ -392,6 +389,9 @@
     <ClCompile Include="src\Resources\loadmeshbinary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\meshmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="colorvertex.hlsl">
@@ -430,6 +430,11 @@
     <None Include="Resources\Textures\Meta\timer.texturemeta" />
     <None Include="Resources\SpriteAnimations\timer.spriteanimation" />
     <None Include="Resources\Meshes\sphere.meshobj" />
+    <None Include="Resources\Meshes\skull.meshobj" />
+    <None Include="Resources\Meshes\.meshbinaries\sphere.meshbinary" />
+    <None Include="Resources\Meshes\.meshbinaries\skull.meshbinary" />
+    <None Include="Resources\SpriteAnimations\nyancat.spriteanimation" />
+    <None Include="Resources\SpriteAnimations\texttest.spriteanimation" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\stoneWall.tga">
@@ -437,13 +442,7 @@
     </Image>
     <Image Include="..\..\Timer.tga" />
     <Image Include="Resources\Textures\timer.tga" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Resources\Meshes\skull.obj">
-      <Filter>Resource Files\Meshes</Filter>
-    </Object>
-    <Object Include="Resources\Meshes\sphere.obj">
-      <Filter>Resource Files\Meshes</Filter>
-    </Object>
+    <Image Include="Resources\Textures\defaultfont.tga" />
+    <Image Include="Resources\Textures\nyancat.tga" />
   </ItemGroup>
 </Project>

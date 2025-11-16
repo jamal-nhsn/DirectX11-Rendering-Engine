@@ -45,7 +45,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Create the MeshManager object.
-	m_meshManager = new MeshManager(m_direct3d->GetDevice());
+	m_meshManager = new Engine::MeshManager(m_direct3d->GetDevice());
 
 	// Create and initialize the TextureManager object.
 	m_textureManager = new TextureManager;
