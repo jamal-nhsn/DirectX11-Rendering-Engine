@@ -9,7 +9,7 @@ namespace Engine
 {
 	namespace
 	{
-		std::unique_ptr<Mesh> GenerateTriangleMesh(ID3D11Device* device)
+		std::unique_ptr<Mesh> GenerateTriangleMesh()
 		{
 			std::array<Vertex3D, 3> vertices;
 			std::array<unsigned int, 3> indices;
@@ -48,7 +48,7 @@ namespace Engine
 			return std::make_unique<Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
-		std::unique_ptr<Mesh> GenerateQuadMesh(ID3D11Device* device)
+		std::unique_ptr<Mesh> GenerateQuadMesh()
 		{
 			std::array<Vertex3D, 4> vertices;
 			std::array<unsigned int, 6> indices;
@@ -90,7 +90,7 @@ namespace Engine
 			return std::make_unique<Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
-		std::unique_ptr<Mesh> GenerateCubeMesh(ID3D11Device* device)
+		std::unique_ptr<Mesh> GenerateCubeMesh()
 		{
 			std::array<Vertex3D, 24> vertices;
 			std::array<unsigned int, 36> indices;
@@ -254,14 +254,14 @@ namespace Engine
 		}
 	}
 
-	void ResourceManager::MeshLoader::LoadBuiltIn(std::unordered_map<std::string, std::unique_ptr<Mesh>>& meshBank, ID3D11Device* device)
+	void ResourceManager::MeshLoader::LoadBuiltIn(std::unordered_map<std::string, std::unique_ptr<Mesh>>& meshBank)
 	{
-		meshBank["triangle"] = GenerateTriangleMesh(device);
-		meshBank["quad"] = GenerateQuadMesh(device);
-		meshBank["cube"] = GenerateCubeMesh(device);
+		meshBank["triangle"] = GenerateTriangleMesh();
+		meshBank["quad"] = GenerateQuadMesh();
+		meshBank["cube"] = GenerateCubeMesh();
 	}
 
-	std::unique_ptr<Mesh> ResourceManager::MeshLoader::LoadMeshOBJ(const std::filesystem::path& filepath, ID3D11Device* device)
+	std::unique_ptr<Mesh> ResourceManager::MeshLoader::LoadMeshOBJ(const std::filesystem::path& filepath)
 	{
 		// Invalid filepath.
 		assert(("Error: File passed to LoadMeshOBJ is not a .meshobj file!", filepath.extension() == ".meshobj"));
@@ -381,7 +381,7 @@ namespace Engine
 		return std::make_unique<Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
-	std::unique_ptr<Mesh> ResourceManager::MeshLoader::LoadMeshBinary(const std::filesystem::path& filepath, ID3D11Device* device)
+	std::unique_ptr<Mesh> ResourceManager::MeshLoader::LoadMeshBinary(const std::filesystem::path& filepath)
 	{
 		std::ifstream file(filepath, std::ios::binary);
 
@@ -417,9 +417,7 @@ namespace Engine
 		assert(("Error: Mesh cannot be null!", mesh));
 
 		std::ofstream file(filepath, std::ios::binary);
-		if (!file.is_open()) {
-			return;
-		}
+		assert(("Error: Cannot create mesh binary file!", file.is_open()));
 
 		const std::vector<char>& vertexData = mesh->GetVBO().GetData();
 		const std::vector<char>& indexData = mesh->GetIBO().GetData();

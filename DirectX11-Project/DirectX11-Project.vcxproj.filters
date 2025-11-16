@@ -252,9 +252,6 @@
     <ClInclude Include="src\Renderer\texture2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Resources\meshmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Resources\resourcemanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -392,10 +389,10 @@
     <ClCompile Include="src\Resources\loadmeshbinary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resources\meshmanager.cpp">
+    <ClCompile Include="src\Resources\meshloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resources\meshloader.cpp">
+    <ClCompile Include="src\Resources\resourcemanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -437,8 +434,6 @@
     <None Include="Resources\SpriteAnimations\timer.spriteanimation" />
     <None Include="Resources\Meshes\sphere.meshobj" />
     <None Include="Resources\Meshes\skull.meshobj" />
-    <None Include="Resources\Meshes\.meshbinaries\sphere.meshbinary" />
-    <None Include="Resources\Meshes\.meshbinaries\skull.meshbinary" />
     <None Include="Resources\SpriteAnimations\nyancat.spriteanimation" />
     <None Include="Resources\SpriteAnimations\texttest.spriteanimation" />
   </ItemGroup>

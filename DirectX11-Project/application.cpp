@@ -6,7 +6,7 @@ Application::Application()
 	m_direct3d = 0;
 
 	m_shaderManager = 0;
-	m_meshManager = 0;
+	m_resourceManager = 0;
 	m_textureManager = 0;
 
 	m_transformSystem = 0;
@@ -45,7 +45,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Create the MeshManager object.
-	m_meshManager = new Engine::MeshManager(m_direct3d->GetDevice());
+	m_resourceManager = new Engine::ResourceManager(true);
+	m_resourceManager->LoadAllMeshes();
 
 	// Create and initialize the TextureManager object.
 	m_textureManager = new TextureManager;
@@ -124,7 +125,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	sphereTransform.SetGlobalPosition(0.0f, -2.0f, 0.0f);
 	m_scene->AddComponent<Model>(sphere1);
 	Model& model1 = m_scene->GetComponent<Model>(sphere1);
-	model1.SetMesh(m_meshManager->GetMesh("sphere"));
+	model1.SetMesh(m_resourceManager->GetMesh("sphere"));
 	model1.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
 	model1.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
 	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
@@ -147,7 +148,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	for (int i = 0; i < 6; i++) {
 		int quad = m_scene->CreateEntity();
 		Model& quadModel = m_scene->GetComponent<Model>(quad);
-		quadModel.SetMesh(m_meshManager->GetMesh("quad"));
+		quadModel.SetMesh(m_resourceManager->GetMesh("quad"));
 		quadModel.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
 		quadModel.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
 		quadModel.SetTexture(m_textureManager->GetTexture("stoneWall"));
@@ -232,8 +233,8 @@ void Application::Shutdown()
 	}
 
 	// Release the MeshManager object.
-	delete m_meshManager;
-	m_meshManager = 0;
+	delete m_resourceManager;
+	m_resourceManager = 0;
 
 	// Release the TextureManager object.
 	if (m_textureManager) {

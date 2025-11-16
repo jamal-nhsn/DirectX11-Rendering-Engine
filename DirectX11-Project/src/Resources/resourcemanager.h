@@ -33,10 +33,10 @@ namespace Engine
 				unsigned int indexCount;
 			};
 
-			static void LoadBuiltIn(std::unordered_map<std::string, std::unique_ptr<Mesh>>& meshBank, ID3D11Device* device);
+			static void LoadBuiltIn(std::unordered_map<std::string, std::unique_ptr<Mesh>>& meshBank);
 
-			static std::unique_ptr<Mesh> LoadMeshOBJ(const std::filesystem::path& filepath, ID3D11Device* device);
-			static std::unique_ptr<Mesh> LoadMeshBinary(const std::filesystem::path& filepath, ID3D11Device* device);
+			static std::unique_ptr<Mesh> LoadMeshOBJ(const std::filesystem::path& filepath);
+			static std::unique_ptr<Mesh> LoadMeshBinary(const std::filesystem::path& filepath);
 			static void CreateBinary(const std::filesystem::path& filepath, Mesh* mesh);
 		};
 
@@ -52,7 +52,11 @@ namespace Engine
 		~ResourceManager() = default;
 
 	public:
-		bool LoadMesh(const std::string& fileName);
+		void LoadMesh(const std::filesystem::path& filepath);
+		// Looks for corresponding mesh in root of Mesh directory if no parent path is provided.
+		void LoadMesh(const std::string& filepath);
+		// Loads all meshes in the entire Mesh directory.
+		void LoadAllMeshes();
 
 		Mesh* GetMesh(std::string meshName);
 

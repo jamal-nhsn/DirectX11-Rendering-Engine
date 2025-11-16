@@ -60,7 +60,6 @@
     <ClInclude Include="src\Renderer\texture2d.h" />
     <ClInclude Include="src\Renderer\vertex.h" />
     <ClInclude Include="src\Renderer\vertexbuffer.h" />
-    <ClInclude Include="src\Resources\meshmanager.h" />
     <ClInclude Include="src\Resources\resourceloaders.h" />
     <ClInclude Include="src\Resources\resourcemanager.h" />
     <ClInclude Include="targaloader.h" />
@@ -112,7 +111,7 @@
     <ClCompile Include="src\Resources\loadtexturemeta.cpp" />
     <ClCompile Include="src\Resources\loadtga.cpp" />
     <ClCompile Include="src\Resources\meshloader.cpp" />
-    <ClCompile Include="src\Resources\meshmanager.cpp" />
+    <ClCompile Include="src\Resources\resourcemanager.cpp" />
     <ClCompile Include="targaloader.cpp" />
     <ClCompile Include="text.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -130,8 +129,6 @@
     <None Include="defaultbasevertex.hlsl" />
     <None Include="defaultlightpixel.hlsl" />
     <None Include="defaultlightvertex.hlsl" />
-    <None Include="Resources\Meshes\.meshbinaries\skull.meshbinary" />
-    <None Include="Resources\Meshes\.meshbinaries\sphere.meshbinary" />
     <None Include="Resources\Meshes\skull.meshobj" />
     <None Include="Resources\Meshes\sphere.meshobj" />
     <None Include="Resources\SpriteAnimations\nyancat.spriteanimation" />

@@ -5,7 +5,7 @@ INCLUDES
 ======*/
 #include "direct3d.h"
 #include "shadermanager.h"
-#include "src/Resources/meshmanager.h"
+#include "src/Resources/resourcemanager.h"
 #include "texturemanager.h"
 #include "spriteanimationmanager.h"
 #include "transformsystem.h"
@@ -30,7 +30,7 @@ private:
 	Direct3D* m_direct3d;
 
 	ShaderManager* m_shaderManager;
-	Engine::MeshManager* m_meshManager;
+	Engine::ResourceManager* m_resourceManager;
 	TextureManager* m_textureManager;
 	SpriteAnimationManager* m_spriteAnimationManager;
 
