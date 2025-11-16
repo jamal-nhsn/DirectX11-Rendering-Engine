@@ -144,14 +144,12 @@ namespace Engine
 
 		// Create the Buffers.
 		VertexBuffer vbo(
-			device,
 			vertices.data(),
 			static_cast<unsigned int>(sizeof(Vertex3D)),
 			static_cast<unsigned int>(vertices.size())
 		);
 
 		IndexBuffer ibo(
-			device,
 			indices.data(),
 			static_cast<unsigned int>(indices.size())
 		);

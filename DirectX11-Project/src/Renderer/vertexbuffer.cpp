@@ -2,89 +2,95 @@
 
 namespace Engine
 {
-	VertexBuffer::VertexBuffer(ID3D11Device* device, const void* vertices, unsigned int vertexSize, unsigned int vertexCount, const D3D11_BUFFER_DESC* bufferDesc)
-		: m_vertexCount(vertexCount), m_vertexSize(vertexSize)
+	VertexBuffer::VertexBuffer(const void* vertices, unsigned int vertexSize, unsigned int vertexCount, const D3D11_BUFFER_DESC* bufferDesc)
+		: m_vbo(0), m_data(vertexCount * vertexSize), m_vertexSize(vertexSize), m_vertexCount(vertexCount)
 	{
-		D3D11_SUBRESOURCE_DATA vertexData;
-		vertexData.pSysMem = vertices;
-		vertexData.SysMemPitch = 0;
-		vertexData.SysMemSlicePitch = 0;
-
-		HRESULT result;
+		// Copy the vertices as bytes.
+		std::memcpy(m_data.data(), vertices, m_data.size());
 
 		if (!bufferDesc) {
-			D3D11_BUFFER_DESC defaultDesc;
-			defaultDesc.Usage = D3D11_USAGE_DEFAULT;
-			defaultDesc.ByteWidth = vertexSize * vertexCount;
-			defaultDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			defaultDesc.CPUAccessFlags = 0;
-			defaultDesc.MiscFlags = 0;
-			defaultDesc.StructureByteStride = 0;
-
-			result = device->CreateBuffer(&defaultDesc, &vertexData, &m_vbo);
+			m_bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+			m_bufferDesc.ByteWidth = vertexSize * vertexCount;
+			m_bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			m_bufferDesc.CPUAccessFlags = 0;
+			m_bufferDesc.MiscFlags = 0;
+			m_bufferDesc.StructureByteStride = 0;
 		}
 		else {
-			result = device->CreateBuffer(bufferDesc, &vertexData, &m_vbo);
-		}
-
-		// Initialization failed, functions called on this buffer will also fail.
-		if (FAILED(result)) {
-			m_vbo = 0;
-			m_vertexCount = 0;
+			m_bufferDesc = D3D11_BUFFER_DESC(*bufferDesc);
 		}
 	}
 
 	VertexBuffer::VertexBuffer(VertexBuffer&& other) noexcept
 	{
 		m_vbo = other.m_vbo;
-		m_vertexCount = other.m_vertexCount;
+		m_bufferDesc = other.m_bufferDesc;
+		m_data.swap(other.m_data);
 		m_vertexSize = other.m_vertexSize;
+		m_vertexCount = other.m_vertexCount;
 
 		// Invalidate other.
 		other.m_vbo = 0;
-		other.m_vertexCount = 0;
-		other.m_vertexSize = 0;
 	}
 
 	VertexBuffer& VertexBuffer::operator=(VertexBuffer&& other) noexcept
 	{
 		m_vbo = other.m_vbo;
-		m_vertexCount = other.m_vertexCount;
+		m_bufferDesc = other.m_bufferDesc;
+		m_data.swap(other.m_data);
 		m_vertexSize = other.m_vertexSize;
+		m_vertexCount = other.m_vertexCount;
 
 		// Invalidate other.
 		other.m_vbo = 0;
-		other.m_vertexCount = 0;
-		other.m_vertexSize = 0;
 
 		return *this;
 	}
 
 	VertexBuffer::~VertexBuffer()
 	{
+		Release();
+	}
+
+	void VertexBuffer::Upload(ID3D11Device* device)
+	{
+		// Already uploaded.
+		if (m_vbo) {
+			return;
+		}
+
+		D3D11_SUBRESOURCE_DATA vertexData;
+		vertexData.pSysMem = m_data.data();
+		vertexData.SysMemPitch = 0;
+		vertexData.SysMemSlicePitch = 0;
+
+		HRESULT result = device->CreateBuffer(&m_bufferDesc, &vertexData, &m_vbo);
+		assert(("Error: Could not upload VBO to GPU!", !FAILED(result)));
+	}
+
+	void VertexBuffer::Release()
+	{
 		if (m_vbo) {
 			m_vbo->Release();
+			m_vbo = 0;
 		}
 	}
 
-	bool VertexBuffer::Bind(ID3D11DeviceContext* deviceContext)
+	void VertexBuffer::Bind(ID3D11DeviceContext* deviceContext)
 	{
 		// Ensure vbo was properly created.
-		if (!m_vbo) {
-			return false;
-		}
+		assert(("Error: VBO not uploaded to GPU!", m_vbo));
 
 		unsigned int stride = m_vertexSize;
 		unsigned int offset = 0;
 
 		deviceContext->IASetVertexBuffers(0, 1, &m_vbo, &stride, &offset);
-		return true;
 	}
 
-	bool VertexBuffer::Map(ID3D11DeviceContext* deviceContext, D3D11_MAPPED_SUBRESOURCE* mappedResource, D3D11_MAP mapMode, UINT8 mapFlags)
+	void VertexBuffer::Map(ID3D11DeviceContext* deviceContext, D3D11_MAPPED_SUBRESOURCE* mappedResource, D3D11_MAP mapMode, UINT8 mapFlags)
 	{
 		HRESULT result = deviceContext->Map(m_vbo, 0, mapMode, mapFlags, mappedResource);
-		return !FAILED(result);
+		assert(("Error: Unable to map VBO!", !FAILED(result)));
 	}
 
 	void VertexBuffer::Unmap(ID3D11DeviceContext* deviceContext, UINT8 subresource)
@@ -95,6 +101,11 @@ namespace Engine
 	unsigned int VertexBuffer::GetVertexCount()
 	{
 		return m_vertexCount;
+	}
+
+	const std::vector<char>& VertexBuffer::GetData()
+	{
+		return m_data;
 	}
 
 	const ID3D11Buffer* VertexBuffer::GetBuffer()

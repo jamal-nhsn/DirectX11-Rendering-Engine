@@ -39,7 +39,7 @@ public:
 
 	void const SubmitText(const TextData& textData, const DirectX::XMMATRIX& modelMatrix);
 
-	void EndScene(ID3D11DeviceContext* deviceContext);
+	void EndScene(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 private:
 	ID3D11Buffer* m_vbo;

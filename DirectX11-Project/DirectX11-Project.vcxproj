@@ -62,6 +62,7 @@
     <ClInclude Include="src\Renderer\vertexbuffer.h" />
     <ClInclude Include="src\Resources\meshmanager.h" />
     <ClInclude Include="src\Resources\resourceloaders.h" />
+    <ClInclude Include="src\Resources\resourcemanager.h" />
     <ClInclude Include="targaloader.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="textdata.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="src\Resources\loadmeshobj.cpp" />
     <ClCompile Include="src\Resources\loadtexturemeta.cpp" />
     <ClCompile Include="src\Resources\loadtga.cpp" />
+    <ClCompile Include="src\Resources\meshloader.cpp" />
     <ClCompile Include="src\Resources\meshmanager.cpp" />
     <ClCompile Include="targaloader.cpp" />
     <ClCompile Include="text.cpp" />

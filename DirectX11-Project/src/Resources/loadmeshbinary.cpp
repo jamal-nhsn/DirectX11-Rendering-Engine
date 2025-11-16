@@ -28,14 +28,12 @@ namespace Engine
 		file.read(reinterpret_cast<char*>(indices.data()), sizeof(unsigned int) * header.indexCount);
 
 		Engine::VertexBuffer vbo(
-			device,
 			vertices.data(),
 			static_cast<unsigned int>(sizeof(Vertex3D)),
 			static_cast<unsigned int>(vertices.size())
 		);
 
 		Engine::IndexBuffer ibo(
-			device,
 			indices.data(),
 			static_cast<unsigned int>(indices.size())
 		);

@@ -15,5 +15,5 @@ public:
 	Render3DSystem(const Render3DSystem&);
 	~Render3DSystem();
 
-	void Update(ID3D11DeviceContext* deviceContext, Scene* scene);
+	void Update(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Scene* scene);
 };

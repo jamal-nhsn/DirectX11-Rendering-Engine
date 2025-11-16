@@ -79,6 +79,6 @@ namespace Engine
 
 		// Create the texture.
 		int rowPitch = width * 4;
-		return std::make_unique<Texture2D>(device, deviceContext, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, destData.data(), rowPitch, samplerState);
+		return std::make_unique<Texture2D>(destData.data(), width, height, samplerState);
 	}
 }

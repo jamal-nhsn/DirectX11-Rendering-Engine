@@ -10,9 +10,10 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 {
 	direct3d->Clear(0.0f, 0.0f, 0.0f, 1.0f);
 
+	ID3D11Device* device = direct3d->GetDevice();
 	ID3D11DeviceContext* deviceContext = direct3d->GetDeviceContext();
 
-	m_render3DSystem.Update(deviceContext, scene);
+	m_render3DSystem.Update(device, deviceContext, scene);
 
 	std::vector<Camera2D>* camera2Ds = scene->GetComponents<Camera2D>();
 	std::vector<Sprite>* sprites = scene->GetComponents<Sprite>();
@@ -33,7 +34,7 @@ void RenderSystem::Update(Direct3D* direct3d, Scene* scene)
 				scene->GetComponent<Transform>(text.GetEntityId()).GetModelMatrix()
 			);
 		}
-		m_renderer2D.EndScene(deviceContext);
+		m_renderer2D.EndScene(device, deviceContext);
 	}
 
 	direct3d->Render();

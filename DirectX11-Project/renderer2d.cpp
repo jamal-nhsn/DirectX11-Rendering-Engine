@@ -241,7 +241,7 @@ void const Renderer2D::SubmitText(const TextData& textData, const DirectX::XMMAT
 	}
 }
 
-void Renderer2D::EndScene(ID3D11DeviceContext* deviceContext)
+void Renderer2D::EndScene(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	HRESULT result;
 
@@ -271,6 +271,9 @@ void Renderer2D::EndScene(ID3D11DeviceContext* deviceContext)
 
 		// Bind the shader.
 		batch.shader->Bind(deviceContext, m_cameraView, m_cameraProjection);
+
+		// Upload texture to device.
+		batch.texture->Upload(device, deviceContext);
 
 		// Bind the texture.
 		batch.texture->Bind(deviceContext);

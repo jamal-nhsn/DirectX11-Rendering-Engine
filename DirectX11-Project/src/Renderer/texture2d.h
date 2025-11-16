@@ -1,23 +1,16 @@
 #pragma once
 
+#include <cassert>
 #include <d3d11.h>
 #include <stdio.h>
+#include <vector>
 
 namespace Engine
 {
 	class Texture2D
 	{
 	public:
-		Texture2D(
-			ID3D11Device* device,
-			ID3D11DeviceContext* deviceContext,
-			unsigned int width,
-			unsigned int height,
-			DXGI_FORMAT format,
-			const void* data,
-			unsigned int rowPitch,
-			ID3D11SamplerState* samplerState
-		);
+		Texture2D(const void* data, unsigned int width, unsigned int height, ID3D11SamplerState* samplerState);
 
 		// Do not allow copying.
 		Texture2D(const Texture2D& other) = delete;
@@ -28,7 +21,10 @@ namespace Engine
 
 		~Texture2D();
 
-		bool Bind(ID3D11DeviceContext* deviceContext);
+		void Upload(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+		void Release();
+
+		void Bind(ID3D11DeviceContext* deviceContext);
 
 		unsigned int GetWidth();
 		unsigned int GetHeight();
@@ -38,6 +34,7 @@ namespace Engine
 		ID3D11ShaderResourceView* m_shaderResourceView;
 		ID3D11SamplerState* m_samplerState;
 
+		std::vector<char> m_data;
 		unsigned int m_width;
 		unsigned int m_height;
 	};

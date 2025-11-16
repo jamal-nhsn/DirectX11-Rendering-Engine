@@ -14,7 +14,7 @@ Render3DSystem::~Render3DSystem()
 {
 }
 
-void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
+void Render3DSystem::Update(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Scene* scene)
 {
 	std::vector<Camera3D>* camera3Ds = scene->GetComponents<Camera3D>();
 	std::vector<Model>* models       = scene->GetComponents<Model>();
@@ -52,6 +52,10 @@ void Render3DSystem::Update(ID3D11DeviceContext* deviceContext, Scene* scene)
 			if (shader == 0) {
 				continue;
 			}
+
+			// Upload texture and mesh to device.
+			texture->Upload(device, deviceContext);
+			mesh->Upload(device);
 
 			texture->Bind(deviceContext);
 

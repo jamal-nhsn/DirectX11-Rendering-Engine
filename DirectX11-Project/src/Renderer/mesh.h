@@ -20,7 +20,10 @@ namespace Engine
 
 		~Mesh() = default;
 
-		bool Bind(ID3D11DeviceContext* deviceContext);
+		void Upload(ID3D11Device* device);
+		void Release();
+
+		void Bind(ID3D11DeviceContext* deviceContext);
 
 		VertexBuffer& GetVBO();
 		IndexBuffer& GetIBO();

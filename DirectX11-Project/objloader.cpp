@@ -121,14 +121,12 @@ std::unique_ptr<Engine::Mesh> ObjLoader::LoadMesh(std::string filePath, ID3D11De
 
 	// Create the Buffers.
 	Engine::VertexBuffer vbo(
-		device,
 		vertices.data(),
 		static_cast<unsigned int>(sizeof(Engine::Vertex3D)),
 		static_cast<unsigned int>(vertices.size())
 	);
 
 	Engine::IndexBuffer ibo(
-		device,
 		indices.data(),
 		static_cast<unsigned int>(indices.size())
 	);

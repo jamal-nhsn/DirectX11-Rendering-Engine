@@ -9,9 +9,22 @@ namespace Engine
 	{
 	}
 
-	bool Mesh::Bind(ID3D11DeviceContext* deviceContext)
+	void Mesh::Upload(ID3D11Device* device)
 	{
-		return m_vbo.Bind(deviceContext) && m_ibo.Bind(deviceContext);
+		m_vbo.Upload(device);
+		m_ibo.Upload(device);
+	}
+
+	void Mesh::Release()
+	{
+		m_vbo.Release();
+		m_ibo.Release();
+	}
+
+	void Mesh::Bind(ID3D11DeviceContext* deviceContext)
+	{
+		m_vbo.Bind(deviceContext);
+		m_ibo.Bind(deviceContext);
 	}
 
 	VertexBuffer& Mesh::GetVBO()
