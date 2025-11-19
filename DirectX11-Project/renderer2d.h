@@ -7,7 +7,7 @@ INCLUDES
 
 #include "d3d11.h"
 #include "camera2d.h"
-#include "vertex.h"
+#include "src/Renderer/vertex.h"
 #include "spritedata.h"
 #include "textdata.h"
 
@@ -20,7 +20,7 @@ private:
 	{
 		Shader* shader;
 		Engine::Texture2D* texture;
-		std::vector<Vertex2D> vertices;
+		std::vector<Engine::Vertex2D> vertices;
 	};
 
 public:

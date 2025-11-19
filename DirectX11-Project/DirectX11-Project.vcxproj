@@ -35,7 +35,6 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="model.h" />
-    <ClInclude Include="objloader.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="render3dsystem.h" />
     <ClInclude Include="rendersystem.h" />
@@ -62,16 +61,12 @@
     <ClInclude Include="src\Renderer\vertexbuffer.h" />
     <ClInclude Include="src\Resources\resourceloaders.h" />
     <ClInclude Include="src\Resources\resourcemanager.h" />
-    <ClInclude Include="targaloader.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="textdata.h" />
-    <ClInclude Include="texture.h" />
     <ClInclude Include="texturemanager.h" />
-    <ClInclude Include="texturemetaloader.h" />
     <ClInclude Include="textureshader.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="transformsystem.h" />
-    <ClInclude Include="vertex.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +84,6 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
-    <ClCompile Include="objloader.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="render3dsystem.cpp" />
     <ClCompile Include="renderer2d.cpp" />
@@ -112,11 +106,8 @@
     <ClCompile Include="src\Resources\loadtga.cpp" />
     <ClCompile Include="src\Resources\meshloader.cpp" />
     <ClCompile Include="src\Resources\resourcemanager.cpp" />
-    <ClCompile Include="targaloader.cpp" />
     <ClCompile Include="text.cpp" />
-    <ClCompile Include="texture.cpp" />
     <ClCompile Include="texturemanager.cpp" />
-    <ClCompile Include="texturemetaloader.cpp" />
     <ClCompile Include="textureshader.cpp" />
     <ClCompile Include="transform.cpp" />
     <ClCompile Include="transformsystem.cpp" />
@@ -140,7 +131,6 @@
     <None Include="texturevertex.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\Timer.tga" />
     <Image Include="Resources\Textures\defaultfont.tga" />
     <Image Include="Resources\Textures\nyancat.tga" />
     <Image Include="Resources\Textures\stoneWall.tga" />

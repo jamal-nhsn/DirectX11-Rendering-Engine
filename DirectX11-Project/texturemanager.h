@@ -7,7 +7,6 @@ INCLUDES
 #include <filesystem>
 #include <string>
 
-#include "texturemetaloader.h"
 #include "src/Renderer/texture2d.h"
 
 class TextureManager

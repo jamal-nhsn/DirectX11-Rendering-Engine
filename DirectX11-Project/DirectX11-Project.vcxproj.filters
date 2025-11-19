@@ -114,9 +114,6 @@
     <ClInclude Include="shader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="vertex.h">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -147,9 +144,6 @@
     <ClInclude Include="textureshader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="texture.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="texturemanager.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
@@ -165,20 +159,11 @@
     <ClInclude Include="renderer.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="objloader.h">
-      <Filter>Header Files\Geometry\Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="targaloader.h">
-      <Filter>Header Files\Resources\Loaders</Filter>
-    </ClInclude>
     <ClInclude Include="sprite.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="camera2d.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="texturemetaloader.h">
-      <Filter>Header Files\Resources\Loaders</Filter>
     </ClInclude>
     <ClInclude Include="defaultspriteshader.h">
       <Filter>Header Files\Shaders</Filter>
@@ -308,9 +293,6 @@
     <ClCompile Include="textureshader.cpp">
       <Filter>Source Files\Shaders\Base Pass\Texture Shader</Filter>
     </ClCompile>
-    <ClCompile Include="texture.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="texturemanager.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
@@ -326,20 +308,11 @@
     <ClCompile Include="renderer.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="objloader.cpp">
-      <Filter>Source Files\Geometry\Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="targaloader.cpp">
-      <Filter>Source Files\Resources\Loaders</Filter>
-    </ClCompile>
     <ClCompile Include="sprite.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="camera2d.cpp">
       <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="texturemetaloader.cpp">
-      <Filter>Source Files\Resources\Loaders</Filter>
     </ClCompile>
     <ClCompile Include="defaultspriteshader.cpp">
       <Filter>Source Files\Shaders\2D\Default Sprite Shader</Filter>
@@ -441,7 +414,6 @@
     <Image Include="Resources\Textures\stoneWall.tga">
       <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="..\..\Timer.tga" />
     <Image Include="Resources\Textures\timer.tga" />
     <Image Include="Resources\Textures\defaultfont.tga" />
     <Image Include="Resources\Textures\nyancat.tga" />

@@ -44,7 +44,7 @@ bool Renderer2D::Initialize(ID3D11Device* device)
 	// Create the dynamic vertex buffer desc allocating the max amount of vertices.
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex2D) * 4 * MAX_SPRITE_BATCH_SIZE;
+	vertexBufferDesc.ByteWidth = sizeof(Engine::Vertex2D) * 4 * MAX_SPRITE_BATCH_SIZE;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	vertexBufferDesc.MiscFlags = 0;
@@ -151,10 +151,10 @@ void const Renderer2D::SubmitSprite(const SpriteData& spriteData, const DirectX:
 
 	size_t firstVertex = m_batches[batchIndex].vertices.size();
 
-	m_batches[batchIndex].vertices.emplace_back(Vertex2D{ {0.0f, 0.0f, 0.0f}, {u1, v1}, {spriteData.tint } });
-	m_batches[batchIndex].vertices.emplace_back(Vertex2D{ {0.0f, 0.0f, 0.0f}, {u1, v2}, {spriteData.tint } });
-	m_batches[batchIndex].vertices.emplace_back(Vertex2D{ {0.0f, 0.0f, 0.0f}, {u2, v2}, {spriteData.tint } });
-	m_batches[batchIndex].vertices.emplace_back(Vertex2D{ {0.0f, 0.0f, 0.0f}, {u2, v1}, {spriteData.tint } });
+	m_batches[batchIndex].vertices.emplace_back(Engine::Vertex2D{ {0.0f, 0.0f, 0.0f}, {u1, v1}, {spriteData.tint } });
+	m_batches[batchIndex].vertices.emplace_back(Engine::Vertex2D{ {0.0f, 0.0f, 0.0f}, {u1, v2}, {spriteData.tint } });
+	m_batches[batchIndex].vertices.emplace_back(Engine::Vertex2D{ {0.0f, 0.0f, 0.0f}, {u2, v2}, {spriteData.tint } });
+	m_batches[batchIndex].vertices.emplace_back(Engine::Vertex2D{ {0.0f, 0.0f, 0.0f}, {u2, v1}, {spriteData.tint } });
 
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -245,7 +245,7 @@ void Renderer2D::EndScene(ID3D11Device* device, ID3D11DeviceContext* deviceConte
 {
 	HRESULT result;
 
-	unsigned int stride = sizeof(Vertex2D);
+	unsigned int stride = sizeof(Engine::Vertex2D);
 	unsigned int offset = 0;
 
 	for (SpriteBatch& batch : m_batches) {
@@ -260,8 +260,8 @@ void Renderer2D::EndScene(ID3D11Device* device, ID3D11DeviceContext* deviceConte
 		if (FAILED(result)) {
 			return;
 		}
-		Vertex2D* dataPtr = (Vertex2D*)mappedResource.pData;
-		memcpy(dataPtr, (void*)batch.vertices.data(), (sizeof(Vertex2D) * batch.vertices.size()));
+		Engine::Vertex2D* dataPtr = (Engine::Vertex2D*)mappedResource.pData;
+		memcpy(dataPtr, (void*)batch.vertices.data(), (sizeof(Engine::Vertex2D) * batch.vertices.size()));
 		deviceContext->Unmap(m_vbo, 0);
 
 		// Set the index and vertex buffer in the input assembler.
