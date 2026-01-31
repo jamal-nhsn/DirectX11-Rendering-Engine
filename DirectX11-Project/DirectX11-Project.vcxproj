@@ -111,6 +111,7 @@
     <ClCompile Include="src\Resources\loadtga.cpp" />
     <ClCompile Include="src\Resources\meshloader.cpp" />
     <ClCompile Include="src\Resources\resourcemanager.cpp" />
+    <ClCompile Include="src\Resources\texture2dloader.cpp" />
     <ClCompile Include="text.cpp" />
     <ClCompile Include="texturemanager.cpp" />
     <ClCompile Include="textureshader.cpp" />
