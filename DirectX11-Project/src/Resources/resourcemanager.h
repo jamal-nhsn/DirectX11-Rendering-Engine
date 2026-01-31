@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Renderer/mesh.h"
+#include "../Renderer/texture2d.h"
 
 #include <string>
 #include <filesystem>
@@ -35,9 +36,24 @@ namespace Engine
 
 			static void LoadBuiltIn(std::unordered_map<std::string, std::unique_ptr<Mesh>>& meshBank);
 
-			static std::unique_ptr<Mesh> LoadMeshOBJ(const std::filesystem::path& filepath);
-			static std::unique_ptr<Mesh> LoadMeshBinary(const std::filesystem::path& filepath);
+			static std::unique_ptr<Mesh> LoadOBJ(const std::filesystem::path& filepath);
+			static std::unique_ptr<Mesh> LoadBinary(const std::filesystem::path& filepath);
 			static void CreateBinary(const std::filesystem::path& filepath, Mesh* mesh);
+		};
+
+		struct Texture2DLoader
+		{
+			struct BinaryHeader
+			{
+				unsigned int width;
+				unsigned int height;
+			};
+
+			static void LoadBuiltIn(std::unordered_map<std::string, std::unique_ptr<Texture2D>>& texture2DBank, ID3D11SamplerState* sampler);
+
+			static std::unique_ptr<Texture2D> LoadTGA(const std::filesystem::path& filepath, ID3D11SamplerState* sampler);
+			static std::unique_ptr<Texture2D> LoadBinary(const std::filesystem::path& filepath, ID3D11SamplerState* sampler);
+			static void CreateBinary(const std::filesystem::path& filepath, Texture2D* texture2D);
 		};
 
 	public:
@@ -52,26 +68,28 @@ namespace Engine
 		~ResourceManager() = default;
 
 	public:
-		void LoadMesh(const std::filesystem::path& filepath);
-		// Looks for corresponding mesh in root of Mesh directory if no parent path is provided.
-		void LoadMesh(const std::string& filepath);
-		// Loads all meshes in the entire Mesh directory.
-		void LoadAllMeshes();
+		void LoadMesh(const std::filesystem::path& filepath); // Loads mesh at filepath.
+		void LoadMesh(const std::string& filepath);           // Looks in s_meshDirPath if no parent path is provided.
+		void LoadAllMeshes();                                 // Loads all in s_meshDirPath.
 
 		Mesh* GetMesh(std::string meshName);
 
-		/*
-		bool LoadTexture2D(const std::filesystem::path& filepath);
-		bool LoadTexture2D(const std::string& filepath);
-		bool LoadTexture2D(const char* filepath);
+		void LoadTexture2D(const std::filesystem::path& filepath);
+		void LoadTexture2D(const std::string& filepath);
+		void LoadAllTexture2Ds();
 
-		bool LoadSpriteAnimation(const std::filesystem::path& filepath);
-		bool LoadSpriteAnimation(const std::string& filepath);
-		bool LoadSpriteAnimation(const char* filepath);
+		Texture2D* GetTexture2D(std::string texture2DName);
+
+		/*
+		void LoadSpriteAnimation(const std::filesystem::path& filepath);
+		void LoadSpriteAnimation(const std::string& filepath);
+		void LoadAllSpriteAnimations();
 		*/
 
 	private:
 		std::unordered_map<std::string, std::unique_ptr<Mesh>> m_meshBank;
+		std::unordered_map<D3D11_SAMPLER_DESC, ID3D11SamplerState*> m_samplerBank;
+		std::unordered_map<std::string, std::unique_ptr<Texture2D>> m_texture2DBank;
 
 		bool m_useBinaries;
 	};

@@ -122,4 +122,8 @@ namespace Engine
 	{
 		return m_height;
 	}
+
+	const std::vector<char>& Texture2D::GetData() {
+		return m_data;
+	}
 }

@@ -40,7 +40,7 @@ namespace Engine
 				std::filesystem::last_write_time(binaryPath) > std::filesystem::last_write_time(filepath);
 
 			if (shouldUseBinary) {
-				m_meshBank[meshName] = MeshLoader::LoadMeshBinary(binaryPath);
+				m_meshBank[meshName] = MeshLoader::LoadBinary(binaryPath);
 				assert(("Error: Could not load Mesh!", m_meshBank[meshName]));
 				return;
 			}
@@ -49,7 +49,7 @@ namespace Engine
 		const std::filesystem::path& extension = filepath.extension();
 
 		if (extension == ".meshobj") {
-			m_meshBank[meshName] = MeshLoader::LoadMeshOBJ(filepath);
+			m_meshBank[meshName] = MeshLoader::LoadOBJ(filepath);
 			assert(("Error: Could not load Mesh!", m_meshBank[meshName]));
 		}
 		else {

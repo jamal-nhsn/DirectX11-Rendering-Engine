@@ -257,7 +257,7 @@ namespace Engine
 		meshBank["cube"] = GenerateCubeMesh();
 	}
 
-	std::unique_ptr<Mesh> ResourceManager::MeshLoader::LoadMeshOBJ(const std::filesystem::path& filepath)
+	std::unique_ptr<Mesh> ResourceManager::MeshLoader::LoadOBJ(const std::filesystem::path& filepath)
 	{
 		// Invalid filepath.
 		assert(("Error: File passed to LoadMeshOBJ is not a .meshobj file!", filepath.extension() == ".meshobj"));
@@ -377,7 +377,7 @@ namespace Engine
 		return std::make_unique<Mesh>(vbo, ibo, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
-	std::unique_ptr<Mesh> ResourceManager::MeshLoader::LoadMeshBinary(const std::filesystem::path& filepath)
+	std::unique_ptr<Mesh> ResourceManager::MeshLoader::LoadBinary(const std::filesystem::path& filepath)
 	{
 		std::ifstream file(filepath, std::ios::binary);
 
@@ -394,13 +394,13 @@ namespace Engine
 		file.read(reinterpret_cast<char*>(vertices.data()), sizeof(Vertex3D) * header.vertexCount);
 		file.read(reinterpret_cast<char*>(indices.data()), sizeof(unsigned int) * header.indexCount);
 
-		Engine::VertexBuffer vbo(
+		VertexBuffer vbo(
 			vertices.data(),
 			static_cast<unsigned int>(sizeof(Vertex3D)),
 			static_cast<unsigned int>(vertices.size())
 		);
 
-		Engine::IndexBuffer ibo(
+		IndexBuffer ibo(
 			indices.data(),
 			static_cast<unsigned int>(indices.size())
 		);

@@ -28,6 +28,7 @@ namespace Engine
 
 		unsigned int GetWidth();
 		unsigned int GetHeight();
+		const std::vector<char>& GetData();
 
 	private:
 		ID3D11Texture2D* m_texture;
