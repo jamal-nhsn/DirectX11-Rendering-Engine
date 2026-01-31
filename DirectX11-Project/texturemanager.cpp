@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "texturemanager.h"
 #include "src/Resources/resourceloaders.h"
 

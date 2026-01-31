@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "resourcemanager.h"
 
 namespace Engine

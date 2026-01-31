@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "model.h"
 
 const ComponentId Model::ID = ComponentId::Model;

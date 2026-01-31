@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "camerasystem.h"
 
 CameraSystem::CameraSystem()

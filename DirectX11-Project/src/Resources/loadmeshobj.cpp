@@ -1,10 +1,5 @@
+#include "pch.h"
 #include "resourceloaders.h"
-
-#include <string>
-#include <fstream>
-#include <cassert>
-#include <vector>
-#include <unordered_map>
 
 namespace Engine
 {

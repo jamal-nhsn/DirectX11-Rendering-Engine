@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "resourceloaders.h"
-
-#include <fstream>
 
 namespace Engine
 {

@@ -54,6 +54,7 @@
     <ClInclude Include="src\ECS\freelist.h" />
     <ClInclude Include="src\ECS\scene.h" />
     <ClInclude Include="src\ECS\sparseset.h" />
+    <ClInclude Include="src\PCH\pch.h" />
     <ClInclude Include="src\Renderer\indexbuffer.h" />
     <ClInclude Include="src\Renderer\mesh.h" />
     <ClInclude Include="src\Renderer\texture2d.h" />
@@ -96,6 +97,9 @@
     <ClCompile Include="spriteanimationmanager.cpp" />
     <ClCompile Include="spriteanimator.cpp" />
     <ClCompile Include="spriteanimatorsystem.cpp" />
+    <ClCompile Include="src\PCH\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Renderer\indexbuffer.cpp" />
     <ClCompile Include="src\Renderer\mesh.cpp" />
     <ClCompile Include="src\Renderer\texture2d.cpp" />
@@ -231,6 +235,9 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\PCH</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

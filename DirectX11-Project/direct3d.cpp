@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "direct3d.h"
 
 Direct3D::Direct3D()

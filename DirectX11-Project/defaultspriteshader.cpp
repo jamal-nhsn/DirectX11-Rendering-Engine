@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "defaultspriteshader.h"
 #include "scene.h"
 

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "spriteanimator.h"
 
 const ComponentId SpriteAnimator::ID = ComponentId::SpriteAnimator;

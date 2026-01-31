@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "mesh.h"
-
-#include <utility>
 
 namespace Engine
 {

@@ -1,9 +1,5 @@
+#include "pch.h"
 #include "resourcemanager.h"
-
-#include <cassert>
-#include <array>
-#include <vector>
-#include <fstream>
 
 namespace Engine
 {

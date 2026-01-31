@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "shader.h"
 
 bool Shader::Initialize(ID3D11Device* device, HWND hwnd)

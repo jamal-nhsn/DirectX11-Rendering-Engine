@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "camera3d.h"
 
 const ComponentId Camera3D::ID = ComponentId::Camera3D;

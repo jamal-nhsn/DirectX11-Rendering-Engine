@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "sprite.h"
 
 const ComponentId Sprite::ID = ComponentId::Sprite;

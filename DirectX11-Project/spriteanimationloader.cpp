@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "spriteanimationloader.h"
 
 const char* SpriteAnimationLoader::s_delimiters = ",() \n:\t";

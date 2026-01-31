@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "colorshader.h"
 #include "scene.h"
 

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "renderer.h"
 
 const ComponentId Renderer::ID = ComponentId::Renderer;

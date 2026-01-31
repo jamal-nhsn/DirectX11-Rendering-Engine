@@ -1,8 +1,5 @@
+#include "pch.h"
 #include "resourceloaders.h"
-
-#include <fstream>
-#include <string>
-#include <cassert>
 
 static const char* s_delimiters = ",() \n:\t";
 

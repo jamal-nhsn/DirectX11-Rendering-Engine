@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "entity.h"
 
 Entity::Entity(int id)

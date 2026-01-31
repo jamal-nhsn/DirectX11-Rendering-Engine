@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "text.h"
 
 const ComponentId Text::ID = ComponentId::Text;

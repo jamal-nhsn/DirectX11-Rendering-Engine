@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "defaultlightshader.h"
 #include "scene.h"
 

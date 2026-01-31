@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "light.h"
 
 const ComponentId Light::ID = ComponentId::Light;
