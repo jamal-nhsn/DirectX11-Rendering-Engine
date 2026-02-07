@@ -1,0 +1,318 @@
+#include "pch.h"
+#include "resourcemanager.h"
+
+namespace Engine
+{
+	namespace 
+	{
+		static const char* s_delimiters = ",() \n:\t";
+
+		void LoadSamplerFilter(D3D11_SAMPLER_DESC& samplerDesc, char* data)
+		{
+			char* token = strtok_s(data, s_delimiters, &data);
+			// Use defualt value if input is malformed.
+			if (token == 0) {
+				return;
+			}
+
+			if (token && strcmp(token, "TRILINEAR") == 0) {
+				samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+				return;
+			}
+			if (token && strcmp(token, "BILINEAR") == 0) {
+				samplerDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+				return;
+			}
+			if (token && strcmp(token, "POINT") == 0) {
+				samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+				return;
+			}
+
+			unsigned int filter = 0;
+
+			filter |= 0x10 * (token && strcmp(token, "LINEAR") == 0);
+
+			token = strtok_s(data, s_delimiters, &data);
+			filter |= 0x4 * (token && strcmp(token, "LINEAR") == 0);
+
+			token = strtok_s(data, s_delimiters, &data);
+			filter |= 0x1 * (token && strcmp(token, "LINEAR") == 0);
+
+			samplerDesc.Filter = static_cast<D3D11_FILTER>(filter);
+			return;
+		}
+
+		void LoadSamplerTextureAddressMode(D3D11_SAMPLER_DESC& samplerDesc, char* data)
+		{
+			char* token = strtok_s(data, s_delimiters, &data);
+			// Use defualt values if input is malformed.
+			if (token == 0) {
+				return;
+			}
+
+			int addressModes[3] = { -1, -1, -1 };
+
+			for (int i = 0; token && i < 3; i++) {
+				if (token && strcmp(token, "WRAP") == 0) {
+					addressModes[i] = static_cast<int>(D3D11_TEXTURE_ADDRESS_WRAP);
+				}
+				else if (token && strcmp(token, "CLAMP") == 0) {
+					addressModes[i] = static_cast<int>(D3D11_TEXTURE_ADDRESS_CLAMP);
+				}
+				else if (token && strcmp(token, "MIRROR") == 0) {
+					addressModes[i] = static_cast<int>(D3D11_TEXTURE_ADDRESS_MIRROR);
+				}
+				else if (token && strcmp(token, "MIRROR_ONCE") == 0) {
+					addressModes[i] = static_cast<int>(D3D11_TEXTURE_ADDRESS_MIRROR_ONCE);
+				}
+				else if (token && strcmp(token, "BORDER") == 0) {
+					addressModes[i] = static_cast<int>(D3D11_TEXTURE_ADDRESS_BORDER);
+				}
+				token = strtok_s(data, s_delimiters, &data);
+			}
+
+			// Again, default to wrapped addressing if input is malformed.
+			samplerDesc.AddressU = addressModes[0] == -1 ? D3D11_TEXTURE_ADDRESS_WRAP : static_cast<D3D11_TEXTURE_ADDRESS_MODE>(addressModes[0]);
+			samplerDesc.AddressV = addressModes[1] == -1 ? samplerDesc.AddressU : static_cast<D3D11_TEXTURE_ADDRESS_MODE>(addressModes[1]);
+			samplerDesc.AddressW = addressModes[2] == -1 ? samplerDesc.AddressU : static_cast<D3D11_TEXTURE_ADDRESS_MODE>(addressModes[2]);
+			return;
+		}
+
+		void LoadSamplerMipLODBias(D3D11_SAMPLER_DESC& samplerDesc, char* data)
+		{
+			char* token = strtok_s(data, s_delimiters, &data);
+			// Use defualt value if input is malformed.
+			if (token == 0) {
+				return;
+			}
+
+			samplerDesc.MipLODBias = strtof(token, &token);
+			return;
+		}
+
+		void LoadSamplerMaxAnisotropy(D3D11_SAMPLER_DESC& samplerDesc, char* data)
+		{
+			char* token = strtok_s(data, s_delimiters, &data);
+			// Use defualt value if input is malformed.
+			if (token == 0) {
+				return;
+			}
+
+			int value = strtol(token, &token, 10);
+			samplerDesc.MaxAnisotropy = value < 1 ? 1 : value;
+			return;
+		}
+
+		void LoadSamplerComparisonFunction(D3D11_SAMPLER_DESC& samplerDesc, char* data)
+		{
+			char* token = strtok_s(data, s_delimiters, &data);
+			// Use defualt value if input is malformed.
+			if (token == 0) {
+				return;
+			}
+
+			if (strcmp(token, "NEVER") == 0) {
+				samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+			}
+			else if (strcmp(token, "LESS") == 0) {
+				samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS;
+			}
+			else if (strcmp(token, "EQUAL") == 0) {
+				samplerDesc.ComparisonFunc = D3D11_COMPARISON_EQUAL;
+			}
+			else if (strcmp(token, "LESS_EQUAL") == 0) {
+				samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
+			}
+			else if (strcmp(token, "GREATER") == 0) {
+				samplerDesc.ComparisonFunc = D3D11_COMPARISON_GREATER;
+			}
+			else if (strcmp(token, "NOT_EQUAL") == 0) {
+				samplerDesc.ComparisonFunc = D3D11_COMPARISON_NOT_EQUAL;
+			}
+			else if (strcmp(token, "GREATER_EQUAL") == 0) {
+				samplerDesc.ComparisonFunc = D3D11_COMPARISON_GREATER_EQUAL;
+			}
+			else if (strcmp(token, "ALWAYS") == 0) {
+				samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+			}
+
+			return;
+		}
+
+		void LoadSamplerBorderColor(D3D11_SAMPLER_DESC& samplerDesc, char* data)
+		{
+			char* token = strtok_s(data, s_delimiters, &data);
+			// Use defualt value if input is malformed.
+			if (token == 0) {
+				return;
+			}
+
+			float divisor = strcmp(token, "I") == 0 ? 255.0f : 1.0f;
+
+			for (int i = 0; i < 4; i++) {
+				token = strtok_s(data, s_delimiters, &data);
+				if (token != 0) {
+					float value = static_cast<float>(strtof(token, &token)) / divisor;
+					samplerDesc.BorderColor[i] = value < 0.0f ? 0.0f : value > 1.0f ? 1.0f : value;
+				}
+			}
+
+			return;
+		}
+
+		void LoadSamplerMinimumLOD(D3D11_SAMPLER_DESC& samplerDesc, char* data)
+		{
+			char* token = strtok_s(data, s_delimiters, &data);
+			// Use defualt value if input is malformed.
+			if (token == 0) {
+				return;
+			}
+
+			float value = strtof(token, &token);
+			samplerDesc.MinLOD = value < 0.0f ? 0.0f : value;
+			return;
+		}
+
+		void LoadSamplerMaximumLOD(D3D11_SAMPLER_DESC& samplerDesc, char* data)
+		{
+			char* token = strtok_s(data, s_delimiters, &data);
+			// Use defualt value if input is malformed.
+			if (token == 0) {
+				return;
+			}
+
+			if (strcmp(token, "MAX") == 0) {
+				samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+				return;
+			}
+
+			float value = strtof(token, &token);
+			samplerDesc.MaxLOD = value < samplerDesc.MinLOD ? samplerDesc.MinLOD : value;
+			return;
+		}
+	}
+
+	void ResourceManager::SamplerLoader::LoadBuiltIn(std::unordered_map<D3D11_SAMPLER_DESC, std::unique_ptr<Sampler>, SamplerDescHash, SamplerDescEqual>& samplerBank)
+	{
+		samplerBank[s_defaultSamplerDesc] = std::make_unique<Sampler>(s_defaultSamplerDesc);
+	}
+
+	std::unique_ptr<Sampler> ResourceManager::SamplerLoader::LoadSampler(const std::filesystem::path& filepath)
+	{
+		D3D11_SAMPLER_DESC samplerDesc = s_defaultSamplerDesc;
+
+		// Create the texture meta if it doesn't exist.
+		if (!std::filesystem::exists(filepath)) {
+			CreateSampler(filepath);
+			return std::make_unique<Sampler>(samplerDesc);
+		}
+
+		// Open the file
+		std::ifstream file(filepath);
+		if (!file.is_open()) {
+			return std::make_unique<Sampler>(samplerDesc);
+		}
+
+		// Read until the "#SAMPLER SETTINGS" or until end of file.
+		std::string line;
+		while (std::getline(file, line) && line != "#SAMPLER SETTINGS") {
+		}
+
+		//No "#SAMPLER SETTINGS".
+		if (line != "#SAMPLER SETTINGS") {
+			return std::make_unique<Sampler>(samplerDesc);
+		}
+
+		// Tokenize input and read in data.
+		while (std::getline(file, line)) {
+			char* data = &line[0];
+			char* field = strtok_s(data, s_delimiters, &data);
+
+			if (!field) {
+				continue;
+			}
+
+			if (strcmp(field, "Filter") == 0) {
+				LoadSamplerFilter(samplerDesc, data);
+			}
+			else if (strcmp(field, "Texture_Address_Mode") == 0) {
+				LoadSamplerTextureAddressMode(samplerDesc, data);
+			}
+			else if (strcmp(field, "Mip_LOD_Bias") == 0) {
+				LoadSamplerMipLODBias(samplerDesc, data);
+			}
+			else if (strcmp(field, "Max_Anisotropy") == 0) {
+				LoadSamplerMaxAnisotropy(samplerDesc, data);
+			}
+			else if (strcmp(field, "Comparison_Function") == 0) {
+				LoadSamplerComparisonFunction(samplerDesc, data);
+			}
+			else if (strcmp(field, "Border_Color") == 0) {
+				LoadSamplerBorderColor(samplerDesc, data);
+			}
+			else if (strcmp(field, "Minimum_LOD") == 0) {
+				LoadSamplerMinimumLOD(samplerDesc, data);
+			}
+			else if (strcmp(field, "Maximum_LOD") == 0) {
+				LoadSamplerMaximumLOD(samplerDesc, data);
+			}
+		}
+
+		return std::make_unique<Sampler>(samplerDesc);
+	}
+
+	std::unique_ptr<Sampler> ResourceManager::SamplerLoader::LoadBinary(const std::filesystem::path& filepath)
+	{
+		std::ifstream file(filepath, std::ios::binary);
+
+		if (!file.is_open()) {
+			return std::make_unique<Sampler>(s_defaultSamplerDesc);
+		}
+
+		BinaryHeader header;
+		file.read(reinterpret_cast<char*>(&header), sizeof(BinaryHeader));
+
+		D3D11_SAMPLER_DESC samplerDesc;
+		file.read(reinterpret_cast<char*>(&samplerDesc), header);
+
+		return std::make_unique<Sampler>(samplerDesc);
+	}
+
+	void ResourceManager::SamplerLoader::CreateSampler(const std::filesystem::path& filepath)
+	{
+		std::ofstream file(filepath);
+		if (!file.is_open()) {
+			return;
+		}
+
+		const char* defaultSampler =
+			"#SAMPLER SETTINGS\n"
+			"\tFilter: BILINEAR\n"
+			"\tTexture_Address_Mode: WRAP\n"
+			"\tMip_LOD_Bias: 0\n"
+			"\tMax_Anisotropy: 1\n"
+			"\tComparison_Function: ALWAYS\n"
+			"\tBorder_Color: I(0, 0, 0, 0)\n"
+			"\tMinimum_LOD: 0\n"
+			"\tMaximum_LOD: MAX\n";
+
+		file.write(defaultSampler, std::strlen(defaultSampler));
+	}
+
+	void ResourceManager::SamplerLoader::CreateBinary(const std::filesystem::path& filepath, const D3D11_SAMPLER_DESC* samplerDesc)
+	{
+		assert(("Error: Sampler cannot be null!", samplerDesc));
+
+		std::ofstream file(filepath, std::ios::binary);
+		assert(("Error: Cannot create Sampler binary file!", file.is_open()));
+
+		// Create the header.
+		constexpr BinaryHeader header = sizeof(D3D11_SAMPLER_DESC);
+
+		// Write the header.
+		file.write(reinterpret_cast<const char*>(&header), sizeof(BinaryHeader));
+
+		// Write the samplerDesc.
+		file.write(reinterpret_cast<const char*>(samplerDesc), sizeof(D3D11_SAMPLER_DESC));
+	}
+}

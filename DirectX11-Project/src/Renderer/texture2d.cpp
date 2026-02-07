@@ -3,10 +3,10 @@
 
 namespace Engine
 {
-	Texture2D::Texture2D(const void* data, unsigned int width, unsigned int height, ID3D11SamplerState* samplerState)
+	Texture2D::Texture2D(const void* data, unsigned int width, unsigned int height, Sampler* sampler)
 		: m_texture(0)
 		, m_shaderResourceView(0)
-		, m_samplerState(samplerState)
+		, m_sampler(sampler)
 		, m_data(width * height * 4)
 		, m_width(width)
 		, m_height(height)
@@ -16,9 +16,12 @@ namespace Engine
 
 	Texture2D::Texture2D(Texture2D&& other) noexcept
 	{
+		// Release what we currently have.
+		Release();
+
 		m_texture = other.m_texture;
 		m_shaderResourceView = other.m_shaderResourceView;
-		m_samplerState = other.m_samplerState;
+		m_sampler = other.m_sampler;
 		m_data.swap(other.m_data);
 		m_width = other.m_width;
 		m_height = other.m_height;
@@ -30,9 +33,12 @@ namespace Engine
 
 	Texture2D& Texture2D::operator=(Texture2D&& other) noexcept
 	{
+		// Release what we currently have.
+		Release();
+
 		m_texture = other.m_texture;
 		m_shaderResourceView = other.m_shaderResourceView;
-		m_samplerState = other.m_samplerState;
+		m_sampler = other.m_sampler;
 		m_data.swap(other.m_data);
 		m_width = other.m_width;
 		m_height = other.m_height;
@@ -51,6 +57,9 @@ namespace Engine
 
 	void Texture2D::Upload(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 	{
+		// Uploade Sampler.
+		m_sampler->Upload(device);
+
 		// Already uploaded.
 		if (m_texture && m_shaderResourceView) {
 			return;
@@ -107,9 +116,10 @@ namespace Engine
 	{
 		// Ensure the texture was uploaded.
 		assert(("Error: Texture not uploaded to GPU!", m_shaderResourceView));
-		assert(("Error: Sampler state not uploaded to GPU!", m_samplerState));
 
-		deviceContext->PSSetSamplers(0, 1, &m_samplerState);
+		// Bind Sampler.
+		m_sampler->Bind(deviceContext);
+
 		deviceContext->PSSetShaderResources(0, 1, &m_shaderResourceView);
 	}
 

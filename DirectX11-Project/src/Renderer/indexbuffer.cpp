@@ -24,6 +24,9 @@ namespace Engine
 
 	IndexBuffer::IndexBuffer(IndexBuffer&& other) noexcept
 	{
+		// Release what we currently have.
+		Release();
+
 		m_ibo = other.m_ibo;
 		m_bufferDesc = other.m_bufferDesc;
 		m_data.swap(other.m_data);
@@ -35,6 +38,9 @@ namespace Engine
 
 	IndexBuffer& IndexBuffer::operator=(IndexBuffer&& other) noexcept
 	{
+		// Release what we currently have.
+		Release();
+
 		m_ibo = other.m_ibo;
 		m_bufferDesc = other.m_bufferDesc;
 		m_data.swap(other.m_data);
@@ -71,7 +77,10 @@ namespace Engine
 
 	void IndexBuffer::Release()
 	{
-		Release();
+		if (m_ibo) {
+			m_ibo->Release();
+			m_ibo = 0;
+		}
 	}
 
 	void IndexBuffer::Bind(ID3D11DeviceContext* deviceContext)

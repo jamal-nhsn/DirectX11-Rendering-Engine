@@ -13,7 +13,7 @@ SpriteAnimationManager::~SpriteAnimationManager()
 {
 }
 
-bool SpriteAnimationManager::Initialize(TextureManager* textureManager)
+bool SpriteAnimationManager::Initialize(Engine::ResourceManager* resourceManager)
 {
 	bool success = false;
 	for (const auto& file : std::filesystem::directory_iterator("Resources/SpriteAnimations")) {
@@ -21,7 +21,7 @@ bool SpriteAnimationManager::Initialize(TextureManager* textureManager)
 		const auto& spriteAnimationPath = file.path();
 
 		// Load the texture.
-		success = LoadSpriteAnimation(textureManager, spriteAnimationPath);
+		success = LoadSpriteAnimation(resourceManager, spriteAnimationPath);
 
 		if (!success) {
 			return success;
@@ -31,13 +31,13 @@ bool SpriteAnimationManager::Initialize(TextureManager* textureManager)
 	return success;
 }
 
-bool SpriteAnimationManager::LoadSpriteAnimation(TextureManager* textureManager, const std::filesystem::path& spriteAnimationPath)
+bool SpriteAnimationManager::LoadSpriteAnimation(Engine::ResourceManager* resourceManager, const std::filesystem::path& spriteAnimationPath)
 {
 	std::vector<SpriteAnimationFrame>* spriteAnimation = 0;
 	if (spriteAnimationPath.extension().compare(".spriteanimation") == 0) {
 		// Create texture from targa image.
 		SpriteAnimationLoader spriteAnimationLoader;
-		spriteAnimation = spriteAnimationLoader.LoadSpriteAnimation(spriteAnimationPath.string().c_str(), textureManager);
+		spriteAnimation = spriteAnimationLoader.LoadSpriteAnimation(spriteAnimationPath.string().c_str(), resourceManager);
 	}
 	else {
 		// Not a spriteanimation file, ignore it.

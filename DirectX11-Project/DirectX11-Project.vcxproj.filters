@@ -243,6 +243,9 @@
     <ClInclude Include="src\PCH\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Renderer\sampler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="window.cpp">
@@ -375,6 +378,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Resources\texture2dloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\samplerloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\sampler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

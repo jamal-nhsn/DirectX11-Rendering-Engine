@@ -8,7 +8,6 @@ Application::Application()
 
 	m_shaderManager = 0;
 	m_resourceManager = 0;
-	m_textureManager = 0;
 
 	m_transformSystem = 0;
 	m_cameraSystem = 0;
@@ -45,21 +44,14 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return success;
 	}
 
-	// Create the MeshManager object.
+	// Create the ResourceManager object.
 	m_resourceManager = new Engine::ResourceManager(true);
 	m_resourceManager->LoadAllMeshes();
-
-	// Create and initialize the TextureManager object.
-	m_textureManager = new TextureManager;
-	success = m_textureManager->Initialize(m_direct3d->GetDevice(), m_direct3d->GetDeviceContext());
-	if (!success) {
-		MessageBox(hwnd, L"Could not initalize textures", L"Error", MB_OK);
-		return success;
-	}
+	m_resourceManager->LoadAllTexture2Ds();
 
 	// Create and initialize the SpriteManager object.
 	m_spriteAnimationManager = new SpriteAnimationManager;
-	success = m_spriteAnimationManager->Initialize(m_textureManager);
+	success = m_spriteAnimationManager->Initialize(m_resourceManager);
 	if (!success) {
 		MessageBox(hwnd, L"Could not initialize sprite animations", L"Error", MB_OK);
 		return success;
@@ -129,7 +121,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	model1.SetMesh(m_resourceManager->GetMesh("sphere"));
 	model1.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
 	model1.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
-	model1.SetTexture(m_textureManager->GetTexture("stoneWall"));
+	model1.SetTexture(m_resourceManager->GetTexture2D("error"));
 	model1.SetShininess(4);
 	Renderer& sphere1Renderer = m_scene->GetComponent<Renderer>(sphere1);
 	sphere1Renderer.SetLayer(RenderLayer::Default);
@@ -152,7 +144,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		quadModel.SetMesh(m_resourceManager->GetMesh("quad"));
 		quadModel.SetBaseShader(m_shaderManager->GetShader<DefaultBaseShader>());
 		quadModel.SetLightShader(m_shaderManager->GetShader<DefaultLightShader>());
-		quadModel.SetTexture(m_textureManager->GetTexture("stoneWall"));
+		quadModel.SetTexture(m_resourceManager->GetTexture2D("stoneWall"));
 		quadModel.SetShininess(4);
 
 		float sign = i % 2 == 0 ? 1.0f : -1.0f;
@@ -178,7 +170,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	fpsTextTransform.SetLocalPosition(50.0f, 100.0f, 0.0f);
 	Text& fpsTextComponent = m_scene->GetComponent<Text>(fpsText);
 	fpsTextComponent.SetShader(m_shaderManager->GetShader<DefaultSpriteShader>());
-	fpsTextComponent.SetTexture(m_textureManager->GetTexture("defaultfont"));
+	fpsTextComponent.SetTexture(m_resourceManager->GetTexture2D("defaultfont"));
 	fpsTextComponent.SetCharacterWidth(12);
 	fpsTextComponent.SetCharacterHeight(16);
 	fpsTextComponent.SetTint(1.0f, 0.0f, 0.0f, 1.0f);
@@ -189,8 +181,8 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
 	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("nyancat");
 
-	int columns = 100;
-	int rows = 100;
+	int columns = 0;//100;
+	int rows = 0;//100;
 
 	int columnSpacing = 50;
 	int rowSpacing = 25;
@@ -236,13 +228,6 @@ void Application::Shutdown()
 	// Release the MeshManager object.
 	delete m_resourceManager;
 	m_resourceManager = 0;
-
-	// Release the TextureManager object.
-	if (m_textureManager) {
-		m_textureManager->Shutdown();
-		delete m_textureManager;
-		m_textureManager = 0;
-	}
 
 	// Release the SpriteAnimationManager object.
 	if (m_spriteAnimationManager) {

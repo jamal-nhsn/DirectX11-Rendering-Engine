@@ -15,7 +15,7 @@ SpriteAnimationLoader::~SpriteAnimationLoader()
 {
 }
 
-std::vector<SpriteAnimationFrame>* SpriteAnimationLoader::LoadSpriteAnimation(const char* filePath, TextureManager* textureManager)
+std::vector<SpriteAnimationFrame>* SpriteAnimationLoader::LoadSpriteAnimation(const char* filePath, Engine::ResourceManager* resourceManager)
 {
 	std::vector<SpriteAnimationFrame>* spriteAnimation = new std::vector<SpriteAnimationFrame>;
 
@@ -38,7 +38,7 @@ std::vector<SpriteAnimationFrame>* SpriteAnimationLoader::LoadSpriteAnimation(co
 		}
 
 		if (strcmp(label, "#FRAME") == 0) {
-			LoadFrame(spriteAnimation, filePtr, textureManager);
+			LoadFrame(spriteAnimation, filePtr, resourceManager);
 		}
 	}
 
@@ -54,7 +54,7 @@ std::vector<SpriteAnimationFrame>* SpriteAnimationLoader::LoadSpriteAnimation(co
 	return spriteAnimation;
 }
 
-void SpriteAnimationLoader::LoadFrame(std::vector<SpriteAnimationFrame>* spriteAnimation, FILE* filePtr, TextureManager* textureManager)
+void SpriteAnimationLoader::LoadFrame(std::vector<SpriteAnimationFrame>* spriteAnimation, FILE* filePtr, Engine::ResourceManager* resourceManager)
 {
 	// Get default values in case some fields are left out.
 	size_t count = 1;
@@ -81,7 +81,7 @@ void SpriteAnimationLoader::LoadFrame(std::vector<SpriteAnimationFrame>* spriteA
 			LoadSlide(data, slide);
 		}
 		else if (strcmp(field, "Texture") == 0) {
-			LoadTexture(data, textureManager, texture);
+			LoadTexture(data, resourceManager, texture);
 		}
 		else if (strcmp(field, "Dimensions") == 0) {
 			LoadDimensions(data, dimensions);
@@ -168,12 +168,12 @@ void SpriteAnimationLoader::LoadSlide(char* data, std::tuple<int, int>& slide)
 	}
 }
 
-void SpriteAnimationLoader::LoadTexture(char* data, TextureManager* textureManager, Engine::Texture2D*& texture)
+void SpriteAnimationLoader::LoadTexture(char* data, Engine::ResourceManager* resourceManager, Engine::Texture2D*& texture)
 {
 	// Try to read value.
 	char* token = strtok_s(data, s_delimiters, &data);
 	if (token != 0) {
-		texture = textureManager->GetTexture(token);
+		texture = resourceManager->GetTexture2D(token);
 	}
 }
 

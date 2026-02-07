@@ -1,5 +1,7 @@
 #pragma once
 
+#include "sampler.h"
+
 #include <cassert>
 #include <d3d11.h>
 #include <stdio.h>
@@ -10,7 +12,7 @@ namespace Engine
 	class Texture2D
 	{
 	public:
-		Texture2D(const void* data, unsigned int width, unsigned int height, ID3D11SamplerState* samplerState);
+		Texture2D(const void* data, unsigned int width, unsigned int height, Sampler* sampler);
 
 		// Do not allow copying.
 		Texture2D(const Texture2D& other) = delete;
@@ -33,7 +35,7 @@ namespace Engine
 	private:
 		ID3D11Texture2D* m_texture;
 		ID3D11ShaderResourceView* m_shaderResourceView;
-		ID3D11SamplerState* m_samplerState;
+		Sampler* m_sampler;
 
 		std::vector<char> m_data;
 		unsigned int m_width;

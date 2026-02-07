@@ -24,6 +24,9 @@ namespace Engine
 
 	VertexBuffer::VertexBuffer(VertexBuffer&& other) noexcept
 	{
+		// Release what we currently have.
+		Release();
+
 		m_vbo = other.m_vbo;
 		m_bufferDesc = other.m_bufferDesc;
 		m_data.swap(other.m_data);
@@ -36,6 +39,9 @@ namespace Engine
 
 	VertexBuffer& VertexBuffer::operator=(VertexBuffer&& other) noexcept
 	{
+		// Release what we currently have.
+		Release();
+
 		m_vbo = other.m_vbo;
 		m_bufferDesc = other.m_bufferDesc;
 		m_data.swap(other.m_data);

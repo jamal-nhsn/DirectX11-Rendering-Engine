@@ -57,6 +57,7 @@
     <ClInclude Include="src\PCH\pch.h" />
     <ClInclude Include="src\Renderer\indexbuffer.h" />
     <ClInclude Include="src\Renderer\mesh.h" />
+    <ClInclude Include="src\Renderer\sampler.h" />
     <ClInclude Include="src\Renderer\texture2d.h" />
     <ClInclude Include="src\Renderer\vertex.h" />
     <ClInclude Include="src\Renderer\vertexbuffer.h" />
@@ -103,6 +104,7 @@
     </ClCompile>
     <ClCompile Include="src\Renderer\indexbuffer.cpp" />
     <ClCompile Include="src\Renderer\mesh.cpp" />
+    <ClCompile Include="src\Renderer\sampler.cpp" />
     <ClCompile Include="src\Renderer\texture2d.cpp" />
     <ClCompile Include="src\Renderer\vertexbuffer.cpp" />
     <ClCompile Include="src\Resources\loadmeshbinary.cpp" />
@@ -112,6 +114,7 @@
     <ClCompile Include="src\Resources\meshloader.cpp" />
     <ClCompile Include="src\Resources\resourcemanager.cpp" />
     <ClCompile Include="src\Resources\texture2dloader.cpp" />
+    <ClCompile Include="src\Resources\samplerloader.cpp" />
     <ClCompile Include="text.cpp" />
     <ClCompile Include="texturemanager.cpp" />
     <ClCompile Include="textureshader.cpp" />

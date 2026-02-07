@@ -31,7 +31,6 @@ private:
 
 	ShaderManager* m_shaderManager;
 	Engine::ResourceManager* m_resourceManager;
-	TextureManager* m_textureManager;
 	SpriteAnimationManager* m_spriteAnimationManager;
 
 	TransformSystem* m_transformSystem;

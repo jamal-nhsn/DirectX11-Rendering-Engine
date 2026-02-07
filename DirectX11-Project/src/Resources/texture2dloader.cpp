@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	void ResourceManager::Texture2DLoader::LoadBuiltIn(std::unordered_map<std::string, std::unique_ptr<Texture2D>>& texture2DBank, ID3D11SamplerState* sampler)
+	void ResourceManager::Texture2DLoader::LoadBuiltIn(std::unordered_map<std::string, std::unique_ptr<Texture2D>>& texture2DBank, Sampler* sampler)
 	{
 		// Solid-color.
 		char white[] = { 255, 255, 255, 255 };
@@ -14,10 +14,10 @@ namespace Engine
 
 		// Meta.
 		char error[] = {
-			255, 255, 0, 255,
-			  0,   0, 0, 255,
-			  0,   0, 0, 255,
-			255, 255, 0, 255
+			255,   0, 255, 255,
+			  0,   0, 0,   255,
+			  0,   0, 0,   255,
+			255,   0, 255, 255
 		};
 		char defaultNormal[] = { 128, 128, 255, 255 };
 
@@ -31,7 +31,7 @@ namespace Engine
 		texture2DBank["defaultNormal"] = std::make_unique<Texture2D>(defaultNormal, 1, 1, sampler);
 	}
 
-	std::unique_ptr<Texture2D> ResourceManager::Texture2DLoader::LoadTGA(const std::filesystem::path& filepath, ID3D11SamplerState* sampler)
+	std::unique_ptr<Texture2D> ResourceManager::Texture2DLoader::LoadTGA(const std::filesystem::path& filepath, Sampler* sampler)
 	{
 		// Open the file.
 		std::ifstream file(filepath, std::ios::binary);
@@ -104,7 +104,7 @@ namespace Engine
 		return std::make_unique<Texture2D>(destData.data(), width, height, sampler);
 	}
 
-	std::unique_ptr<Texture2D> ResourceManager::Texture2DLoader::LoadBinary(const std::filesystem::path& filepath, ID3D11SamplerState* sampler)
+	std::unique_ptr<Texture2D> ResourceManager::Texture2DLoader::LoadBinary(const std::filesystem::path& filepath, Sampler* sampler)
 	{
 		std::ifstream file(filepath, std::ios::binary);
 		
