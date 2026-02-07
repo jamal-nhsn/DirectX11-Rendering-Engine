@@ -6,7 +6,6 @@ INCLUDES
 #include "direct3d.h"
 #include "shadermanager.h"
 #include "src/Resources/resourcemanager.h"
-#include "texturemanager.h"
 #include "spriteanimationmanager.h"
 #include "transformsystem.h"
 #include "camerasystem.h"

@@ -144,9 +144,6 @@
     <ClInclude Include="textureshader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="texturemanager.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="defaultlightshader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
@@ -231,9 +228,6 @@
     <ClInclude Include="src\Renderer\indexbuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Resources\resourceloaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Renderer\texture2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -299,9 +293,6 @@
     <ClCompile Include="textureshader.cpp">
       <Filter>Source Files\Shaders\Base Pass\Texture Shader</Filter>
     </ClCompile>
-    <ClCompile Include="texturemanager.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="defaultlightshader.cpp">
       <Filter>Source Files\Shaders\Light Pass\Default Light Shader</Filter>
     </ClCompile>
@@ -354,18 +345,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\texture2d.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resources\loadtga.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resources\loadtexturemeta.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resources\loadmeshobj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resources\loadmeshbinary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Resources\meshloader.cpp">

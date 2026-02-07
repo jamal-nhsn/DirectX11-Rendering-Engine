@@ -10,7 +10,6 @@ INCLUDES
 
 #include "src/Resources/resourcemanager.h"
 
-#include "texturemanager.h"
 #include "spriteanimationframe.h"
 
 class SpriteAnimationLoader
