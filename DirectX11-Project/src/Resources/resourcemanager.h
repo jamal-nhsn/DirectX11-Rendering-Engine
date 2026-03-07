@@ -3,6 +3,7 @@
 #include "../Renderer/mesh.h"
 #include "../Renderer/texture2d.h"
 #include "../Renderer/sampler.h"
+#include "../Renderer/spriteanimation.h"
 
 #include <string>
 #include <filesystem>
@@ -21,10 +22,9 @@ namespace Engine
 		static constexpr const char* s_textureDirPath         = "Resources/Textures";
 		static constexpr const char* s_samplerDirPath         = "Resources/Textures/Samplers";
 
-		static constexpr const char* s_meshBinaryDirPath            = "Resources/Meshes/.bin";
-		static constexpr const char* s_spriteAnimationBinaryDirPath = "Resources/SpriteAnimations/.bin";
-		static constexpr const char* s_textureBinaryDirPath         = "Resources/Textures/.bin";
-		static constexpr const char* s_samplerBinaryDirPath         = "Resources/Textures/Samplers/.bin";
+		static constexpr const char* s_meshBinaryDirPath    = "Resources/Meshes/.bin";
+		static constexpr const char* s_textureBinaryDirPath = "Resources/Textures/.bin";
+		static constexpr const char* s_samplerBinaryDirPath = "Resources/Textures/Samplers/.bin";
 
 	private:
 		struct MeshLoader
@@ -59,7 +59,7 @@ namespace Engine
 
 		struct SamplerLoader
 		{
-			typedef size_t BinaryHeader;
+			using BinaryHeader = size_t;
 
 			static constexpr const D3D11_SAMPLER_DESC s_defaultSamplerDesc = {
 				D3D11_FILTER_COMPARISON_MIN_MAG_MIP_POINT,
@@ -81,6 +81,13 @@ namespace Engine
 
 			static void CreateSampler(const std::filesystem::path& filepath); // Generates default .sampler file.
 			static void CreateBinary(const std::filesystem::path& filepath, const D3D11_SAMPLER_DESC* samplerDesc);
+		};
+
+		struct SpriteAnimationLoader
+		{
+			// No binaries.
+			// No built in.
+			static std::unique_ptr<SpriteAnimation> LoadSpriteAnimation(const std::filesystem::path& filepath, ResourceManager* resourceManager);
 		};
 
 	public:
@@ -107,6 +114,12 @@ namespace Engine
 
 		Texture2D* GetTexture2D(std::string texture2DName);
 
+		void LoadSpriteAnimation(const std::filesystem::path& filepath);
+		void LoadSpriteAnimation(const std::string& filepath);
+		void LoadAllSpriteAnimations();
+
+		SpriteAnimation* GetSpriteAnimation(std::string spriteAnimationName);
+
 		/*
 		void LoadSpriteAnimation(const std::filesystem::path& filepath);
 		void LoadSpriteAnimation(const std::string& filepath);
@@ -117,6 +130,7 @@ namespace Engine
 		std::unordered_map<std::string, std::unique_ptr<Mesh>> m_meshBank;
 		std::unordered_map<D3D11_SAMPLER_DESC, std::unique_ptr<Sampler>, SamplerDescHash, SamplerDescEqual> m_samplerBank;
 		std::unordered_map<std::string, std::unique_ptr<Texture2D>> m_texture2DBank;
+		std::unordered_map<std::string, std::unique_ptr<SpriteAnimation>> m_spriteAnimationBank;
 
 		bool m_useBinaries;
 	};

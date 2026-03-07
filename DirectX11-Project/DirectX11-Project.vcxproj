@@ -42,8 +42,6 @@
     <ClInclude Include="shader.h" />
     <ClInclude Include="shadermanager.h" />
     <ClInclude Include="sprite.h" />
-    <ClInclude Include="spriteanimationloader.h" />
-    <ClInclude Include="spriteanimationmanager.h" />
     <ClInclude Include="spriteanimator.h" />
     <ClInclude Include="spriteanimatorsystem.h" />
     <ClInclude Include="spritedata.h" />
@@ -58,6 +56,7 @@
     <ClInclude Include="src\Renderer\indexbuffer.h" />
     <ClInclude Include="src\Renderer\mesh.h" />
     <ClInclude Include="src\Renderer\sampler.h" />
+    <ClInclude Include="src\Renderer\spriteanimation.h" />
     <ClInclude Include="src\Renderer\texture2d.h" />
     <ClInclude Include="src\Renderer\vertex.h" />
     <ClInclude Include="src\Renderer\vertexbuffer.h" />
@@ -92,8 +91,6 @@
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shadermanager.cpp" />
     <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="spriteanimationloader.cpp" />
-    <ClCompile Include="spriteanimationmanager.cpp" />
     <ClCompile Include="spriteanimator.cpp" />
     <ClCompile Include="spriteanimatorsystem.cpp" />
     <ClCompile Include="src\PCH\pch.cpp">
@@ -107,6 +104,7 @@
     <ClCompile Include="src\Renderer\vertexbuffer.cpp" />
     <ClCompile Include="src\Resources\meshloader.cpp" />
     <ClCompile Include="src\Resources\resourcemanager.cpp" />
+    <ClCompile Include="src\Resources\spriteanimationloader.cpp" />
     <ClCompile Include="src\Resources\texture2dloader.cpp" />
     <ClCompile Include="src\Resources\samplerloader.cpp" />
     <ClCompile Include="text.cpp" />

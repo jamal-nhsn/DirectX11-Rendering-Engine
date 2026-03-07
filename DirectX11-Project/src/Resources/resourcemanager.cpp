@@ -19,7 +19,6 @@ namespace Engine
 		std::filesystem::create_directory(s_samplerDirPath);
 
 		std::filesystem::create_directory(s_meshBinaryDirPath);
-		std::filesystem::create_directory(s_spriteAnimationBinaryDirPath);
 		std::filesystem::create_directory(s_textureBinaryDirPath);
 		std::filesystem::create_directory(s_samplerBinaryDirPath);
 	}
@@ -110,6 +109,7 @@ namespace Engine
 		assert(("Error: Texture does not exist!", std::filesystem::exists(filepath)));
 
 		const std::string& texture2DName = filepath.stem().string();
+		assert(("Error: Texture2D name is already taken!", m_texture2DBank.find(texture2DName) == m_texture2DBank.end()));
 
 		// Create path to sampler file.
 		std::filesystem::path samplerPath(s_samplerDirPath);
@@ -238,5 +238,59 @@ namespace Engine
 		assert(("Error: Texture2D is null!", m_texture2DBank[texture2DName]));
 
 		return m_texture2DBank[texture2DName].get();
+	}
+
+	void ResourceManager::LoadSpriteAnimation(const std::filesystem::path& filepath)
+	{
+		assert(("Error: SpriteAnimation does not exist!", std::filesystem::exists(filepath)));
+
+		const std::string& spriteAnimationName = filepath.stem().string();
+		assert(("Error: SpriteAnimation name is already taken!", m_spriteAnimationBank.find(spriteAnimationName) == m_spriteAnimationBank.end()));
+
+		const std::filesystem::path& extension = filepath.extension();
+
+		if (extension == ".spriteanimation") {
+			m_spriteAnimationBank[spriteAnimationName] = SpriteAnimationLoader::LoadSpriteAnimation(filepath, this);
+			assert(("Error: Could not load SpriteAnimation!", m_spriteAnimationBank[spriteAnimationName]));
+		}
+		else {
+			assert(("Error: Unsupported SpriteAnimation type!", false));
+		}
+
+		m_spriteAnimationBank[spriteAnimationName] = SpriteAnimationLoader::LoadSpriteAnimation(filepath, this);
+		assert(("Error: Could not load SpriteAnimation!", m_spriteAnimationBank[spriteAnimationName]));
+	}
+
+	void ResourceManager::LoadSpriteAnimation(const std::string& filepath)
+	{
+		std::filesystem::path path(filepath);
+		if (path.has_root_directory()) {
+			LoadSpriteAnimation(path);
+		}
+		else {
+			std::filesystem::path truePath(s_spriteAnimationDirPath / path);
+			LoadSpriteAnimation(truePath);
+		}
+	}
+
+	void ResourceManager::LoadAllSpriteAnimations()
+	{
+		for (
+			auto it = std::filesystem::recursive_directory_iterator(s_spriteAnimationDirPath);
+			it != std::filesystem::recursive_directory_iterator();
+			it++
+			) {
+			if (it->is_regular_file()) {
+				LoadSpriteAnimation(it->path());
+			}
+		}
+	}
+
+	SpriteAnimation* ResourceManager::GetSpriteAnimation(std::string spriteAnimationName)
+	{
+		assert(("Error: SpriteAnimation does not exist!", m_spriteAnimationBank.find(spriteAnimationName) != m_spriteAnimationBank.end()));
+		assert(("Error: SpriteAnimation is null!", m_spriteAnimationBank[spriteAnimationName]));
+
+		return m_spriteAnimationBank[spriteAnimationName].get();
 	}
 }

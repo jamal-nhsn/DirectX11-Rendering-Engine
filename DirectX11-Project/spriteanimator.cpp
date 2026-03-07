@@ -37,7 +37,7 @@ void SpriteAnimator::Update(float dt)
 	}
 }
 
-const SpriteAnimationFrame* SpriteAnimator::GetCurrentFrame()
+const Engine::SpriteAnimationFrame* SpriteAnimator::GetCurrentFrame()
 {
 	if (!m_spriteAnimation || m_frame == -1) {
 		return 0;
@@ -46,14 +46,14 @@ const SpriteAnimationFrame* SpriteAnimator::GetCurrentFrame()
 	return &(*m_spriteAnimation)[m_frame];
 }
 
-void SpriteAnimator::SetSpriteAnimation(const std::vector<SpriteAnimationFrame>* spriteAnimation)
+void SpriteAnimator::SetSpriteAnimation(const Engine::SpriteAnimation* spriteAnimation)
 {
 	m_spriteAnimation = spriteAnimation;
 	m_frame = 0;
 	m_timer = GetCurrentFrame()->duration;
 }
 
-const std::vector<SpriteAnimationFrame>* SpriteAnimator::GetSpriteAnimation()
+const Engine::SpriteAnimation* SpriteAnimator::GetSpriteAnimation()
 {
 	return m_spriteAnimation;
 }

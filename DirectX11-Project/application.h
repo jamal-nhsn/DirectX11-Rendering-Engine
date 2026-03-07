@@ -6,7 +6,6 @@ INCLUDES
 #include "direct3d.h"
 #include "shadermanager.h"
 #include "src/Resources/resourcemanager.h"
-#include "spriteanimationmanager.h"
 #include "transformsystem.h"
 #include "camerasystem.h"
 #include "rendersystem.h"
@@ -30,7 +29,6 @@ private:
 
 	ShaderManager* m_shaderManager;
 	Engine::ResourceManager* m_resourceManager;
-	SpriteAnimationManager* m_spriteAnimationManager;
 
 	TransformSystem* m_transformSystem;
 	CameraSystem* m_cameraSystem;

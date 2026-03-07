@@ -21,7 +21,7 @@ void SpriteAnimatorSystem::Update(Scene* scene, float dt)
 	for (SpriteAnimator& spriteAnimator : (*spriteAnimators)) {
 
 		spriteAnimator.Update(dt);
-		const SpriteAnimationFrame* frame = spriteAnimator.GetCurrentFrame();
+		const Engine::SpriteAnimationFrame* frame = spriteAnimator.GetCurrentFrame();
 
 		if (!frame || !scene->HasComponent<Sprite>(spriteAnimator.GetEntityId())) {
 			continue;

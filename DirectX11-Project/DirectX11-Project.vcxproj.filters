@@ -168,14 +168,8 @@
     <ClInclude Include="rendersystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="spriteanimationmanager.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="spriteanimationframe.h">
       <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="spriteanimationloader.h">
-      <Filter>Header Files\Resources\Loaders</Filter>
     </ClInclude>
     <ClInclude Include="spriteanimator.h">
       <Filter>Header Files\Components</Filter>
@@ -238,6 +232,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\sampler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\spriteanimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -317,12 +314,6 @@
     <ClCompile Include="rendersystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="spriteanimationloader.cpp">
-      <Filter>Source Files\Resources\Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="spriteanimationmanager.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="spriteanimator.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -363,6 +354,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\sampler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\spriteanimationloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

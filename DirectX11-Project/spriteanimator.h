@@ -6,7 +6,7 @@ INCLUDES
 #include <vector>
 
 #include "components.h"
-#include "spriteanimationframe.h"
+#include "../Renderer/spriteanimation.h"
 
 class SpriteAnimator
 {
@@ -18,10 +18,10 @@ public:
 	int GetEntityId();
 
 	void Update(float deltaTime);
-	const SpriteAnimationFrame* GetCurrentFrame();
+	const Engine::SpriteAnimationFrame* GetCurrentFrame();
 
-	void SetSpriteAnimation(const std::vector<SpriteAnimationFrame>* spriteAnimation);
-	const std::vector<SpriteAnimationFrame>* GetSpriteAnimation();
+	void SetSpriteAnimation(const Engine::SpriteAnimation* spriteAnimation);
+	const Engine::SpriteAnimation* GetSpriteAnimation();
 
 	void SetTimer(float time);
 	float GetTimer();
@@ -35,7 +35,7 @@ public:
 private:
 	int m_entityId;
 
-	const std::vector<SpriteAnimationFrame>* m_spriteAnimation;
+	const Engine::SpriteAnimation* m_spriteAnimation;
 	float m_timer;
 	int m_frame;
 };

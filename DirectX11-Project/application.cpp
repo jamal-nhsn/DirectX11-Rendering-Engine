@@ -48,14 +48,7 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_resourceManager = new Engine::ResourceManager(true);
 	m_resourceManager->LoadAllMeshes();
 	m_resourceManager->LoadAllTexture2Ds();
-
-	// Create and initialize the SpriteManager object.
-	m_spriteAnimationManager = new SpriteAnimationManager;
-	success = m_spriteAnimationManager->Initialize(m_resourceManager);
-	if (!success) {
-		MessageBox(hwnd, L"Could not initialize sprite animations", L"Error", MB_OK);
-		return success;
-	}
+	m_resourceManager->LoadAllSpriteAnimations();
 
 	// Create the System objects.
 	m_transformSystem = new TransformSystem;
@@ -179,10 +172,10 @@ bool Application::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	int spriteHeight = 125;
 
 	Shader* spriteShader = m_shaderManager->GetShader<DefaultSpriteShader>();
-	auto spriteAnimation = m_spriteAnimationManager->GetSpriteAnimation("nyancat");
+	auto spriteAnimation = m_resourceManager->GetSpriteAnimation("nyancat");
 
-	int columns = 0;//100;
-	int rows = 0;//100;
+	int columns = 100;
+	int rows = 100;
 
 	int columnSpacing = 50;
 	int rowSpacing = 25;
@@ -228,13 +221,6 @@ void Application::Shutdown()
 	// Release the MeshManager object.
 	delete m_resourceManager;
 	m_resourceManager = 0;
-
-	// Release the SpriteAnimationManager object.
-	if (m_spriteAnimationManager) {
-		m_spriteAnimationManager->Shutdown();
-		delete m_spriteAnimationManager;
-		m_spriteAnimationManager = 0;
-	}
 
 	// Release the System objects.
 	if (m_transformSystem) {
